@@ -24,7 +24,7 @@ public class ChildrenControllerTest {
 
     @Test
     public void shouldIntroduceItself() throws Exception {
-        mvc.perform(get("/").accept(APPLICATION_JSON))
+        mvc.perform(get("/child").accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("This is the children controller!")));
     }
