@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CapacityPlanner.iml" filepath="$PROJECT_DIR$/CapacityPlanner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/children-service/children-service.iml" filepath="$PROJECT_DIR$/children-service/children-service.iml" />
+    </modules>
+  </component>
+</project>
