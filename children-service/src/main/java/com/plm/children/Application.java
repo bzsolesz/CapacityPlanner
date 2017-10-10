@@ -34,7 +34,7 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     public Docket swaggerConfiguration() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(cretaeChildrenServiceApiInfo())
+                .apiInfo(createChildrenServiceApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.plm.children"))
                 .paths(PathSelectors.any())
@@ -42,7 +42,7 @@ public class Application extends SpringBootServletInitializer {
                 .useDefaultResponseMessages(false);
     }
 
-    private ApiInfo cretaeChildrenServiceApiInfo() {
+    private ApiInfo createChildrenServiceApiInfo() {
         return new ApiInfo(
                 "API Documentation of Children Service",
                 "API Documentation of service methods dealing with Children Information",
