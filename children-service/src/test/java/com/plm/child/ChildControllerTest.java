@@ -1,4 +1,4 @@
-package com.plm.children;
+package com.plm.child;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +15,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ChildrenControllerTest {
+public class ChildControllerTest {
 
     @Mock
-    private ChildrenService childrenServiceMock;
+    private ChildService childServiceMock;
 
     @InjectMocks
-    private ChildrenController testedController;
+    private ChildController testedController;
 
     private MockMvc mockMvc;
 
@@ -35,10 +35,10 @@ public class ChildrenControllerTest {
     @Test
     public void shouldIntroduceItself() throws Exception {
 
-        when(childrenServiceMock.index()).thenReturn("This is the children controller!");
+        when(childServiceMock.index()).thenReturn("This is the child controller!");
 
         mockMvc.perform(get("/child").accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("This is the children controller!")));
+                .andExpect(content().string(equalTo("This is the child controller!")));
     }
 }
