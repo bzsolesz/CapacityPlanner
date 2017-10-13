@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.plm</groupId>
-    <artifactId>children-service</artifactId>
+    <artifactId>child-service</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -60,7 +60,7 @@
                 </includes>
             </resource>
         </resources>
-        <finalName>ChildrenService</finalName>
+        <finalName>ChildService</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
