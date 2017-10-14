@@ -1,4 +1,4 @@
-package com.plm.children;
+package com.plm.child;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -34,18 +34,18 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     public Docket swaggerConfiguration() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(cretaeChildrenServiceApiInfo())
+                .apiInfo(createChildServiceApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.plm.children"))
+                .apis(RequestHandlerSelectors.basePackage("com.plm.child"))
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false);
     }
 
-    private ApiInfo cretaeChildrenServiceApiInfo() {
+    private ApiInfo createChildServiceApiInfo() {
         return new ApiInfo(
-                "API Documentation of Children Service",
-                "API Documentation of service methods dealing with Children Information",
+                "API Documentation of ChildService",
+                "API Documentation of service methods dealing with Children's Information",
                 this.buildVersion,
                 "", null, "", "", new ArrayList<>());
     }
