@@ -1,5 +1,6 @@
 package com.plm.child;
 
-public interface ChildService {
+public interface ChildDao {
+
     Child getChildById(int id) throws ResourceNotFoundException;
 }

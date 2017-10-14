@@ -29,6 +29,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-driver-version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${springfoox.swagger.version}</version>
@@ -46,6 +51,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <mysql-driver-version>5.1.6</mysql-driver-version>
         <springfoox.swagger.version>2.7.0</springfoox.swagger.version>
         <jacoco.version>0.7.9</jacoco.version>
     </properties>
@@ -103,7 +109,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.90</minimum>
+                                            <minimum>0.85</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
