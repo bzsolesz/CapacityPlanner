@@ -34,6 +34,7 @@ public class ChildDaoImplTest {
     private final java.util.Date TEST_DATE_OF_BIRTH = new java.util.Date(TEST_SQL_DATE_OF_BIRTH.getTime());
 
     private ChildDaoImpl testedDao;
+    private DBProperties testDBProperties;
     
     @Mock
     private Connection dbConnectionMock;
@@ -47,7 +48,13 @@ public class ChildDaoImplTest {
 
         initMocks(this);
 
-        testedDao = spy(new ChildDaoImpl(TEST_DB_DRIVER_CLASS, TEST_DB_URL, TEST_DB_USERNAME, TEST_DB_PASSWORD));
+        testDBProperties = new DBProperties();
+        testDBProperties.setDriverClass(TEST_DB_DRIVER_CLASS);
+        testDBProperties.setUrl(TEST_DB_URL);
+        testDBProperties.setUsername(TEST_DB_USERNAME);
+        testDBProperties.setPassword(TEST_DB_PASSWORD);
+
+        testedDao = spy(new ChildDaoImpl(testDBProperties));
 
         doReturn(dbConnectionMock).when(testedDao)
                 .createDBConnection(TEST_DB_URL, TEST_DB_USERNAME, TEST_DB_PASSWORD);
