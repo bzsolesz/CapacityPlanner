@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Reload test data into Child table" author="bzsolesz" runAlways="true" runOnChange="true">
+        <preConditions>
+            <tableExists tableName="child" />
+        </preConditions>
+        <delete tableName="child"/>
+        <insert tableName="child">
+            <column name="first_name" value="Peter"/>
+            <column name="surname" value="Jones"/>
+            <column name="date_of_birth" valueDate="1970-06-06"/>
+        </insert>
+        <insert tableName="child">
+            <column name="first_name" value="Mark"/>
+            <column name="surname" value="Spencer"/>
+            <column name="date_of_birth" valueDate="1982-02-26"/>
+        </insert>
+        <comment>Delete from and load test data into Child table</comment>
+    </changeSet>
+
+</databaseChangeLog>

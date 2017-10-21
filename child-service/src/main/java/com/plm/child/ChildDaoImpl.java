@@ -1,5 +1,6 @@
 package com.plm.child;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,40 +15,32 @@ import java.util.Date;
 public class ChildDaoImpl implements ChildDao {
 
     static final String GET_CHILD_BY_ID_QUERY = "select * from child where id = ?";
-    public static final String CHILD_ID_COLUMN = "id";
-    public static final String CHILD_FIRST_NAME_COLUMN = "first_name";
-    public static final String CHILD_SURNAME_COLUMN = "surname";
-    public static final String CHILD_DATE_OF_BIRTH_COLUMN = "date_of_birth";
+    static final String CHILD_ID_COLUMN = "id";
+    static final String CHILD_FIRST_NAME_COLUMN = "first_name";
+    static final String CHILD_SURNAME_COLUMN = "surname";
+    static final String CHILD_DATE_OF_BIRTH_COLUMN = "date_of_birth";
 
-    private String dbDriverClass;
-    private String dbUrl;
-    private String dbUsername;
-    private String dbPassword;
+    private DBProperties dbProperties;
 
-    public ChildDaoImpl(
-            @Value("${db.driver.class}") String dbDriverClass,
-            @Value("${db.url}") String dbUrl,
-            @Value("${db.username}") String dbUsername,
-            @Value("${db.password}") String dbPassword) {
-
-        this.dbDriverClass = dbDriverClass;
-        this.dbUrl = dbUrl;
-        this.dbUsername = dbUsername;
-        this.dbPassword = dbPassword;
+    @Autowired
+    public ChildDaoImpl(DBProperties dbProperties)
+    {
+        this.dbProperties = dbProperties;
     }
 
     @Override
     public Child getChildById(int id) throws ResourceNotFoundException {
 
         try {
-            registerDriverClass(dbDriverClass);
+            registerDriverClass(dbProperties.getDriverClass());
         } catch (ClassNotFoundException cnfe) {
             cnfe.printStackTrace();
             throw new RuntimeException("Database driver cannot be registered!");
         }
 
         try (
-                Connection dbConnection = createDBConnection(dbUrl, dbUsername, dbPassword);
+                Connection dbConnection = createDBConnection(
+                        dbProperties.getUrl(), dbProperties.getUsername(), dbProperties.getPassword());
                 PreparedStatement getChildByIdStatement = dbConnection.prepareStatement(GET_CHILD_BY_ID_QUERY);
             )
         {
