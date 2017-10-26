@@ -1,5 +1,8 @@
-package com.plm.service.child;
+package com.plm.service.child.domain.impl;
 
+import com.plm.service.child.dao.ChildRepository;
+import com.plm.service.child.dao.Child;
+import com.plm.service.child.domain.ChildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

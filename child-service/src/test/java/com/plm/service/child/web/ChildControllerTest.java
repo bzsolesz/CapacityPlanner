@@ -1,5 +1,7 @@
-package com.plm.service.child;
+package com.plm.service.child.web;
 
+import com.plm.service.child.dao.Child;
+import com.plm.service.child.domain.ChildService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
