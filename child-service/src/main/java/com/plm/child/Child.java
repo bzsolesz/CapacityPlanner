@@ -13,16 +13,10 @@ public class Child {
     @JsonFormat(pattern = "dd/MM/YYYY")
     private Date dateOfBirth;
 
-    public Child(int id, String firstName, String surname, Date dateOfBirth) {
-        this.id = id;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.dateOfBirth = dateOfBirth;
+    public Child() {
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
     public String getFirstName() {
         return firstName;
@@ -34,5 +28,21 @@ public class Child {
 
     public Date getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

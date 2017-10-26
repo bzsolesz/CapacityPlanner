@@ -3,13 +3,13 @@ package com.plm.child;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -31,24 +31,33 @@ public class ChildControllerTest {
 
     private MockMvc mockMvc;
 
+    private String testUrl;
+    private Child testChild;
+
     @Before
     public void setup(){
 
         initMocks(this);
 
+        testUrl = "/child/" + TEST_CHILD_ID;
+
+        testChild = new Child();
+        testChild.setId(TEST_CHILD_ID);
+        testChild.setFirstName(TEST_FIRST_NAME);
+        testChild.setSurname(TEST_SURNAME);
+        testChild.setDateOfBirth(TEST_DATE_OF_BIRTH);
+
         testedController = new ChildController(childServiceMock);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(testedController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(testedController)
+                .setControllerAdvice(new GlobalControllerExceptionHandler())
+                .build();
     }
 
     @Test
     public void shouldReturnTheChildWithIDLookedFor() throws Exception {
 
-        Child testChild = new Child(TEST_CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
-
         when(childServiceMock.getChildById(TEST_CHILD_ID)).thenReturn(testChild);
-
-        String testUrl = "/child/" + TEST_CHILD_ID;
 
         mockMvc.perform(get(testUrl).accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -57,14 +66,5 @@ public class ChildControllerTest {
                 .andExpect(jsonPath("$.surname").value(TEST_SURNAME))
                 .andExpect(jsonPath("$.dateOfBirth").value(
                         new SimpleDateFormat("dd/MM/YYYY").format(TEST_DATE_OF_BIRTH)));
-    }
-
-    @Test
-    public void shouldReturn404IfChildNotFound() throws Exception {
-
-        when(childServiceMock.getChildById(anyInt())).thenThrow(new ResourceNotFoundException(""));
-
-        mockMvc.perform(get("/child/999").accept(APPLICATION_JSON))
-                .andExpect(status().isNotFound());
     }
 }

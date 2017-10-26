@@ -1,78 +1,35 @@
 package com.plm.child;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Map;
 
 @Component
 public class ChildDaoImpl implements ChildDao {
 
-    static final String GET_CHILD_BY_ID_QUERY = "select * from child where id = ?";
-    static final String CHILD_ID_COLUMN = "id";
-    static final String CHILD_FIRST_NAME_COLUMN = "first_name";
-    static final String CHILD_SURNAME_COLUMN = "surname";
-    static final String CHILD_DATE_OF_BIRTH_COLUMN = "date_of_birth";
+    static final String CHILD_ID_PARAMETER = "id";
+    static final String GET_CHILD_BY_ID_QUERY = "select * from child where id = :" + CHILD_ID_PARAMETER;
 
-    private DBProperties dbProperties;
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ChildDaoImpl(DBProperties dbProperties)
-    {
-        this.dbProperties = dbProperties;
+    public ChildDaoImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public Child getChildById(int id) throws ResourceNotFoundException {
+    public Child getChildById(int id) {
 
-        try {
-            registerDriverClass(dbProperties.getDriverClass());
-        } catch (ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-            throw new RuntimeException("Database driver cannot be registered!");
-        }
+        Map<String, Integer> parameterMap = Collections.singletonMap(CHILD_ID_PARAMETER, id);
 
-        try (
-                Connection dbConnection = createDBConnection(
-                        dbProperties.getUrl(), dbProperties.getUsername(), dbProperties.getPassword());
-                PreparedStatement getChildByIdStatement = dbConnection.prepareStatement(GET_CHILD_BY_ID_QUERY);
-            )
-        {
-            getChildByIdStatement.setInt(1, id);
-
-            ResultSet resultSet = getChildByIdStatement.executeQuery();
-
-            if (resultSet.first()) {
-
-                int childId = resultSet.getInt(CHILD_ID_COLUMN);
-                String firstName = resultSet.getString(CHILD_FIRST_NAME_COLUMN);
-                String surname = resultSet.getString(CHILD_SURNAME_COLUMN);
-                Date dateOfBirth = new Date(resultSet.getDate(CHILD_DATE_OF_BIRTH_COLUMN).getTime());
-
-                return new Child(childId, firstName, surname, dateOfBirth);
-
-            } else {
-                throw new ResourceNotFoundException("Child was not found!");
-            }
-        } catch (SQLException sqle) {
-
-            sqle.printStackTrace();
-
-            throw new RuntimeException("Database query failed!");
-        }
+        return jdbcTemplate.queryForObject(GET_CHILD_BY_ID_QUERY, parameterMap, createChildBeanPropertyRowMapper());
     }
 
-    void registerDriverClass(String dbDriverClass) throws ClassNotFoundException {
-        Class.forName(dbDriverClass);
-    }
-
-    Connection createDBConnection(String dbUrl, String dbUsername, String dbPassword) throws SQLException {
-        return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+    BeanPropertyRowMapper<Child> createChildBeanPropertyRowMapper() {
+        return new BeanPropertyRowMapper<Child>(Child.class);
     }
 }

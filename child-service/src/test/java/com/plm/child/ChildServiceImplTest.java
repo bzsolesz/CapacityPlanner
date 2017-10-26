@@ -37,12 +37,4 @@ public class ChildServiceImplTest {
 
         assertEquals(foundChild, childMock);
     }
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void shouldThrowResourceNotFoundExceptionIfChildWasNotFound() {
-
-        when(childDaoMock.getChildById(anyInt())).thenThrow(new ResourceNotFoundException(""));
-
-        testedService.getChildById(TEST_CHILD_ID);
-    }
 }

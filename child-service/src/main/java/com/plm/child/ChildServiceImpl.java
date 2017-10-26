@@ -14,7 +14,7 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public Child getChildById(int id) throws ResourceNotFoundException {
+    public Child getChildById(int id) {
         return childDao.getChildById(id);
     }
 }
