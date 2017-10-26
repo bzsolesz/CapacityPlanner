@@ -39,8 +39,8 @@ public class SwaggerConfiguration {
 
     private List<ResponseMessage> createHttpGetGlobalResponseMessages() {
         return Arrays.asList(
-                createGlobalResponseMessage(HttpStatus.NOT_FOUND, "Requested resource was not found!"),
-                createGlobalResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, "An error happened during resource lookup!")
+                createGlobalResponseMessage(HttpStatus.NOT_FOUND, "Requested entity was not found!"),
+                createGlobalResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, "An error happened during entity lookup!")
         );
     }
 

@@ -41,17 +41,11 @@ public class ChildControllerTest {
 
         testUrl = "/child/" + TEST_CHILD_ID;
 
-        testChild = new Child();
-        testChild.setId(TEST_CHILD_ID);
-        testChild.setFirstName(TEST_FIRST_NAME);
-        testChild.setSurname(TEST_SURNAME);
-        testChild.setDateOfBirth(TEST_DATE_OF_BIRTH);
+        testChild = new Child(TEST_CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
 
         testedController = new ChildController(childServiceMock);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(testedController)
-                .setControllerAdvice(new GlobalControllerExceptionHandler())
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(testedController).build();
     }
 
     @Test
