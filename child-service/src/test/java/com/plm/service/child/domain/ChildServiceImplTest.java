@@ -1,10 +1,12 @@
-package com.plm.service.child.domain.impl;
+package com.plm.service.child.domain;
 
 import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.dao.ChildEntityRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -29,13 +31,16 @@ public class ChildServiceImplTest {
         testedService = new ChildServiceImpl(childEntityRepository);
 
         when(childEntityRepository.findOne(TEST_CHILD_ID)).thenReturn(childEntityMock);
+
+        when(childEntityMock.getId()).thenReturn(TEST_CHILD_ID);
+        when(childEntityMock.getDateOfBirth()).thenReturn(new Date());
     }
 
     @Test
     public void shouldGetChildById() {
 
-        ChildEntity foundChildEntity = testedService.getChildById(TEST_CHILD_ID);
+        Child foundChild = testedService.getChildById(TEST_CHILD_ID);
 
-        assertEquals(foundChildEntity, childEntityMock);
+        assertEquals(TEST_CHILD_ID, foundChild.getId());
     }
 }

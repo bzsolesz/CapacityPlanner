@@ -1,6 +1,6 @@
 package com.plm.service.child.web;
 
-import com.plm.service.child.dao.ChildEntity;
+import com.plm.service.child.domain.Child;
 import com.plm.service.child.domain.ChildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class ChildController {
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ChildEntity getChildById(@PathVariable int id) {
+    public Child getChildById(@PathVariable int id) {
         return childService.getChildById(id);
     }
 }

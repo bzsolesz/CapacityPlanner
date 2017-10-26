@@ -1,7 +1,5 @@
 package com.plm.service.child.dao;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,18 +17,9 @@ public class ChildEntity {
 
     private String firstName;
     private String surname;
-
-    @JsonFormat(pattern = "dd/MM/YYYY")
     private Date dateOfBirth;
 
     protected ChildEntity() {
-    }
-
-    public ChildEntity(int id, String firstName, String surname, Date dateOfBirth) {
-        this.id = id;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.dateOfBirth = dateOfBirth;
     }
 
     public int getId() { return id; }

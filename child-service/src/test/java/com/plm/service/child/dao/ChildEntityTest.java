@@ -17,19 +17,7 @@ public class ChildEntityTest {
     private ChildEntity testedChildEntity;
 
     @Test
-    public void shouldCreateChildWithData() throws Exception {
-
-        testedChildEntity = new ChildEntity(TEST_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
-
-        assertNotNull(testedChildEntity);
-        assertEquals(TEST_ID, testedChildEntity.getId());
-        assertEquals(TEST_FIRST_NAME, testedChildEntity.getFirstName());
-        assertEquals(TEST_SURNAME, testedChildEntity.getSurname());
-        assertEquals(TEST_DATE_OF_BIRTH, testedChildEntity.getDateOfBirth());
-    }
-
-    @Test
-    public void shouldChildWithDataSettersAndGetters() {
+    public void shouldHaveStandardGettersAndSetters() {
 
         testedChildEntity = new ChildEntity();
         testedChildEntity.setId(TEST_ID);

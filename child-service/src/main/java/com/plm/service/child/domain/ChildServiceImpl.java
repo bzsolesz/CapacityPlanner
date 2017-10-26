@@ -1,13 +1,11 @@
-package com.plm.service.child.domain.impl;
+package com.plm.service.child.domain;
 
 import com.plm.service.child.dao.ChildEntityRepository;
-import com.plm.service.child.dao.ChildEntity;
-import com.plm.service.child.domain.ChildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChildServiceImpl implements ChildService {
+class ChildServiceImpl implements ChildService {
 
     private ChildEntityRepository childEntityRepository;
 
@@ -17,7 +15,7 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public ChildEntity getChildById(int id) {
-        return childEntityRepository.findOne(id);
+    public Child getChildById(int id) {
+        return new Child(childEntityRepository.findOne(id));
     }
 }
