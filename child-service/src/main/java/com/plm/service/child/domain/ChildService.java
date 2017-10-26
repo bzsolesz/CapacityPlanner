@@ -1,7 +1,7 @@
 package com.plm.service.child.domain;
 
-import com.plm.service.child.dao.Child;
+import com.plm.service.child.dao.ChildEntity;
 
 public interface ChildService {
-    Child getChildById(int id);
+    ChildEntity getChildById(int id);
 }

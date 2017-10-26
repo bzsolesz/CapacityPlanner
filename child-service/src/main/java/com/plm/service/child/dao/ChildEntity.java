@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-public class Child {
+@Table(name = "child")
+public class ChildEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +23,10 @@ public class Child {
     @JsonFormat(pattern = "dd/MM/YYYY")
     private Date dateOfBirth;
 
-    protected Child() {
+    protected ChildEntity() {
     }
 
-    public Child(int id, String firstName, String surname, Date dateOfBirth) {
+    public ChildEntity(int id, String firstName, String surname, Date dateOfBirth) {
         this.id = id;
         this.firstName = firstName;
         this.surname = surname;

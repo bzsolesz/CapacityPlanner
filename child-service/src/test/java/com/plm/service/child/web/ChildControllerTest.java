@@ -1,6 +1,6 @@
 package com.plm.service.child.web;
 
-import com.plm.service.child.dao.Child;
+import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.domain.ChildService;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class ChildControllerTest {
     private MockMvc mockMvc;
 
     private String testUrl;
-    private Child testChild;
+    private ChildEntity testChildEntity;
 
     @Before
     public void setup(){
@@ -42,7 +42,7 @@ public class ChildControllerTest {
 
         testUrl = "/child/" + TEST_CHILD_ID;
 
-        testChild = new Child(TEST_CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
+        testChildEntity = new ChildEntity(TEST_CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
 
         testedController = new ChildController(childServiceMock);
 
@@ -52,7 +52,7 @@ public class ChildControllerTest {
     @Test
     public void shouldReturnTheChildWithIDLookedFor() throws Exception {
 
-        when(childServiceMock.getChildById(TEST_CHILD_ID)).thenReturn(testChild);
+        when(childServiceMock.getChildById(TEST_CHILD_ID)).thenReturn(testChildEntity);
 
         mockMvc.perform(get(testUrl).accept(APPLICATION_JSON))
                 .andExpect(status().isOk())

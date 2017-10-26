@@ -1,7 +1,7 @@
 package com.plm.service.child.domain.impl;
 
-import com.plm.service.child.dao.ChildRepository;
-import com.plm.service.child.dao.Child;
+import com.plm.service.child.dao.ChildEntity;
+import com.plm.service.child.dao.ChildEntityRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,25 +17,25 @@ public class ChildServiceImplTest {
     private ChildServiceImpl testedService;
 
     @Mock
-    private ChildRepository childRepository;
+    private ChildEntityRepository childEntityRepository;
     @Mock
-    private Child childMock;
+    private ChildEntity childEntityMock;
 
     @Before
     public void setup() {
 
         initMocks(this);
 
-        testedService = new ChildServiceImpl(childRepository);
+        testedService = new ChildServiceImpl(childEntityRepository);
 
-        when(childRepository.findOne(TEST_CHILD_ID)).thenReturn(childMock);
+        when(childEntityRepository.findOne(TEST_CHILD_ID)).thenReturn(childEntityMock);
     }
 
     @Test
     public void shouldGetChildById() {
 
-        Child foundChild = testedService.getChildById(TEST_CHILD_ID);
+        ChildEntity foundChildEntity = testedService.getChildById(TEST_CHILD_ID);
 
-        assertEquals(foundChild, childMock);
+        assertEquals(foundChildEntity, childEntityMock);
     }
 }
