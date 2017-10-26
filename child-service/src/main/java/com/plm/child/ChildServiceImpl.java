@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChildServiceImpl implements ChildService {
 
-    private ChildDao childDao;
+    private ChildRepository childRepository;
 
     @Autowired
-    public ChildServiceImpl(ChildDao childDao) {
-        this.childDao = childDao;
+    public ChildServiceImpl(ChildRepository childRepository) {
+        this.childRepository = childRepository;
     }
 
     @Override
-    public Child getChildById(int id) throws ResourceNotFoundException {
-        return childDao.getChildById(id);
+    public Child getChildById(int id) {
+        return childRepository.findOne(id);
     }
 }

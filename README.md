@@ -1,7 +1,5 @@
 # CapacityPlanner
 Stories to come:
-- Use Spring JDBCTemplate instead of standard Java JDBC
-- Replace DAO layer with Hibernate + Spring Data
 - Introduce integration tests from WebService layer to database using in-memory database and embedded container
 - Introduce WebService security
 - Setup certificate based mutual TLS connection between client and server

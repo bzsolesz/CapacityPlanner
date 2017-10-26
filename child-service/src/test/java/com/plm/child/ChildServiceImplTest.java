@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -16,7 +15,7 @@ public class ChildServiceImplTest {
     private ChildServiceImpl testedService;
 
     @Mock
-    private ChildDao childDaoMock;
+    private ChildRepository childRepository;
     @Mock
     private Child childMock;
 
@@ -25,9 +24,9 @@ public class ChildServiceImplTest {
 
         initMocks(this);
 
-        testedService = new ChildServiceImpl(childDaoMock);
+        testedService = new ChildServiceImpl(childRepository);
 
-        when(childDaoMock.getChildById(TEST_CHILD_ID)).thenReturn(childMock);
+        when(childRepository.findOne(TEST_CHILD_ID)).thenReturn(childMock);
     }
 
     @Test
@@ -36,13 +35,5 @@ public class ChildServiceImplTest {
         Child foundChild = testedService.getChildById(TEST_CHILD_ID);
 
         assertEquals(foundChild, childMock);
-    }
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void shouldThrowResourceNotFoundExceptionIfChildWasNotFound() {
-
-        when(childDaoMock.getChildById(anyInt())).thenThrow(new ResourceNotFoundException(""));
-
-        testedService.getChildById(TEST_CHILD_ID);
     }
 }
