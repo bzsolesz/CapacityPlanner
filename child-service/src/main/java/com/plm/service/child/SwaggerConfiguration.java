@@ -1,4 +1,4 @@
-package com.plm.child;
+package com.plm.service.child;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,7 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(createChildServiceApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.plm.child"))
+                .apis(RequestHandlerSelectors.basePackage("com.plm.service.child"))
                 .paths(PathSelectors.any())
                 .build()
                 .globalResponseMessage(RequestMethod.GET, createHttpGetGlobalResponseMessages())

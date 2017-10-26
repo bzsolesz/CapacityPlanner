@@ -1,4 +1,4 @@
-package com.plm.child;
+package com.plm.service.child;
 
 import org.springframework.data.repository.CrudRepository;
 

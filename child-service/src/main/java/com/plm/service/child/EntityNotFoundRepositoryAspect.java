@@ -1,4 +1,4 @@
-package com.plm.child;
+package com.plm.service.child;
 
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntityNotFoundRepositoryAspect {
 
-    @AfterReturning(pointcut = "execution(* com.plm.child.*Repository.findOne(..))", returning = "entity")
+    @AfterReturning(pointcut = "execution(* com.plm.service.child.*Repository.findOne(..))", returning = "entity")
     public void throwEntityNotFoundExceptionIfReturningEntityIsNull(Object entity) {
         if (entity == null) {
             throw new EntityNotFoundException();
