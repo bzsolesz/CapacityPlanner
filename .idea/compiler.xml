@@ -7,10 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="child-service" />
+        <module name="common-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="capacity-planner" target="1.5" />
       <module name="child-service" target="1.8" />
+      <module name="common-service" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
