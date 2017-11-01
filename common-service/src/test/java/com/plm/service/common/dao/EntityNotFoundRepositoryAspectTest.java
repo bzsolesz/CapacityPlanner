@@ -1,4 +1,4 @@
-package com.plm.service.child.dao;
+package com.plm.service.common.dao;
 
 import org.junit.Before;
 import org.junit.Test;

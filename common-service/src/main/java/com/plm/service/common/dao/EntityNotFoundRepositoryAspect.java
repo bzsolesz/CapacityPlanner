@@ -1,4 +1,4 @@
-package com.plm.service.child.dao;
+package com.plm.service.common.dao;
 
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;

@@ -11,9 +11,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="capacity-planner" target="1.5" />
+      <module name="capacity-planner" target="1.8" />
       <module name="child-service" target="1.8" />
-      <module name="common-service" target="1.5" />
+      <module name="common-service" target="1.8" />
+      <module name="coverage-report" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

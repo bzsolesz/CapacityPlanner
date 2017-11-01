@@ -46,7 +46,7 @@ public class SwaggerConfiguration {
 
     private ResponseMessage createGlobalResponseMessage(HttpStatus httpStatus, String message) {
         return new ResponseMessage(httpStatus.value(), message, null,
-                Collections.EMPTY_MAP, Collections.EMPTY_LIST);
+                Collections.emptyMap(), Collections.emptyList());
     }
 
     private ApiInfo createChildServiceApiInfo() {
