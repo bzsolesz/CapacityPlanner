@@ -13,25 +13,6 @@
     <artifactId>coverage-report</artifactId>
     <packaging>pom</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <id>jacoco-create-report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report-aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>com.plm.service</groupId>
@@ -45,5 +26,22 @@
             <type>war</type>
         </dependency>
     </dependencies>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report-aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>
