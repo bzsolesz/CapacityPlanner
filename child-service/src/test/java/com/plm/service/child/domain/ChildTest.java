@@ -1,11 +1,15 @@
-package com.plm.service.child.dao;
+package com.plm.service.child.domain;
 
+import com.plm.service.child.dao.ChildEntity;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ChildTest {
 
@@ -16,12 +20,25 @@ public class ChildTest {
 
     private Child testedChild;
 
-    @Test
-    public void shouldCreateChildWithData() throws Exception {
+    @Mock
+    private ChildEntity childEntityMock;
+
+    @Before
+    public void setUp() throws Exception {
+
+        initMocks(this);
 
         testedChild = new Child(TEST_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
 
-        assertNotNull(testedChild);
+        when(childEntityMock.getId()).thenReturn(TEST_ID);
+        when(childEntityMock.getFirstName()).thenReturn(TEST_FIRST_NAME);
+        when(childEntityMock.getSurname()).thenReturn(TEST_SURNAME);
+        when(childEntityMock.getDateOfBirth()).thenReturn(TEST_DATE_OF_BIRTH);
+    }
+
+    @Test
+    public void shouldReturnItsFieldValues() throws Exception {
+
         assertEquals(TEST_ID, testedChild.getId());
         assertEquals(TEST_FIRST_NAME, testedChild.getFirstName());
         assertEquals(TEST_SURNAME, testedChild.getSurname());
@@ -29,15 +46,10 @@ public class ChildTest {
     }
 
     @Test
-    public void shouldChildWithDataSettersAndGetters() {
+    public void couldBeCreatedFromChildEntity() throws Exception {
 
-        testedChild = new Child();
-        testedChild.setId(TEST_ID);
-        testedChild.setFirstName(TEST_FIRST_NAME);
-        testedChild.setSurname(TEST_SURNAME);
-        testedChild.setDateOfBirth(TEST_DATE_OF_BIRTH);
+        testedChild = new Child(childEntityMock);
 
-        assertNotNull(testedChild);
         assertEquals(TEST_ID, testedChild.getId());
         assertEquals(TEST_FIRST_NAME, testedChild.getFirstName());
         assertEquals(TEST_SURNAME, testedChild.getSurname());

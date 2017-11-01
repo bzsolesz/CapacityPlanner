@@ -1,6 +1,6 @@
 package com.plm.service.child.web;
 
-import com.plm.service.child.dao.Child;
+import com.plm.service.child.domain.Child;
 import com.plm.service.child.domain.ChildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

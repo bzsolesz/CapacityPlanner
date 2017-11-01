@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CapacityPlanner.iml" filepath="$PROJECT_DIR$/CapacityPlanner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/capacity-planner.iml" filepath="$PROJECT_DIR$/capacity-planner.iml" />
       <module fileurl="file://$PROJECT_DIR$/child-service/child-service.iml" filepath="$PROJECT_DIR$/child-service/child-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-service/common-service.iml" filepath="$PROJECT_DIR$/common-service/common-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/coverage-report/coverage-report.iml" filepath="$PROJECT_DIR$/coverage-report/coverage-report.iml" />
+      <module fileurl="file://$PROJECT_DIR$/integration-test/integration-test.iml" filepath="$PROJECT_DIR$/integration-test/integration-test.iml" />
     </modules>
   </component>
 </project>
