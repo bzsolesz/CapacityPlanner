@@ -25,9 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ChildControllerTest {
 
     private static final int TEST_CHILD_ID = 123;
-    private final String TEST_FIRST_NAME = "firstName";
-    private final String TEST_SURNAME = "surname";
-    private final Date TEST_DATE_OF_BIRTH = new Date();
+    private static final String TEST_FIRST_NAME = "firstName";
+    private static final String TEST_SURNAME = "surname";
+    private static final Date TEST_DATE_OF_BIRTH = new Date();
 
     @MockBean
     private ChildService childServiceMock;
@@ -35,13 +35,10 @@ public class ChildControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private String testUrl;
     private Child testChild;
 
     @Before
     public void setup(){
-
-        testUrl = "/child/" + TEST_CHILD_ID;
         testChild = new Child(TEST_CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
     }
 
@@ -50,7 +47,7 @@ public class ChildControllerTest {
 
         when(childServiceMock.getChildById(TEST_CHILD_ID)).thenReturn(testChild);
 
-        mockMvc.perform(get(testUrl).accept(APPLICATION_JSON))
+        mockMvc.perform(get("/child/{id}", TEST_CHILD_ID).accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(TEST_CHILD_ID))
                 .andExpect(jsonPath("$.firstName").value(TEST_FIRST_NAME))

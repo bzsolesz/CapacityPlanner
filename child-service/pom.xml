@@ -12,7 +12,38 @@
         <version>0.5-SNAPSHOT</version>
     </parent>
 
+
+    <properties>
+        <mysql-driver-version>5.1.6</mysql-driver-version>
+        <springfoox.swagger.version>2.7.0</springfoox.swagger.version>
+    </properties>
+
+    <build>
+        <finalName>ChildService</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
+        <dependency>
+            <groupId>com.plm.service</groupId>
+            <artifactId>common-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -50,29 +81,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.plm.service</groupId>
-            <artifactId>common-service</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
     </dependencies>
 
-    <properties>
-        <mysql-driver-version>5.1.6</mysql-driver-version>
-        <springfoox.swagger.version>2.7.0</springfoox.swagger.version>
-    </properties>
-
-    <build>
-        <finalName>ChildService</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

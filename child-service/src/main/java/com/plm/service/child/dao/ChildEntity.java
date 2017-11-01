@@ -19,7 +19,7 @@ public class ChildEntity {
     private String surname;
     private Date dateOfBirth;
 
-    protected ChildEntity() {
+    public ChildEntity() {
     }
 
     public int getId() { return id; }

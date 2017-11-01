@@ -24,6 +24,7 @@
         <option value="$PROJECT_DIR$/child-service/pom.xml" />
         <option value="$PROJECT_DIR$/common-service/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/integration-test/pom.xml" />
       </list>
     </option>
   </component>

@@ -19,6 +19,7 @@
         <module>common-service</module>
         <module>child-service</module>
         <module>coverage-report</module>
+        <module>integration-test</module>
     </modules>
 
     <properties>
@@ -77,10 +78,16 @@
         <excludeDefaults>true</excludeDefaults>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.20.1</version>
                 <inherited>false</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report-only</report>
+                            <report>failsafe-report-only</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
                 <configuration>
                     <aggregate>true</aggregate>
                     <linkXRef>false</linkXRef>
