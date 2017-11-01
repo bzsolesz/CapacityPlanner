@@ -4,20 +4,24 @@ import com.plm.service.child.domain.Child;
 import com.plm.service.child.domain.ChildService;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(ChildController.class)
 public class ChildControllerTest {
 
     private static final int TEST_CHILD_ID = 123;
@@ -25,11 +29,10 @@ public class ChildControllerTest {
     private final String TEST_SURNAME = "surname";
     private final Date TEST_DATE_OF_BIRTH = new Date();
 
-    @Mock
+    @MockBean
     private ChildService childServiceMock;
 
-    private ChildController testedController;
-
+    @Autowired
     private MockMvc mockMvc;
 
     private String testUrl;
@@ -38,15 +41,8 @@ public class ChildControllerTest {
     @Before
     public void setup(){
 
-        initMocks(this);
-
         testUrl = "/child/" + TEST_CHILD_ID;
-
         testChild = new Child(TEST_CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
-
-        testedController = new ChildController(childServiceMock);
-
-        mockMvc = MockMvcBuilders.standaloneSetup(testedController).build();
     }
 
     @Test
