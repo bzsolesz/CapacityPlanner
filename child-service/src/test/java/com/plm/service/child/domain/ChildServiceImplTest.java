@@ -2,6 +2,7 @@ package com.plm.service.child.domain;
 
 import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.dao.ChildEntityRepository;
+import com.plm.service.common.domain.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -42,5 +43,13 @@ public class ChildServiceImplTest {
         Child foundChild = testedService.getChildById(TEST_CHILD_ID);
 
         assertEquals(TEST_CHILD_ID, foundChild.getId());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void shouldThrowEntityNotFoundExceptionIfChildWasNotFound() throws Exception {
+
+        when(childEntityRepository.findOne(TEST_CHILD_ID)).thenReturn(null);
+
+        testedService.getChildById(TEST_CHILD_ID);
     }
 }

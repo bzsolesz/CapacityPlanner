@@ -1,4 +1,4 @@
-package com.plm.service.common.dao;
+package com.plm.service.common.domain;
 
 import org.junit.Test;
 
