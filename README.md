@@ -8,7 +8,6 @@ Stories to come:
 
 // TODO test CROS setup in integration test
 // TODO remove hard-coded service url from child.service.ts
-// TODO Ignore web module from Intellij
 // TODO Check build warnings
 // TODO Remove hard-coded child id from child-detail.component.ts
 // TODO Update Karma unit tests for initial components, services (app.component, child.service, child-detail.component)
