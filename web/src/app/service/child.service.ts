@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 import { Child } from '../domain/child';
-
-const CHILD_SERVICE_URL = "http://localhost:8081/ChildService/child";
 
 @Injectable()
 export class ChildService {
@@ -13,7 +12,7 @@ export class ChildService {
 
   getChildById(id: number): Observable<Child> {
 
-    const serviceUrl = `${CHILD_SERVICE_URL}/${id}`;
+    const serviceUrl = `${environment.childServiceUrl}/${id}`;
 
     return this.httpClient.get<Child>(serviceUrl);
   }

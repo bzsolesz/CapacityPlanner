@@ -7,7 +7,6 @@ Stories to come:
 - introduce UI Testing
 
 // TODO test CROS setup in integration test
-// TODO remove hard-coded service url from child.service.ts
 // TODO Remove hard-coded child id from child-detail.component.ts
 // TODO Update Karma unit tests for initial components, services (app.component, child.service, child-detail.component)
 // TODO Update e2e Protractor test suite for initial components, services (app.component, child.service, child-detail.component)
