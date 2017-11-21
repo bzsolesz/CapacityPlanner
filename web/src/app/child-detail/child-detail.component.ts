@@ -15,7 +15,6 @@ export class ChildDetailComponent implements OnInit {
   constructor(private childService: ChildService) { }
 
   ngOnInit() {
-  	this.getChildById(10);
   }
 
   getChildById(id: number): void {
