@@ -2,6 +2,7 @@
 	<input placeholder="Child ID..." #childId (keyup.enter)="getChildById(childId.value); childId.value='';">
 	<button (click)="getChildById(childId.value); childId.value='';">Query</button>
 </div>
+<p *ngIf="queryErrorMessage">{{queryErrorMessage}}</p>
 <div *ngIf="child">
 	<p>Child details:</p>
 	<p>{{child.id}}</p>

@@ -11,6 +11,7 @@ import { ChildService } from '../service/child.service';
 export class ChildDetailComponent implements OnInit {
 
   child: Child;
+  queryErrorMessage: string;
 
   constructor(private childService: ChildService) { }
 
@@ -18,6 +19,15 @@ export class ChildDetailComponent implements OnInit {
   }
 
   getChildById(id: number): void {
-  	this.childService.getChildById(id).subscribe(child => this.child = child);
+    this.childService.getChildById(id).subscribe(
+      child => {
+        this.child = child
+        this.queryErrorMessage = null;
+      },
+      (error: Error) => {
+        this.child = null;
+        this.queryErrorMessage = error.message;
+      }
+    );
   }
 }

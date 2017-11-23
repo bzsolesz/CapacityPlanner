@@ -9,5 +9,4 @@ Stories to come:
 // TODO test CROS setup in integration test
 // TODO Update Karma unit tests for initial components, services (app.component, child.service, child-detail.component)
 // TODO Update e2e Protractor test suite for initial components, services (app.component, child.service, child-detail.component)
-// TODO Implement error handling (404, 500) for childService.getChildById method
 // TODO Integrate web module build into maven process as much as possible (build, packaging, test result reporting)
