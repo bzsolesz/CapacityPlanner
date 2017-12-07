@@ -5,7 +5,7 @@ import com.plm.service.child.dao.ChildEntity;
 import org.junit.Test;
 
 import javax.transaction.Transactional;
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class ChildControllerIT extends AbstractITBase {
 
-    private static final Date TEST_DATE_OF_BIRTH = new Date();
+    private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.now();
 
     @Test
     @Transactional

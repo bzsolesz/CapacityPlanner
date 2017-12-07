@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "child")
@@ -17,7 +17,7 @@ public class ChildEntity {
 
     private String firstName;
     private String surname;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     public ChildEntity() {
     }
@@ -32,7 +32,7 @@ public class ChildEntity {
         return surname;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -48,7 +48,7 @@ public class ChildEntity {
         this.surname = surname;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 }

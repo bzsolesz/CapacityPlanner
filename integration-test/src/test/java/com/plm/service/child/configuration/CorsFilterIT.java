@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 
 import javax.transaction.Transactional;
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class CorsFilterIT extends AbstractITBase {
 
-    private static final Date TEST_DATE_OF_BIRTH = new Date();
+    private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.now();
     private static final String KNOWN_PROTOCOL = "http";
     private static final String KNOWN_HOST = "localhost";
     private static final int KNOWN_PORT = 88000;
