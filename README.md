@@ -6,6 +6,5 @@ Stories to come:
 - First web site page with AngularJS and Boostrap CSS + javascript unit testing
 - introduce UI Testing
 
-TODO Update Karma unit tests for initial components, services (app.component, child.service, child-detail.component)
 TODO Update e2e Protractor test suite for initial components, services (app.component, child.service, child-detail.component)
 TODO Integrate web module build into maven process as much as possible (build, packaging, test result reporting)
