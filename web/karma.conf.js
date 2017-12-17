@@ -10,6 +10,8 @@ module.exports = function (config) {
       require('karma-safari-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-junit-reporter'),
+      require('karma-htmlfile-reporter'),
       require('@angular/cli/plugins/karma')
     ],
     client:{
@@ -21,6 +23,21 @@ module.exports = function (config) {
     },
     angularCli: {
       environment: 'dev'
+    },
+    junitReporter: {
+      outputDir: './tests',
+      outputFile: undefined,
+      suite: '',
+      useBrowserName: true,
+      nameFormatter: undefined,
+      classNameFormatter: undefined,
+      properties: {}
+    },
+    htmlReporter: {
+      outputFile: 'tests/web-unit-test-report.html',
+      pageTitle: 'Capacity Planner Web Component Unit Tests',
+      groupSuites: true,
+      useCompactStyle: true
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
