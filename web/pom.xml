@@ -18,7 +18,7 @@
         <version>1.6.0</version>
         <executions>
           <execution>
-            <id>capacity planner web unit tests</id>
+            <id>run unit tests</id>
             <phase>test</phase>
             <goals>
               <goal>exec</goal>
@@ -31,6 +31,22 @@
                 <argument>--code-coverage</argument>
                 <argument>--reporters</argument>
                 <argument>progress,html</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>build production binary</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>node_modules/@angular/cli/bin/ng</executable>
+              <arguments>
+                <argument>build</argument>
+                <argument>--prod</argument>
+                <argument>--build-optimizer</argument>
+                <argument>--no-delete-output-path</argument>
               </arguments>
             </configuration>
           </execution>
