@@ -10,7 +10,6 @@ module.exports = function (config) {
       require('karma-safari-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('karma-junit-reporter'),
       require('karma-htmlfile-reporter'),
       require('@angular/cli/plugins/karma')
     ],
@@ -18,23 +17,31 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      reports: [ 'html', 'lcovonly' ],
-      fixWebpackSourcePaths: true
+      dir: 'target/coverage',
+      reports: [ 'html' ],
+      fixWebpackSourcePaths: true,
+      skipFilesWithNoCoverage: false,
+      thresholds: {
+        emitWarning: false,
+        global: {
+          statements: 85,
+          lines: 85,
+          branches: 85,
+          functions: 85
+        },
+        each: {
+          statements: 85,
+          lines: 85,
+          branches: 85,
+          functions: 85,
+        }
+      }
     },
     angularCli: {
       environment: 'dev'
     },
-    junitReporter: {
-      outputDir: './tests',
-      outputFile: undefined,
-      suite: '',
-      useBrowserName: true,
-      nameFormatter: undefined,
-      classNameFormatter: undefined,
-      properties: {}
-    },
     htmlReporter: {
-      outputFile: 'tests/web-unit-test-report.html',
+      outputFile: 'target/tests/unit-test-report.html',
       pageTitle: 'Capacity Planner Web Component Unit Tests',
       groupSuites: true,
       useCompactStyle: true

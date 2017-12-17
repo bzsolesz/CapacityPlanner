@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/common-service/common-service.iml" filepath="$PROJECT_DIR$/common-service/common-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/coverage-report/coverage-report.iml" filepath="$PROJECT_DIR$/coverage-report/coverage-report.iml" />
       <module fileurl="file://$PROJECT_DIR$/integration-test/integration-test.iml" filepath="$PROJECT_DIR$/integration-test/integration-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
     </modules>
   </component>
 </project>

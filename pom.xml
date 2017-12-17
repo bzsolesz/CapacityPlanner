@@ -20,6 +20,7 @@
         <module>child-service</module>
         <module>coverage-report</module>
         <module>integration-test</module>
+        <module>web</module>
     </modules>
 
     <properties>

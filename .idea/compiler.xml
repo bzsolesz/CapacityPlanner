@@ -9,6 +9,7 @@
         <module name="child-service" />
         <module name="common-service" />
         <module name="integration-test" />
+        <module name="web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,6 +18,7 @@
       <module name="common-service" target="1.8" />
       <module name="coverage-report" target="1.8" />
       <module name="integration-test" target="1.8" />
+      <module name="web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
