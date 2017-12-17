@@ -8,17 +8,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.List;
+
 @Configuration
 public class CorsFilterConfiguration {
 
-    @Value("${service.client.cross.origin}")
-    private String serviceClientCrossOrigin;
+    @Value("#{'${service.client.cross.origin}'.split(',')}")
+    private List<String> serviceClientCrossOriginList;
 
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin(serviceClientCrossOrigin);
+        config.setAllowedOrigins(serviceClientCrossOriginList);
         config.addAllowedMethod(HttpMethod.GET);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);

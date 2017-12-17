@@ -17,9 +17,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CorsFilterIT extends AbstractITBase {
 
     private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.now();
+
     private static final String KNOWN_PROTOCOL = "http";
     private static final String KNOWN_HOST = "localhost";
     private static final int KNOWN_PORT = 88000;
+
+    private static final String KNOWN_PROTOCOL_2 = "https";
+    private static final String KNOWN_HOST_2 = "123.122.0.13";
+    private static final int KNOWN_PORT_2 = 89000;
 
     private Integer testChildId;
 
@@ -39,6 +44,19 @@ public class CorsFilterIT extends AbstractITBase {
     public void shouldReturnOkToGetRequestFromKnownOrigin() throws Exception {
 
         String testOriginUrl = buildTestOriginUrl(KNOWN_PROTOCOL, KNOWN_HOST, KNOWN_PORT);
+
+        mockMvc.perform(get("/child/{id}", testChildId)
+                .header(HttpHeaders.ORIGIN, testOriginUrl)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, testOriginUrl));
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnOkToGetRequestFromTheSecondKnownOrigin() throws Exception {
+
+        String testOriginUrl = buildTestOriginUrl(KNOWN_PROTOCOL_2, KNOWN_HOST_2, KNOWN_PORT_2);
 
         mockMvc.perform(get("/child/{id}", testChildId)
                 .header(HttpHeaders.ORIGIN, testOriginUrl)
