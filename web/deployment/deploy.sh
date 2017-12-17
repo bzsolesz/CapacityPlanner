@@ -33,6 +33,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 BINARY_TO_COPY=`cd "$SCRIPT_DIR"/../target/dist; pwd`/*.*
 
+echo -e "\ntarget site name:" $TARGET_SITE_NAME
 echo -e "\nbinary to copy:" $BINARY_TO_COPY
 echo -e "\ntarget deployment site directory: " $TARGET_SITE_DIR
 
@@ -41,3 +42,7 @@ rm $TARGET_SITE_DIR/*
 
 echo -e "\ncopy binary to target deployment site directory"
 cp $BINARY_TO_COPY $TARGET_SITE_DIR
+
+echo -e '\nreplace update "base href" in index.html to target site name'
+sed -i -e "s#base href=\"/\"#base href=\"/"$TARGET_SITE_NAME"/\"#g" $TARGET_SITE_DIR/index.html
+rm $TARGET_SITE_DIR/index.html-e
