@@ -84,12 +84,12 @@ describe('Child-Detail Component Tests', () => {
 
     expect(childDetailPage.childDetailDisplay).not.toBeNull();
 
-    expect(childDetailPage.childDetailDisplayId.nativeNode.textContent).toBe(testChild.id.toString());
+    expect(childDetailPage.childDetailDisplayId.nativeElement.textContent).toBe(testChild.id.toString());
 
-    var childDetailDisplayNodes = childDetailPage.childDetailDisplay.queryAll(By.css('p'));
+    var childDetailDisplayElements = childDetailPage.childDetailDisplay.queryAll(By.css('p'));
 
-    expect(childDetailDisplayNodes[2].nativeElement.textContent).toBe(testChild.firstName + ' ' + testChild.surname);
-    expect(childDetailDisplayNodes[3].nativeElement.textContent).toBe(testChild.dateOfBirth);
+    expect(childDetailDisplayElements[2].nativeElement.textContent).toBe(testChild.firstName + ' ' + testChild.surname);
+    expect(childDetailDisplayElements[3].nativeElement.textContent).toBe(testChild.dateOfBirth);
   });
 
   it('should query child by id when "Query" button is clicked and display child details', fakeAsync(() => {
@@ -137,7 +137,6 @@ describe('Child-Detail Component Tests', () => {
     playQueryChildActivityOnPage(hitEnterOnChildIdInputActivityFunction, testChild.id, Observable.of(testChild));
 
     expect(childDetailPage.childIdInput.nativeElement.value).toBe('');
-
   }));
 
   function initTestChild() {
