@@ -160,6 +160,8 @@
                     <argument>--proxy-config</argument>
                     <argument>e2e/proxy.config.json</argument>
                     <argument>--env=e2e</argument>
+                    <argument>--output-path</argument>
+                    <argument>${project.build.directory}/e2e</argument>
                   </arguments>
                 </configuration>
               </execution>
