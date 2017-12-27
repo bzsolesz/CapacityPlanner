@@ -38,28 +38,49 @@
               </arguments>
             </configuration>
           </execution>
-          <execution>
-            <id>build production binary</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>node_modules/@angular/cli/bin/ng</executable>
-              <arguments>
-                <argument>build</argument>
-                <argument>--prod</argument>
-                <argument>--build-optimizer</argument>
-                <argument>--no-delete-output-path</argument>
-              </arguments>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
 
   <profiles>
+    <profile>
+      <id>build_prod_binary</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>prod</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>build production binary</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node_modules/@angular/cli/bin/ng</executable>
+                  <arguments>
+                    <argument>build</argument>
+                    <argument>--prod</argument>
+                    <argument>--build-optimizer</argument>
+                    <argument>--no-delete-output-path</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>e2e_test</id>
       <activation>
