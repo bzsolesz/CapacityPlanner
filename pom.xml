@@ -6,7 +6,7 @@
 
     <groupId>com.plm</groupId>
     <artifactId>capacity-planner</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -20,6 +20,7 @@
         <module>child-service</module>
         <module>coverage-report</module>
         <module>integration-test</module>
+        <module>web</module>
     </modules>
 
     <properties>
@@ -79,6 +80,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.20.1</version>
                 <inherited>false</inherited>
                 <reportSets>
                     <reportSet>

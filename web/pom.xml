@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.plm.capacity-planner</groupId>
+  <artifactId>web</artifactId>
+
+  <parent><groupId>com.plm</groupId>
+    <artifactId>capacity-planner</artifactId>
+    <version>0.5-SNAPSHOT</version>
+  </parent>
+
+  <properties>
+    <exec.maven.plugin.version>1.6.0</exec.maven.plugin.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec.maven.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>run unit tests</id>
+            <phase>test</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>node_modules/@angular/cli/bin/ng</executable>
+              <arguments>
+                <argument>test</argument>
+                <argument>--single-run</argument>
+                <argument>--code-coverage</argument>
+                <argument>--reporters</argument>
+                <argument>progress,html</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>build_prod_binary</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>prod</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>build production binary</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node_modules/@angular/cli/bin/ng</executable>
+                  <arguments>
+                    <argument>build</argument>
+                    <argument>--prod</argument>
+                    <argument>--build-optimizer</argument>
+                    <argument>--no-delete-output-path</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>e2e_test</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>withIT</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.honton.chas</groupId>
+            <artifactId>process-exec-maven-plugin</artifactId>
+            <version>0.9.2</version>
+            <executions>
+              <execution>
+                <id>start Safari Selenium WebDriver</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+                <configuration>
+                  <name>Safari Selenium WebDriver</name>
+                  <waitAfterLaunch>2</waitAfterLaunch>
+                  <processLogFile>${project.build.directory}/safari-driver.log</processLogFile>
+                  <arguments>
+                    <argument>/usr/bin/safaridriver</argument>
+                    <argument>--port</argument>
+                    <argument>4444</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>start Express mock backend server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+                <configuration>
+                  <name>Express mock backend server</name>
+                  <waitAfterLaunch>2</waitAfterLaunch>
+                  <processLogFile>${project.build.directory}/express-mock-backend.log</processLogFile>
+                  <workingDir>${project.basedir}/e2e/mock_backend</workingDir>
+                  <arguments>
+                    <argument>/usr/local/bin/node</argument>
+                    <argument>mock_backend.js</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop all process started in pre-integration-test</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop-all</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>run e2e test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node_modules/@angular/cli/bin/ng</executable>
+                  <arguments>
+                    <argument>e2e</argument>
+                    <argument>--webdriver-update</argument>
+                    <argument>false</argument>
+                    <argument>--proxy-config</argument>
+                    <argument>e2e/proxy.config.json</argument>
+                    <argument>--env=e2e</argument>
+                    <argument>--output-path</argument>
+                    <argument>${project.build.directory}/e2e</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

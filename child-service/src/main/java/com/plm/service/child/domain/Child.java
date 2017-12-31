@@ -3,7 +3,7 @@ package com.plm.service.child.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.plm.service.child.dao.ChildEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Child {
 
@@ -11,10 +11,10 @@ public class Child {
     private String firstName;
     private String surname;
 
-    @JsonFormat(pattern = "dd/MM/YYYY")
-    private Date dateOfBirth;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dateOfBirth;
 
-    public Child(int id, String firstName, String surname, Date dateOfBirth) {
+    public Child(int id, String firstName, String surname, LocalDate dateOfBirth) {
         this.id = id;
         this.firstName = firstName;
         this.surname = surname;
@@ -25,7 +25,7 @@ public class Child {
         this.id = childEntity.getId();
         this.firstName = childEntity.getFirstName();
         this.surname = childEntity.getSurname();
-        this.dateOfBirth = new Date(childEntity.getDateOfBirth().getTime());
+        this.dateOfBirth = childEntity.getDateOfBirth();
     }
 
     public int getId() {
@@ -40,7 +40,7 @@ public class Child {
         return surname;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 }

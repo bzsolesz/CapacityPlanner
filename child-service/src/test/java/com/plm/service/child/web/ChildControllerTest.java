@@ -11,8 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -27,7 +27,7 @@ public class ChildControllerTest {
     private static final int TEST_CHILD_ID = 123;
     private static final String TEST_FIRST_NAME = "firstName";
     private static final String TEST_SURNAME = "surname";
-    private static final Date TEST_DATE_OF_BIRTH = new Date();
+    private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.now();
 
     @MockBean
     private ChildService childServiceMock;
@@ -53,6 +53,6 @@ public class ChildControllerTest {
                 .andExpect(jsonPath("$.firstName").value(TEST_FIRST_NAME))
                 .andExpect(jsonPath("$.surname").value(TEST_SURNAME))
                 .andExpect(jsonPath("$.dateOfBirth").value(
-                        new SimpleDateFormat("dd/MM/YYYY").format(TEST_DATE_OF_BIRTH)));
+                        TEST_DATE_OF_BIRTH.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
     }
 }

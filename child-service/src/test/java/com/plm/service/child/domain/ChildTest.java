@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -16,7 +16,7 @@ public class ChildTest {
     private static final int TEST_ID = 123;
     private final String TEST_FIRST_NAME = "firstName";
     private final String TEST_SURNAME = "surname";
-    private final Date TEST_DATE_OF_BIRTH = new Date();
+    private final LocalDate TEST_DATE_OF_BIRTH = LocalDate.now();
 
     private Child testedChild;
 

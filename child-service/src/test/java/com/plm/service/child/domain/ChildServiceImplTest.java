@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -34,7 +34,7 @@ public class ChildServiceImplTest {
         when(childEntityRepository.findOne(TEST_CHILD_ID)).thenReturn(childEntityMock);
 
         when(childEntityMock.getId()).thenReturn(TEST_CHILD_ID);
-        when(childEntityMock.getDateOfBirth()).thenReturn(new Date());
+        when(childEntityMock.getDateOfBirth()).thenReturn(LocalDate.now());
     }
 
     @Test
