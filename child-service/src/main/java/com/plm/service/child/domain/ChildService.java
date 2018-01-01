@@ -2,6 +2,8 @@ package com.plm.service.child.domain;
 
 import com.plm.service.common.domain.EntityNotFoundException;
 
+import java.util.Set;
+
 public interface ChildService {
 
     /**
@@ -12,4 +14,11 @@ public interface ChildService {
      * @throws EntityNotFoundException if Child was not found
      */
     Child getChildById(int id);
+
+    /**
+     * Returns all children (<code>Child</code>).
+     *
+     * @return the set of all Children
+     */
+    Set<Child> getAllChildren();
 }

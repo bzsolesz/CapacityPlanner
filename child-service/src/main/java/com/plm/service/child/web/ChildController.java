@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/child")
 public class ChildController {
@@ -23,4 +25,7 @@ public class ChildController {
     public Child getChildById(@PathVariable int id) {
         return childService.getChildById(id);
     }
+
+    @GetMapping(value = "/all", produces = "application/json")
+    public Set<Child> getAllChildren() { return childService.getAllChildren(); }
 }
