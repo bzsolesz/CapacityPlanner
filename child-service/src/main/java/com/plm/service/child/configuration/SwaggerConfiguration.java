@@ -40,15 +40,12 @@ public class SwaggerConfiguration {
     }
 
     private List<ResponseMessage> createHttpGetGlobalResponseMessages() {
-        return Arrays.asList(
-                createGlobalResponseMessage(HttpStatus.NOT_FOUND, "Requested entity was not found!"),
-                createGlobalResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR, "An error happened during entity lookup!")
-        );
-    }
 
-    private ResponseMessage createGlobalResponseMessage(HttpStatus httpStatus, String message) {
-        return new ResponseMessage(httpStatus.value(), message, null,
-                Collections.emptyMap(), Collections.emptyList());
+        return Collections.singletonList(
+                new ResponseMessage(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "An error happened during entity lookup!",
+                        null, Collections.emptyMap(), Collections.emptyList()));
     }
 
     private ApiInfo createChildServiceApiInfo() {

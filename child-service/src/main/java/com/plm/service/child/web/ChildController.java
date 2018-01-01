@@ -2,6 +2,8 @@ package com.plm.service.child.web;
 
 import com.plm.service.child.domain.Child;
 import com.plm.service.child.domain.ChildService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,9 @@ public class ChildController {
         this.childService = childService;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Child was not found")
+    })
     @GetMapping(value = "/{id}", produces = "application/json")
     public Child getChildById(@PathVariable int id) {
         return childService.getChildById(id);
