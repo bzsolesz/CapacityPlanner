@@ -7,11 +7,13 @@ import { NgxBootstrapModule } from './ngx-bootstrap/ngx-bootstrap.module';
 import { AppComponent } from './app.component';
 import { ChildService } from './service/child.service';
 import { ChildDetailComponent } from './child-detail/child-detail.component';
+import { ChildListComponent } from './child-list/child-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChildDetailComponent
+    ChildDetailComponent,
+    ChildListComponent
   ],
   imports: [
     BrowserModule,

@@ -8,13 +8,15 @@ import { Child } from '../domain/child';
 
 describe('Child Service Tests', () => {
 
-  const expectedServiceUrl = "http://localhost:8081/ChildService/child/999";
-
   var testedService: ChildService;
 
   var httpMock: HttpTestingController;
 
-  var testChild: Child;
+  var testChild1: Child;
+  var testChild2: Child;
+
+  var getTestChild1Url: string;
+  var getAllChildrenUrl: string = 'http://localhost:8081/ChildService/child/all';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,41 +27,37 @@ describe('Child Service Tests', () => {
     testedService = TestBed.get(ChildService);
     httpMock = TestBed.get(HttpTestingController);
 
-    initTestChild();
+    initTestChildren();
+
+    getTestChild1Url = "http://localhost:8081/ChildService/child/" + testChild1.id;
   });
 
-  it('should make a HTTP GET request to ChildService/child/${id} server endpoint and return the Child', () => {
+  it('getChildById - should make a HTTP GET request to ChildService/child/${id} server endpoint and return the Child', () => {
 
-    testedService.getChildById(testChild.id).subscribe(
+    testedService.getChildById(testChild1.id).subscribe(
       child => {
-        expect(child).toBe(testChild);
+        expect(child).toBe(testChild1);
       }
     );
 
-    const testRequest = httpMock.expectOne(expectedServiceUrl);
+    const testRequest = httpMock.expectOne(getTestChild1Url);
 
     expect(testRequest.request.method).toBe("GET");
 
-    testRequest.flush(testChild);
+    testRequest.flush(testChild1);
   });
 
-  it('should return a generic error message for HTTP error statuses other than 404', () => {
+  it('getChildById - should return a generic error message for HTTP error statuses other than 404', () => {
 
-    testedService.getChildById(testChild.id).subscribe(
-      child => {
-        fail('Child service request should return an error!');
-      },
-      (error: Error) => {
-        expect(error.message).toBe(ChildService.GENERIC_ERROR_MESSAGE);
-      }
+    expectGenericErrorMessage(
+      () => { return testedService.getChildById(testChild1.id); },
+      getTestChild1Url
     );
-
-    httpMock.expectOne(expectedServiceUrl).flush('', {status: 500, statusText: ''});
   });
 
-  it('should return a "Child Not Found" error message for HTTP 404', () => {
+  it('getChildById - should return a "Child Not Found" error message for HTTP 404', () => {
 
-    testedService.getChildById(testChild.id).subscribe(
+    testedService.getChildById(testChild1.id).subscribe(
       child => {
         fail('Child service request should return an error!');
       },
@@ -68,15 +66,67 @@ describe('Child Service Tests', () => {
       }
     );
 
-    httpMock.expectOne(expectedServiceUrl).flush('', {status: 404, statusText: ''});
+    httpMock.expectOne(getTestChild1Url).flush('', {status: 404, statusText: ''});
+  });
+
+  it('getAllChildren - should make a HTTP GET request to ChildService/child/all server endpoint and return all Children', () => {
+
+    testedService.getAllChildren().subscribe(
+      children => {
+        expect(children.length).toBe(2);
+        expect(children[0]).toBe(testChild1);
+        expect(children[1]).toBe(testChild2);
+      }
+    );
+
+    const testRequest = httpMock.expectOne(getAllChildrenUrl);
+
+    expect(testRequest.request.method).toBe("GET");
+
+    testRequest.flush([testChild1, testChild2]);
+  });
+
+  it('getAllChildren - should return empty array if no child', () => {
+
+    testedService.getAllChildren().subscribe(
+      children => {
+        expect(children.length).toBe(0);
+      }
+    );
+
+    httpMock.expectOne(getAllChildrenUrl).flush([]);
+  });
+
+  it('getAllChildren - should return a generic error message if an error happened', () => {
+
+    expectGenericErrorMessage(
+      () => { return testedService.getAllChildren(); },
+      getAllChildrenUrl
+    );
   });
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  function initTestChild() {
-    testChild = new Child();
-    testChild.id = 999;
+  function initTestChildren() {
+    testChild1 = new Child();
+    testChild1.id = 1;
+
+    testChild2 = new Child();
+    testChild2.id = 2;
   };
+
+  function expectGenericErrorMessage(calledServiceMethod: Function, expectedCallUrl): void {
+    calledServiceMethod().subscribe(
+      result => {
+        fail('Child service request should return an error!');
+      },
+      (error: Error) => {
+        expect(error.message).toBe(ChildService.GENERIC_ERROR_MESSAGE);
+      }
+    );
+
+    httpMock.expectOne(expectedCallUrl).flush('', {status: 500, statusText: ''});
+  }
 });

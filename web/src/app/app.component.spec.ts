@@ -16,10 +16,16 @@ describe('App Component Tests', () => {
   })
   class ChildDetailCompomentStub {}
 
+  @Component({
+    selector: 'app-child-list',
+    template: '<div id="childListComponent"></div>'
+  })
+  class ChildListComponentStub {}
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ChildDetailCompomentStub]
+      declarations: [AppComponent, ChildDetailCompomentStub, ChildListComponentStub]
     }).compileComponents();
   }));
 
@@ -27,6 +33,15 @@ describe('App Component Tests', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     testedComponent = fixture.componentInstance;
+  });
+
+  it('should display Child List Component', () => {
+
+    fixture.detectChanges();
+
+    var childListComponentDisplay = fixture.debugElement.query(By.css('#childListComponent'));
+
+    expect(childListComponentDisplay).not.toBeNull();
   });
 
   it('should display Child Detail Component', () => {

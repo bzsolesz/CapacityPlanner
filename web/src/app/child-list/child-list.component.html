@@ -1,0 +1,6 @@
+<ul id="childListDisplay">
+	<li *ngFor="let child of children">
+		{{child.firstName}} {{child.surname}} ({{child.dateOfBirth}}) 
+	</li>
+</ul>
+<p *ngIf="queryErrorMessage" id="childListErrorMessageDisplay">{{queryErrorMessage}}</p>

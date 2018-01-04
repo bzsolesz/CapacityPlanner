@@ -33,4 +33,17 @@ export class ChildService {
       )
     );
   }
+
+  getAllChildren(): Observable<Child[]> {
+
+    const serviceUrl = `${environment.childServiceUrl}/all`;
+
+    return this.httpClient.get<Child[]>(serviceUrl).pipe(
+      catchError(
+        (error: HttpErrorResponse): Observable<Child[]> => {
+          return Observable.throw(new Error(ChildService.GENERIC_ERROR_MESSAGE));
+        }
+      )
+    )
+  }
 }
