@@ -11,11 +11,11 @@ export class ChildListComponent implements OnInit {
 
   children: Child[] = [];
   queryErrorMessage: string = null;
-  
+
   constructor(private childService: ChildService) { }
 
   ngOnInit() {
-  	this.getAllChildren();
+    this.getAllChildren();
   }
 
   getAllChildren(): void {
@@ -25,9 +25,9 @@ export class ChildListComponent implements OnInit {
         this.queryErrorMessage = null;
       },
       (error: Error) => {
-      	this.children = [];
+        this.children = [];
         this.queryErrorMessage = error.message;
       }
-    )	
+    )
   }
 }

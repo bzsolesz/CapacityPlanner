@@ -11,7 +11,7 @@ import { Child } from '../domain/child';
 
 describe('Child-List Component Tests', () => {
 
-  var fixture: ComponentFixture<ChildListComponent>;   
+  var fixture: ComponentFixture<ChildListComponent>;
   var testedComponent: ChildListComponent;
 
   class ChildServiceSpy {
@@ -25,7 +25,7 @@ describe('Child-List Component Tests', () => {
     initPage(): void {
       this.childListDisplay = fixture.debugElement.query(By.css("#childListDisplay"));
       this.errorMessageDisplay = fixture.debugElement.query(By.css("#childListErrorMessageDisplay"));
-    };  
+    };
   }
 
   var childServiceSpy: ChildServiceSpy;
@@ -57,7 +57,7 @@ describe('Child-List Component Tests', () => {
     childServiceSpy.getAllChildren.and.returnValue(Observable.of(testChildren));
 
     fixture.detectChanges();
-    childListPage.initPage(); 
+    childListPage.initPage();
 
     expect(childServiceSpy.getAllChildren).toHaveBeenCalledTimes(1);
 
@@ -112,7 +112,7 @@ describe('Child-List Component Tests', () => {
     testChild1.firstName = "firstName1";
     testChild1.surname = "surname1";
     testChild1.dateOfBirth = "01/01/1981"
-    
+
     testChild2.id = 2;
     testChild2.firstName = "firstName2";
     testChild2.surname = "surname2";
