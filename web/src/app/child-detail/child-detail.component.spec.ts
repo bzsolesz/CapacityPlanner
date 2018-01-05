@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { async, fakeAsync, tick } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { of } from 'rxjs/observable/of';
 
 import { ChildDetailComponent } from './child-detail.component';
 import { ChildService } from '../service/child.service';
@@ -92,16 +92,16 @@ describe('Child-Detail Component Tests', () => {
     expect(childDetailDisplayElements[3].nativeElement.textContent).toBe(testChild.dateOfBirth);
   });
 
-  it('should query child by id when "Query" button is clicked and display child details', fakeAsync(() => {
+  it('should query child by id when "Query" button is clicked and display child details', () => {
 
-    playQueryChildActivityOnPage(clickOnQueryButtonActivityFunction, testChild.id, Observable.of(testChild));
+    playQueryChildActivityOnPage(clickOnQueryButtonActivityFunction, testChild.id, of(testChild));
 
     expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id.toString());
 
     expectTestChildToBeDisplayedAndNoErrorMessage();
-  }));
+  });
 
-  it('should display the error message when query for child by id failed', fakeAsync(() => {
+  it('should display the error message when query for child by id failed', () => {
 
     var error: Error = new Error("An error has happened");
 
@@ -114,30 +114,30 @@ describe('Child-Detail Component Tests', () => {
 
     expect(testedComponent.child).toBeNull();
     expect(childDetailPage.childDetailDisplay).toBeNull();
-  }));
+  });
 
-  it('should set the child id input field to empty after "Query" button was clicked', fakeAsync(() => {
+  it('should set the child id input field to empty after "Query" button was clicked', () => {
 
-    playQueryChildActivityOnPage(clickOnQueryButtonActivityFunction, testChild.id, Observable.of(testChild));
+    playQueryChildActivityOnPage(clickOnQueryButtonActivityFunction, testChild.id, of(testChild));
 
     expect(childDetailPage.childIdInput.nativeElement.value).toBe('');
-  }));
+  });
 
-  it('should query child by id when Enter was hit on input field and display child details', fakeAsync(() => {
+  it('should query child by id when Enter was hit on input field and display child details', () => {
 
-    playQueryChildActivityOnPage(hitEnterOnChildIdInputActivityFunction, testChild.id, Observable.of(testChild));
+    playQueryChildActivityOnPage(hitEnterOnChildIdInputActivityFunction, testChild.id, of(testChild));
 
     expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id.toString());
 
     expectTestChildToBeDisplayedAndNoErrorMessage();
-  }));
+  });
 
-  it('should set the child id input field to empty after Enter was pressed', fakeAsync(() => {
+  it('should set the child id input field to empty after Enter was pressed', () => {
 
-    playQueryChildActivityOnPage(hitEnterOnChildIdInputActivityFunction, testChild.id, Observable.of(testChild));
+    playQueryChildActivityOnPage(hitEnterOnChildIdInputActivityFunction, testChild.id, of(testChild));
 
     expect(childDetailPage.childIdInput.nativeElement.value).toBe('');
-  }));
+  });
 
   function initTestChild() {
     testChild = new Child();
@@ -162,8 +162,6 @@ describe('Child-Detail Component Tests', () => {
 
     childDetailPage.childIdInput.nativeElement.value = childId.toString();
     activity();
-
-    tick();
 
     fixture.detectChanges();
     childDetailPage.initPage();

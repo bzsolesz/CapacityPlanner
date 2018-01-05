@@ -3,7 +3,7 @@ import { async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { of } from 'rxjs/observable/of';
 
 import { ChildListComponent } from './child-list.component';
 import { ChildService } from '../service/child.service';
@@ -54,7 +54,7 @@ describe('Child-List Component Tests', () => {
 
   it('should get the list of Children at initialization by ChildService.getAllChildren and display them', () => {
 
-    childServiceSpy.getAllChildren.and.returnValue(Observable.of(testChildren));
+    childServiceSpy.getAllChildren.and.returnValue(of(testChildren));
 
     fixture.detectChanges();
     childListPage.initPage();
@@ -76,7 +76,7 @@ describe('Child-List Component Tests', () => {
 
   it('should display empty list if no Child', () => {
 
-    childServiceSpy.getAllChildren.and.returnValue(Observable.of([]));
+    childServiceSpy.getAllChildren.and.returnValue(of([]));
 
     fixture.detectChanges();
     childListPage.initPage();
