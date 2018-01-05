@@ -5,7 +5,7 @@ import { ChildService } from '../service/child.service';
 
 @Component({
   selector: 'app-child-list',
-  templateUrl: './child-list.component.html']
+  templateUrl: './child-list.component.html'
 })
 export class ChildListComponent implements OnInit {
 
