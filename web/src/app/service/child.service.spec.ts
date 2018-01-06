@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { ChildService } from './child.service';
 import { Child } from '../domain/child';
 
-describe('Child Service Tests', () => {
+describe('Child Service', () => {
 
   var testedService: ChildService;
 

@@ -5,8 +5,7 @@ import { ChildService } from '../service/child.service';
 
 @Component({
   selector: 'app-child-detail',
-  templateUrl: './child-detail.component.html',
-  styleUrls: ['./child-detail.component.css']
+  templateUrl: './child-detail.component.html'
 })
 export class ChildDetailComponent implements OnInit {
 

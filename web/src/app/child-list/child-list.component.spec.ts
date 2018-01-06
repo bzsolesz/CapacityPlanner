@@ -9,7 +9,7 @@ import { ChildListComponent } from './child-list.component';
 import { ChildService } from '../service/child.service';
 import { Child } from '../domain/child';
 
-describe('Child-List Component Tests', () => {
+describe('Child-List Component', () => {
 
   var fixture: ComponentFixture<ChildListComponent>;
   var testedComponent: ChildListComponent;
@@ -24,7 +24,7 @@ describe('Child-List Component Tests', () => {
 
     initPage(): void {
       this.childListDisplay = fixture.debugElement.query(By.css("#childListDisplay"));
-      this.errorMessageDisplay = fixture.debugElement.query(By.css("#childListErrorMessageDisplay"));
+      this.errorMessageDisplay = fixture.debugElement.query(By.css("#errorMessageDisplay"));
     };
   }
 

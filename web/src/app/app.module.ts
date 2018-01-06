@@ -9,6 +9,8 @@ import { ChildService } from './service/child.service';
 import { ChildDetailComponent } from './child-detail/child-detail.component';
 import { ChildListComponent } from './child-list/child-list.component';
 
+import { AppRoutingModule } from './app-routing/app-routing.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,8 @@ import { ChildListComponent } from './child-list/child-list.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    NgxBootstrapModule
+    NgxBootstrapModule,
+    AppRoutingModule
   ],
   providers: [ChildService],
   bootstrap: [AppComponent]

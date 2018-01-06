@@ -9,7 +9,7 @@ import { ChildDetailComponent } from './child-detail.component';
 import { ChildService } from '../service/child.service';
 import { Child } from '../domain/child';
 
-describe('Child-Detail Component Tests', () => {
+describe('Child-Detail Component', () => {
 
   var fixture: ComponentFixture<ChildDetailComponent>;
   var testedComponent: ChildDetailComponent;

@@ -5,27 +5,21 @@ import { Component } from '@angular/core';
 
 import { AppComponent} from './app.component';
 
-describe('App Component Tests', () => {
+describe('App Component', () => {
 
   var fixture: ComponentFixture<AppComponent>;
   var testedComponent: AppComponent;
 
   @Component({
-    selector: 'app-child-detail',
-    template: '<div id="childDetailComponent"></div>'
+    selector: 'router-outlet',
+    template: '<div></div>'
   })
-  class ChildDetailCompomentStub {}
-
-  @Component({
-    selector: 'app-child-list',
-    template: '<div id="childListComponent"></div>'
-  })
-  class ChildListComponentStub {}
+  class RouterOutletStub {}
 
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ChildDetailCompomentStub, ChildListComponentStub]
+      declarations: [AppComponent, RouterOutletStub]
     }).compileComponents();
   }));
 
@@ -35,21 +29,12 @@ describe('App Component Tests', () => {
     testedComponent = fixture.componentInstance;
   });
 
-  it('should display Child List Component', () => {
+  it('should display the Router Outlet for routed views', () => {
 
     fixture.detectChanges();
 
-    var childListComponentDisplay = fixture.debugElement.query(By.css('#childListComponent'));
+    var routerOutletDisplay = fixture.debugElement.query(By.css('router-outlet'));    
 
-    expect(childListComponentDisplay).not.toBeNull();
-  });
-
-  it('should display Child Detail Component', () => {
-
-    fixture.detectChanges();
-
-    var childDetailComponentDisplay = fixture.debugElement.query(By.css('#childDetailComponent'));
-
-    expect(childDetailComponentDisplay).not.toBeNull();
-  });
+    expect(routerOutletDisplay).not.toBeNull();
+  })
 });
