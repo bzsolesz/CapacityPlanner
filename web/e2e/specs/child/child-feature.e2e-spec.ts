@@ -1,5 +1,5 @@
-import { ChildListPage } from '../page_objects/child-list.po';
-import { ChildDetailPage } from '../page_objects/child-detail.po';
+import { ChildListPage } from '../../page_objects/child/child-list.po';
+import { ChildDetailPage } from '../../page_objects/child/child-detail.po';
 
 describe('By the Child feature the User', () => {
 

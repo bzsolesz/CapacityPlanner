@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Child } from '../domain/child';
-import { ChildService } from '../service/child.service';
+import { ChildService } from '../domain/child.service';
 
 @Component({
-  selector: 'app-child-list',
   templateUrl: './child-list.component.html'
 })
 export class ChildListComponent implements OnInit {

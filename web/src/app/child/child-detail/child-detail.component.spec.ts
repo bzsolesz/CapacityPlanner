@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { ChildDetailComponent } from './child-detail.component';
-import { ChildService } from '../service/child.service';
+import { ChildService } from '../domain/child.service';
 import { Child } from '../domain/child';
 
 describe('Child-Detail Component', () => {

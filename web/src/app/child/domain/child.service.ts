@@ -4,8 +4,8 @@ import { catchError } from 'rxjs/operators/catchError';
 import 'rxjs/add/observable/throw';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { environment } from '../../environments/environment';
-import { Child } from '../domain/child';
+import { environment } from '../../../environments/environment';
+import { Child } from './child';
 
 @Injectable()
 export class ChildService {

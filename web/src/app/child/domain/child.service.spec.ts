@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Observable } from 'rxjs/Observable';
 
 import { ChildService } from './child.service';
-import { Child } from '../domain/child';
+import { Child } from './child';
 
 describe('Child Service', () => {
 
