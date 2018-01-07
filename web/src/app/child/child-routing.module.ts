@@ -5,7 +5,7 @@ import { ChildDetailComponent } from './child-detail/child-detail.component';
 import { ChildListComponent } from './child-list/child-list.component';
 
 const childRoutes: Routes = [
-  { path: 'children', component: ChildListComponent },
+  { path: 'child/all', component: ChildListComponent },
   { path: 'child', component: ChildDetailComponent }
 ];
 

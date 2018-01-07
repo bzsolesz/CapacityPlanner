@@ -6,6 +6,6 @@ export class ChildListPage {
   childListItemDisplays: ElementArrayFinder = this.childListDisplay.all(by.css('li'));
 
   navigateToPage(): void {
-    browser.get('/');
+    browser.get('/child/all');
   };
 }
