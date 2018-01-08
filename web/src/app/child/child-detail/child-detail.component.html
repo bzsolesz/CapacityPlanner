@@ -1,7 +1,3 @@
-<div>
-	<input placeholder="Child ID..." #childId (keyup.enter)="getChildById(childId.value); childId.value='';" id="childIdInput">
-	<button (click)="getChildById(childId.value); childId.value='';" id="queryButton">Query</button>
-</div>
 <div *ngIf="child" id="childDetailDisplay">
 	<p>Child details:</p>
 	<p>{{child.id}}</p>

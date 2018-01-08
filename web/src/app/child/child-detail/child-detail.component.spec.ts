@@ -4,6 +4,8 @@ import { DebugElement } from '@angular/core';
 import { async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
 
 import { ChildDetailComponent } from './child-detail.component';
 import { ChildService } from '../domain/child.service';
@@ -14,29 +16,45 @@ describe('Child-Detail Component', () => {
   var fixture: ComponentFixture<ChildDetailComponent>;
   var testedComponent: ChildDetailComponent;
 
+  class ActivatedRouteStub {
+    private _testParamMap: ParamMap;
+    private subject = new BehaviorSubject(this._testParamMap);
+
+    paramMap = this.subject.asObservable();
+
+    set testParamMap(params: {}) {
+      this._testParamMap = convertToParamMap(params);
+      this.subject.next(this._testParamMap);
+    }
+  }
+
   class ChildServiceSpy {
     getChildById = jasmine.createSpy('getChildById');
   }
 
   class ChildDetailPage {
-    childIdInput: DebugElement;
-    queryButton: DebugElement;
     errorMessageDisplay: DebugElement;
     childDetailDisplay: DebugElement;
     childDetailDisplayId: DebugElement;
+    childDetailDisplayName: DebugElement;
+    childDetailDisplayDateOfBirth: DebugElement;
 
     initPage(): void {
-      this.childIdInput = fixture.debugElement.query(By.css('#childIdInput'));
-      this.queryButton = fixture.debugElement.query(By.css('#queryButton'));
       this.errorMessageDisplay = fixture.debugElement.query(By.css('#errorMessageDisplay'));
       this.childDetailDisplay = fixture.debugElement.query(By.css('#childDetailDisplay'));
 
       if (this.childDetailDisplay !== null) {
-        this.childDetailDisplayId = this.childDetailDisplay.queryAll(By.css('p'))[1];
+
+        let childDetailDisplayItems = this.childDetailDisplay.queryAll(By.css('p'));
+
+        this.childDetailDisplayId = childDetailDisplayItems[1];
+        this.childDetailDisplayName = childDetailDisplayItems[2];
+        this.childDetailDisplayDateOfBirth = childDetailDisplayItems[3];
       }
     }
   }
 
+  var activatedRouteStub: ActivatedRouteStub;
   var childServiceSpy: ChildServiceSpy;
   var childDetailPage: ChildDetailPage;
   var testChild: Child;
@@ -45,98 +63,56 @@ describe('Child-Detail Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [ ChildDetailComponent ],
-      providers: [ {provide: ChildService, useClass: ChildServiceSpy} ]
+      providers: [
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: ChildService, useClass: ChildServiceSpy }
+      ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-
     fixture = TestBed.createComponent(ChildDetailComponent);
     testedComponent = fixture.componentInstance;
 
+    activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
     childServiceSpy = fixture.debugElement.injector.get(ChildService) as any;
 
     childDetailPage = new ChildDetailPage();
 
     initTestChild();
+
+    activatedRouteStub.testParamMap = {id: testChild.id};
   });
 
-  it('should not call Child Service or display child details, error message after initialization', () => {
+  it(`should get Child details by id (from url /child/:id) at initialization from ChildService
+    and display it on the page`, () => {
+
+    childServiceSpy.getChildById.and.returnValue(of(testChild));
 
     fixture.detectChanges();
     childDetailPage.initPage();
-
-    expect(childServiceSpy.getChildById).not.toHaveBeenCalled();
-
-    expect(childDetailPage.childIdInput.nativeElement.placeholder).toBe('Child ID...');
-    expect(childDetailPage.queryButton).not.toBeNull();
-    expect(childDetailPage.errorMessageDisplay).toBeNull();
-    expect(childDetailPage.childDetailDisplay).toBeNull();
-  });
-
-  it('should display detail of queried child if present', () => {
-
-    testedComponent.child = testChild;
-
-    fixture.detectChanges();
-    childDetailPage.initPage();
-
-    expect(childDetailPage.childDetailDisplay).not.toBeNull();
 
     expect(childDetailPage.childDetailDisplayId.nativeElement.textContent).toBe(testChild.id.toString());
+    expect(childDetailPage.childDetailDisplayName.nativeElement.textContent).toBe(testChild.firstName + ' ' + testChild.surname);
+    expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.textContent).toBe(testChild.dateOfBirth);
 
-    var childDetailDisplayElements = childDetailPage.childDetailDisplay.queryAll(By.css('p'));
-
-    expect(childDetailDisplayElements[2].nativeElement.textContent).toBe(testChild.firstName + ' ' + testChild.surname);
-    expect(childDetailDisplayElements[3].nativeElement.textContent).toBe(testChild.dateOfBirth);
+    expect(childDetailPage.errorMessageDisplay).toBeNull();
   });
 
-  it('should query child by id when "Query" button is clicked and display child details', () => {
-
-    playQueryChildActivityOnPage(clickOnQueryButtonActivityFunction, testChild.id, of(testChild));
-
-    expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id.toString());
-
-    expectTestChildToBeDisplayedAndNoErrorMessage();
-  });
 
   it('should display the error message when query for child by id failed', () => {
 
     var error: Error = new Error("An error has happened");
 
-    playQueryChildActivityOnPage(clickOnQueryButtonActivityFunction, testChild.id, Observable.throw(error));
+    childServiceSpy.getChildById.and.returnValue(Observable.throw(error));
 
-    expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id.toString());
+    fixture.detectChanges();
+    childDetailPage.initPage();
 
-    expect(testedComponent.queryErrorMessage).toBe(error.message);
     expect(childDetailPage.errorMessageDisplay.nativeElement.textContent).toBe(error.message);
 
-    expect(testedComponent.child).toBeNull();
     expect(childDetailPage.childDetailDisplay).toBeNull();
-  });
-
-  it('should set the child id input field to empty after "Query" button was clicked', () => {
-
-    playQueryChildActivityOnPage(clickOnQueryButtonActivityFunction, testChild.id, of(testChild));
-
-    expect(childDetailPage.childIdInput.nativeElement.value).toBe('');
-  });
-
-  it('should query child by id when Enter was hit on input field and display child details', () => {
-
-    playQueryChildActivityOnPage(hitEnterOnChildIdInputActivityFunction, testChild.id, of(testChild));
-
-    expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id.toString());
-
-    expectTestChildToBeDisplayedAndNoErrorMessage();
-  });
-
-  it('should set the child id input field to empty after Enter was pressed', () => {
-
-    playQueryChildActivityOnPage(hitEnterOnChildIdInputActivityFunction, testChild.id, of(testChild));
-
-    expect(childDetailPage.childIdInput.nativeElement.value).toBe('');
   });
 
   function initTestChild() {
@@ -146,32 +122,4 @@ describe('Child-Detail Component', () => {
     testChild.surname = 'SURNAME';
     testChild.dateOfBirth = '10/12/2017';
   };
-
-  function clickOnQueryButtonActivityFunction() {
-    return childDetailPage.queryButton.triggerEventHandler('click', null);
-  };
-
-  function hitEnterOnChildIdInputActivityFunction() {
-    return childDetailPage.childIdInput.triggerEventHandler('keyup.enter', null);
-  };
-
-  function playQueryChildActivityOnPage(activity: Function, childId: number, returnValue: Observable<any>) {
-    childServiceSpy.getChildById.and.returnValue(returnValue);
-
-    childDetailPage.initPage();
-
-    childDetailPage.childIdInput.nativeElement.value = childId.toString();
-    activity();
-
-    fixture.detectChanges();
-    childDetailPage.initPage();
-  };
-
-  function expectTestChildToBeDisplayedAndNoErrorMessage() {
-    expect(testedComponent.child).toBe(testChild);
-    expect(childDetailPage.childDetailDisplayId.nativeElement.textContent).toBe(testChild.id.toString());
-
-    expect(testedComponent.queryErrorMessage).toBeNull();
-    expect(childDetailPage.errorMessageDisplay).toBeNull();
-  }
 });

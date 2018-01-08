@@ -6,7 +6,7 @@ import { ChildListComponent } from './child-list/child-list.component';
 
 const childRoutes: Routes = [
   { path: 'child/all', component: ChildListComponent },
-  { path: 'child', component: ChildDetailComponent }
+  { path: 'child/:id', component: ChildDetailComponent }
 ];
 
 @NgModule({

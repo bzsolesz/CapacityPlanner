@@ -1,6 +1,6 @@
 <ul id="childListDisplay">
 	<li *ngFor="let child of children">
-		{{child.firstName}} {{child.surname}} ({{child.dateOfBirth}})
+		<a [routerLink]="['/child', child.id]">{{child.firstName}} {{child.surname}}</a> ({{child.dateOfBirth}})
 	</li>
 </ul>
 <p *ngIf="queryErrorMessage" id="errorMessageDisplay">{{queryErrorMessage}}</p>

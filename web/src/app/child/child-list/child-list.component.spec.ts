@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ChildListComponent } from './child-list.component';
 import { ChildService } from '../domain/child.service';
@@ -35,6 +36,7 @@ describe('Child-List Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ChildListComponent ],
+      imports: [ RouterTestingModule ],
       providers: [ { provide: ChildService, useClass: ChildServiceSpy } ]
     })
     .compileComponents();
@@ -52,7 +54,8 @@ describe('Child-List Component', () => {
     initTestChildren();
   });
 
-  it('should get the list of Children at initialization by ChildService.getAllChildren and display them', () => {
+  it(`should get the Children list at initialization by ChildService.getAllChildren
+    and have a link for each Child Detail page`, () => {
 
     childServiceSpy.getAllChildren.and.returnValue(of(testChildren));
 
@@ -66,10 +69,14 @@ describe('Child-List Component', () => {
     expect(childListPage.childListDisplay).not.toBeNull();
 
     var childListItems = childListPage.childListDisplay.queryAll(By.css('li'));
-
     expect(childListItems.length).toBe(2);
-    expect(childListItems[0].nativeElement.textContent).toContain(stringOf(testChildren[0]));
-    expect(childListItems[1].nativeElement.textContent).toContain(stringOf(testChildren[1]));
+    expectChildListItemToBeChild(childListItems[0], testChildren[0]);
+    expectChildListItemToBeChild(childListItems[1], testChildren[1]);
+
+    var childListItemLinks = childListPage.childListDisplay.queryAll(By.css('a'));
+    expect(childListItemLinks.length).toBe(2);
+    expectChildListItemLinkToBeChildDetailLink(childListItemLinks[0], testChildren[0]);
+    expectChildListItemLinkToBeChildDetailLink(childListItemLinks[1], testChildren[1]);
 
     expectNoErrorMessage();
   });
@@ -121,8 +128,13 @@ describe('Child-List Component', () => {
     testChildren = [testChild1, testChild2];
   };
 
-  function stringOf(child: Child): string {
-    return `${child.firstName} ${child.surname} (${child.dateOfBirth})`;
+  function expectChildListItemToBeChild(childListItem: DebugElement, child: Child) {
+    expect(childListItem.nativeElement.textContent)
+      .toContain(`${child.firstName} ${child.surname} (${child.dateOfBirth})`);
+  }
+
+  function expectChildListItemLinkToBeChildDetailLink(childListItemLink: DebugElement, child: Child) {
+    expect(childListItemLink.nativeElement.getAttribute("href")).toBe(`/child/${child.id}`);
   };
 
   function expectNoChildren() {

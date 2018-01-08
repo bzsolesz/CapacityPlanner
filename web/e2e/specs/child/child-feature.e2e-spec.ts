@@ -16,20 +16,19 @@ describe('By the Child feature the User', () => {
     expect(childListPage.childListItemDisplays.get(1).getText()).toContain('Mark Spencer (26/02/1981)');
   });
 
-  it('should be able to query a Child by ID and see her details', () => {
+  it('should be able to see the Child details by clicking on the link in the list', () => {
 
-    const TEST_CHILD_ID: number = 9;
+    var childListPage: ChildListPage = new ChildListPage();
+
+    childListPage.navigateToPage();
+
+    childListPage.clickOnChildListItemLink(0);
 
     var childDetailPage: ChildDetailPage = new ChildDetailPage();
 
-    childDetailPage.navigateToPage();
-
-    childDetailPage.childIdInput.sendKeys(TEST_CHILD_ID);
-    childDetailPage.queryButton.click();
-
     expect(childDetailPage.childDetailDisplay.isPresent()).toBeTruthy();
 
-    expect(childDetailPage.childDetailIdDisplay.getText()).toBe(TEST_CHILD_ID.toString());
+    expect(childDetailPage.childDetailIdDisplay.getText()).toBe("9");
     expect(childDetailPage.childDetailNameDisplay.getText()).toBe('Peter Jones');
     expect(childDetailPage.childDetailDateOfBirthDisplay.getText()).toBe('06/06/1970');
   });

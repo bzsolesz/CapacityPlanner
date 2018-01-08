@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { Child } from '../domain/child';
 import { ChildService } from '../domain/child.service';
@@ -11,9 +12,18 @@ export class ChildDetailComponent implements OnInit {
   child: Child;
   queryErrorMessage: string;
 
-  constructor(private childService: ChildService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private childService: ChildService
+  ) { }
 
   ngOnInit() {
+    let childId: string;
+    this.route.paramMap.subscribe(
+      params => {childId = params.get("id");}
+    );
+
+    this.getChildById(parseInt(childId));
   }
 
   getChildById(id: number): void {
