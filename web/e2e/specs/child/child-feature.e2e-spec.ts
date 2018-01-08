@@ -26,10 +26,25 @@ describe('By the Child feature the User', () => {
 
     var childDetailPage: ChildDetailPage = new ChildDetailPage();
 
-    expect(childDetailPage.childDetailDisplay.isPresent()).toBeTruthy();
+    expect(childDetailPage.childDetailDisplay.isDisplayed()).toBeTruthy();
 
     expect(childDetailPage.childDetailIdDisplay.getText()).toBe("9");
     expect(childDetailPage.childDetailNameDisplay.getText()).toBe('Peter Jones');
     expect(childDetailPage.childDetailDateOfBirthDisplay.getText()).toBe('06/06/1970');
+  });
+
+  it('should be able to navigate from Child Detail page to Children page', () => {
+
+    var childDetailPage: ChildDetailPage = new ChildDetailPage();
+
+    childDetailPage.navigateToPage(9);
+
+    expect(childDetailPage.childDetailIdDisplay.getText()).toBe("9");
+
+    childDetailPage.goToChildrenPageButton.click();
+
+    var childListPage: ChildListPage = new ChildListPage();
+
+    expect(childListPage.childListItemDisplays.count()).toBe(2);
   });
 });

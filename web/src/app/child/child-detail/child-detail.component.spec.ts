@@ -5,7 +5,7 @@ import { async } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
 
 import { ChildDetailComponent } from './child-detail.component';
 import { ChildService } from '../domain/child.service';
@@ -15,6 +15,10 @@ describe('Child-Detail Component', () => {
 
   var fixture: ComponentFixture<ChildDetailComponent>;
   var testedComponent: ChildDetailComponent;
+
+  class RouterSpy {
+    navigate = jasmine.createSpy('navigate');
+  }
 
   class ActivatedRouteStub {
     private _testParamMap: ParamMap;
@@ -38,10 +42,12 @@ describe('Child-Detail Component', () => {
     childDetailDisplayId: DebugElement;
     childDetailDisplayName: DebugElement;
     childDetailDisplayDateOfBirth: DebugElement;
+    goToChildrenPageButton: DebugElement;
 
     initPage(): void {
       this.errorMessageDisplay = fixture.debugElement.query(By.css('#errorMessageDisplay'));
       this.childDetailDisplay = fixture.debugElement.query(By.css('#childDetailDisplay'));
+      this.goToChildrenPageButton = fixture.debugElement.query(By.css('#goToChildrenPageButton'));
 
       if (this.childDetailDisplay !== null) {
 
@@ -54,6 +60,7 @@ describe('Child-Detail Component', () => {
     }
   }
 
+  var routerSpy: RouterSpy;
   var activatedRouteStub: ActivatedRouteStub;
   var childServiceSpy: ChildServiceSpy;
   var childDetailPage: ChildDetailPage;
@@ -64,6 +71,7 @@ describe('Child-Detail Component', () => {
     TestBed.configureTestingModule({
       declarations: [ ChildDetailComponent ],
       providers: [
+        { provide: Router, useClass: RouterSpy },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ChildService, useClass: ChildServiceSpy }
       ]
@@ -75,6 +83,7 @@ describe('Child-Detail Component', () => {
     fixture = TestBed.createComponent(ChildDetailComponent);
     testedComponent = fixture.componentInstance;
 
+    routerSpy = TestBed.get(Router);
     activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
     childServiceSpy = fixture.debugElement.injector.get(ChildService) as any;
 
@@ -113,6 +122,18 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.errorMessageDisplay.nativeElement.textContent).toBe(error.message);
 
     expect(childDetailPage.childDetailDisplay).toBeNull();
+  });
+
+  it('should have a button for navigating to the Children page', () => {
+
+    childServiceSpy.getChildById.and.returnValue(of(testChild));
+
+    fixture.detectChanges();
+    childDetailPage.initPage();
+
+    childDetailPage.goToChildrenPageButton.triggerEventHandler('click', null);
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(["/child/all"]);
   });
 
   function initTestChild() {

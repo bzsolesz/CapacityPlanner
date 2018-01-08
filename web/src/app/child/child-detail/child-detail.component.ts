@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Child } from '../domain/child';
 import { ChildService } from '../domain/child.service';
@@ -13,6 +13,7 @@ export class ChildDetailComponent implements OnInit {
   queryErrorMessage: string;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private childService: ChildService
   ) { }
@@ -37,5 +38,9 @@ export class ChildDetailComponent implements OnInit {
         this.queryErrorMessage = error.message;
       }
     );
+  }
+
+  goToChildrenPage(): void {
+    this.router.navigate(["/child/all"]);
   }
 }
