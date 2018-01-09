@@ -1,21 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Child } from '../domain/child';
-import { ChildService } from '../service/child.service';
+import { ChildService } from '../domain/child.service';
 
 @Component({
-  selector: 'app-child-detail',
-  templateUrl: './child-detail.component.html',
-  styleUrls: ['./child-detail.component.css']
+  templateUrl: './child-detail.component.html'
 })
 export class ChildDetailComponent implements OnInit {
 
   child: Child;
   queryErrorMessage: string;
 
-  constructor(private childService: ChildService) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private childService: ChildService
+  ) { }
 
   ngOnInit() {
+    let childId: string;
+    this.route.paramMap.subscribe(
+      params => {childId = params.get("id");}
+    );
+
+    this.getChildById(parseInt(childId));
   }
 
   getChildById(id: number): void {
@@ -29,5 +38,9 @@ export class ChildDetailComponent implements OnInit {
         this.queryErrorMessage = error.message;
       }
     );
+  }
+
+  goToChildrenPage(): void {
+    this.router.navigate(["/child/all"]);
   }
 }

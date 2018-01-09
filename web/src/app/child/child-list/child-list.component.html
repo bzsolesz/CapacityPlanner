@@ -1,0 +1,6 @@
+<ul id="childListDisplay">
+	<li *ngFor="let child of children">
+		<a [routerLink]="['/child', child.id]">{{child.firstName}} {{child.surname}}</a> ({{child.dateOfBirth}})
+	</li>
+</ul>
+<p *ngIf="queryErrorMessage" id="errorMessageDisplay">{{queryErrorMessage}}</p>

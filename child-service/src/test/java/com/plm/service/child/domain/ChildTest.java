@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -54,5 +56,35 @@ public class ChildTest {
         assertEquals(TEST_FIRST_NAME, testedChild.getFirstName());
         assertEquals(TEST_SURNAME, testedChild.getSurname());
         assertEquals(TEST_DATE_OF_BIRTH, testedChild.getDateOfBirth());
+    }
+
+    @Test
+    public void shouldGenerateHashCodeFromItsId() throws Exception {
+        assertEquals(TEST_ID, testedChild.hashCode());
+    }
+
+    @Test
+    public void shouldBeEqualWithItself() throws Exception {
+        assertTrue(testedChild.equals(testedChild));
+    }
+
+    @Test
+    public void shouldBeEqualWithAnotherChildInstanceWithTheSameId() throws Exception {
+        assertTrue(testedChild.equals(new Child(TEST_ID, null, null, null)));
+    }
+
+    @Test
+    public void shouldNotBeEqualWithNull() throws Exception {
+        assertFalse(testedChild.equals(null));
+    }
+
+    @Test
+    public void shouldNotBeEqualWithAnInstanceOfAnotherClass() throws Exception {
+        assertFalse(testedChild.equals(new Object()));
+    }
+
+    @Test
+    public void shouldNotBeEqualWithAChildWithDifferentId() throws Exception {
+        assertFalse(testedChild.equals(new Child(TEST_ID + 1, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH)));
     }
 }
