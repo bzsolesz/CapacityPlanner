@@ -9,6 +9,8 @@ import org.mockito.Mock;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +43,7 @@ public class ChildServiceImplTest {
 
         testedService = new ChildServiceImpl(childEntityRepository);
 
-        when(childEntityRepository.findOne(TEST_CHILD_ID1)).thenReturn(childEntityMock1);
+        when(childEntityRepository.findOneOptionalById(TEST_CHILD_ID1)).thenReturn(Optional.of(childEntityMock1));
 
         initChildEntityMock(childEntityMock1, TEST_CHILD_ID1);
         initChildEntityMock(childEntityMock2, TEST_CHILD_ID2);
@@ -59,7 +61,7 @@ public class ChildServiceImplTest {
     @Test(expected = EntityNotFoundException.class)
     public void shouldThrowEntityNotFoundExceptionIfChildWasNotFound() throws Exception {
 
-        when(childEntityRepository.findOne(TEST_CHILD_ID1)).thenReturn(null);
+        when(childEntityRepository.findOneOptionalById(TEST_CHILD_ID1)).thenReturn(Optional.empty());
 
         testedService.getChildById(TEST_CHILD_ID1);
     }
@@ -67,7 +69,7 @@ public class ChildServiceImplTest {
     @Test
     public void shouldReturnAnEmptySetIfNoChild() throws Exception {
 
-        when(childEntityRepository.findAll()).thenReturn(Arrays.asList());
+        when(childEntityRepository.findAll()).thenReturn(Collections.emptyList());
 
         Set<Child> allChildren = testedService.getAllChildren();
 
