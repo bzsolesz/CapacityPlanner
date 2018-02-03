@@ -1,5 +1,8 @@
 package com.plm.service.child.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.plm.service.child.domain.Child;
 import com.plm.service.child.domain.ChildService;
 import org.junit.Before;
@@ -18,9 +21,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,6 +88,44 @@ public class ChildControllerTest {
         expectChildJSON(response, "$[1]", testChild2);
     }
 
+    @Test
+    public void shouldUpdateTheChild() throws Exception {
+
+        testChild2 = initTestChild(testChild1.getId());
+
+        doAnswer(invocationOnMock -> {
+
+            Child child = invocationOnMock.getArgumentAt(0, Child.class);
+
+            assertEquals(child, testChild1);
+
+            return testChild2;
+
+        }).when(childServiceMock).updateChild(any(Child.class));
+
+        ResultActions response = mockMvc.perform(
+                put("/child/{id}", testChild1.getId())
+                        .content(childAsJson(testChild1))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON));
+
+        response.andExpect(status().isOk());
+
+        expectChildJSON(response, "$", testChild2);
+    }
+
+    @Test
+    public void shouldReturnBadRequestIfChildIdToUpdateIsDifferentInUrlPath() throws Exception {
+
+        ResultActions response = mockMvc.perform(
+                put("/child/{id}", testChild1.getId() + 1)
+                        .content(childAsJson(testChild1))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON));
+
+        response.andExpect(status().isBadRequest());
+    }
+
     private void expectChildJSON(ResultActions response, String jsonPath, Child child) throws Exception {
 
         response.andExpect(jsonPath(jsonPath + ".id").value(child.getId()))
@@ -92,5 +137,13 @@ public class ChildControllerTest {
 
     private Child initTestChild(int id) {
         return new Child(id, "firstName" + id, "surname" + id, LocalDate.now());
+    }
+
+    private String childAsJson(Child child) throws JsonProcessingException {
+
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.registerModule(new JavaTimeModule());
+
+        return jsonMapper.writeValueAsString(child);
     }
 }

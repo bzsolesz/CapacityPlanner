@@ -21,11 +21,26 @@ public class Child {
         this.dateOfBirth = dateOfBirth;
     }
 
+    Child() {
+    }
+
     Child(ChildEntity childEntity) {
         this.id = childEntity.getId();
         this.firstName = childEntity.getFirstName();
         this.surname = childEntity.getSurname();
         this.dateOfBirth = childEntity.getDateOfBirth();
+    }
+
+    ChildEntity asChildEntity() {
+
+        ChildEntity childEntity = new ChildEntity();
+
+        childEntity.setId(this.id);
+        childEntity.setFirstName(this.firstName);
+        childEntity.setSurname(this.surname);
+        childEntity.setDateOfBirth(this.dateOfBirth);
+
+        return childEntity;
     }
 
     public int getId() {
@@ -57,5 +72,21 @@ public class Child {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    void setId(int id) {
+        this.id = id;
+    }
+
+    void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

@@ -21,4 +21,12 @@ public interface ChildService {
      * @return the set of all Children
      */
     Set<Child> getAllChildren();
+
+    /**
+     * Update the <code>Child</code> in the data storage.
+     *
+     * @param child the child to update
+     * @return the updated Child
+     */
+    Child updateChild(Child child);
 }

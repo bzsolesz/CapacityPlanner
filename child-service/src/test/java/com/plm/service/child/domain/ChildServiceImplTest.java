@@ -16,6 +16,9 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -89,6 +92,26 @@ public class ChildServiceImplTest {
         assertTrue(allChildren.contains(new Child(childEntityMock1)));
         assertTrue(allChildren.contains(new Child(childEntityMock2)));
         assertTrue(allChildren.contains(new Child(childEntityMock3)));
+    }
+
+    @Test
+    public void shouldPersistTheUpdateChildEntity() throws Exception {
+
+        doAnswer(invocationOnMock -> {
+
+            ChildEntity childEntityToSave = invocationOnMock.getArgumentAt(0, ChildEntity.class);
+
+            assertEquals(TEST_CHILD_ID1, childEntityToSave.getId());
+
+            return childEntityMock1;
+        }).when(childEntityRepository).save(any(ChildEntity.class));
+
+        Child testChild = new Child(TEST_CHILD_ID1, null, null, LocalDate.now());
+
+        Child updatedChild = testedService.updateChild(testChild);
+
+        verify(childEntityRepository).save(any(ChildEntity.class));
+        assertEquals(TEST_CHILD_ID1, updatedChild.getId());
     }
 
     private void initChildEntityMock(ChildEntity childEntityMock, int id) {

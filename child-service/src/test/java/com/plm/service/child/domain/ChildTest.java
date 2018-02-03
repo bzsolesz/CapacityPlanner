@@ -59,6 +59,32 @@ public class ChildTest {
     }
 
     @Test
+    public void couldBeCreatedWithEmptyConstructorAndSetters() throws Exception {
+
+        testedChild = new Child();
+        testedChild.setId(TEST_ID);
+        testedChild.setFirstName(TEST_FIRST_NAME);
+        testedChild.setSurname(TEST_SURNAME);
+        testedChild.setDateOfBirth(TEST_DATE_OF_BIRTH);
+
+        when(childEntityMock.getId()).thenReturn(TEST_ID);
+        when(childEntityMock.getFirstName()).thenReturn(TEST_FIRST_NAME);
+        when(childEntityMock.getSurname()).thenReturn(TEST_SURNAME);
+        when(childEntityMock.getDateOfBirth()).thenReturn(TEST_DATE_OF_BIRTH);
+    }
+
+    @Test
+    public void couldBeTransformedIntoAChildEntity() throws Exception {
+        
+        ChildEntity childEntity = testedChild.asChildEntity();
+
+        assertEquals(TEST_ID, childEntity.getId());
+        assertEquals(TEST_FIRST_NAME, childEntity.getFirstName());
+        assertEquals(TEST_SURNAME, childEntity.getSurname());
+        assertEquals(TEST_DATE_OF_BIRTH, childEntity.getDateOfBirth());
+    }
+
+    @Test
     public void shouldGenerateHashCodeFromItsId() throws Exception {
         assertEquals(TEST_ID, testedChild.hashCode());
     }

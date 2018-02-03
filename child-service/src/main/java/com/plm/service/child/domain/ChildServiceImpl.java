@@ -41,4 +41,12 @@ class ChildServiceImpl implements ChildService {
                 .map(Child::new)
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public Child updateChild(Child child) {
+
+        ChildEntity updatedChildEntity = childEntityRepository.save(child.asChildEntity());
+
+        return new Child(updatedChildEntity);
+    }
 }
