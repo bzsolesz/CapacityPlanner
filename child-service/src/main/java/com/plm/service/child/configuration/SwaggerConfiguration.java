@@ -36,6 +36,7 @@ public class SwaggerConfiguration {
                 .paths(PathSelectors.any())
                 .build()
                 .globalResponseMessage(RequestMethod.GET, createHttpGetGlobalResponseMessages())
+                .globalResponseMessage(RequestMethod.PUT, createHttpPutGlobalResponseMessages())
                 .useDefaultResponseMessages(false);
     }
 
@@ -44,8 +45,22 @@ public class SwaggerConfiguration {
         return Collections.singletonList(
                 new ResponseMessage(
                         HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                        "An error happened during entity lookup!",
+                        "An error happened during resource lookup!",
                         null, Collections.emptyMap(), Collections.emptyList()));
+    }
+
+    private List<ResponseMessage> createHttpPutGlobalResponseMessages() {
+
+        return Arrays.asList(
+                new ResponseMessage(
+                        HttpStatus.NO_CONTENT.value(),
+                        "Resource update succeeded.",
+                        null, Collections.emptyMap(), Collections.emptyList()),
+                new ResponseMessage(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "An error happened during resource update!",
+                        null, Collections.emptyMap(), Collections.emptyList())
+        );
     }
 
     private ApiInfo createChildServiceApiInfo() {

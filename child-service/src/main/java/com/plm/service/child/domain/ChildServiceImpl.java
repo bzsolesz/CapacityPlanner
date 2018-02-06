@@ -47,10 +47,8 @@ class ChildServiceImpl implements ChildService {
 
     @Override
     @Transactional
-    public Child updateChild(Child child) {
+    public void updateChild(Child child) {
 
-        ChildEntity updatedChildEntity = childEntityRepository.save(child.asChildEntity());
-
-        return new Child(updatedChildEntity);
+        childEntityRepository.save(child.asChildEntity());
     }
 }

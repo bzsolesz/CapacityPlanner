@@ -41,11 +41,14 @@ public class ChildController {
             @ApiResponse(code = 400, message = "Child id mismatch!")
     })
     @PutMapping(value = "/{id}", consumes="application/json", produces = "application/json")
-    public ResponseEntity<Child> updateChild(@PathVariable int id, @RequestBody Child child) {
+    public ResponseEntity<Void> updateChild(@PathVariable int id, @RequestBody Child child) {
 
         if (id != child.getId()) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(childService.updateChild(child));
+
+        childService.updateChild(child);
+
+        return ResponseEntity.noContent().build();
     }
 }

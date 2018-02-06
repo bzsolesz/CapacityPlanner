@@ -26,7 +26,6 @@ public interface ChildService {
      * Update the <code>Child</code> in the data storage.
      *
      * @param child the child to update
-     * @return the updated Child
      */
-    Child updateChild(Child child);
+    void updateChild(Child child);
 }

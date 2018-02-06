@@ -75,10 +75,7 @@ public class ChildControllerIT extends AbstractITBase {
                         .content(updatedChildJson)
                         .accept(APPLICATION_JSON));
 
-        response.andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(childEntity.getId()))
-                .andExpect(jsonPath("$.firstName").value(updatedChild.getFirstName()))
-                .andExpect(jsonPath("$.surname").value(updatedChild.getSurname()));
+        response.andExpect(status().isNoContent());
 
         ChildEntity updatedChildEntity = testEntityManager.find(ChildEntity.class, childEntity.getId());
 

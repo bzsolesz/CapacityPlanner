@@ -108,10 +108,9 @@ public class ChildServiceImplTest {
 
         Child testChild = new Child(TEST_CHILD_ID1, null, null, LocalDate.now());
 
-        Child updatedChild = testedService.updateChild(testChild);
+        testedService.updateChild(testChild);
 
         verify(childEntityRepository).save(any(ChildEntity.class));
-        assertEquals(TEST_CHILD_ID1, updatedChild.getId());
     }
 
     private void initChildEntityMock(ChildEntity childEntityMock, int id) {

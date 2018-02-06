@@ -24,6 +24,7 @@ import java.util.LinkedHashSet;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -109,9 +110,9 @@ public class ChildControllerTest {
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON));
 
-        response.andExpect(status().isOk());
+        response.andExpect(status().isNoContent());
 
-        expectChildJSON(response, "$", testChild2);
+        verify(childServiceMock).updateChild(any(Child.class));
     }
 
     @Test
