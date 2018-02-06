@@ -8,8 +8,8 @@ import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.domain.Child;
 import org.junit.Test;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;

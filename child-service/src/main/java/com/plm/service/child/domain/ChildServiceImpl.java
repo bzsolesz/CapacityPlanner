@@ -5,6 +5,7 @@ import com.plm.service.child.dao.ChildEntityRepository;
 import com.plm.service.common.domain.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -22,6 +23,7 @@ class ChildServiceImpl implements ChildService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Child getChildById(int id) {
         Optional<ChildEntity> childEntity = childEntityRepository.findOneOptionalById(id);
 
@@ -33,6 +35,7 @@ class ChildServiceImpl implements ChildService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Child> getAllChildren() {
 
         Iterable<ChildEntity> allChildrenEntity = childEntityRepository.findAll();
@@ -43,6 +46,7 @@ class ChildServiceImpl implements ChildService {
     }
 
     @Override
+    @Transactional
     public Child updateChild(Child child) {
 
         ChildEntity updatedChildEntity = childEntityRepository.save(child.asChildEntity());
