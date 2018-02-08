@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { async } from '@angular/core/testing';
+import { async, fakeAsync, tick } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Router, ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { ChildDetailComponent } from './child-detail.component';
 import { ChildService } from '../domain/child.service';
@@ -40,7 +41,8 @@ describe('Child-Detail Component', () => {
     errorMessageDisplay: DebugElement;
     childDetailDisplay: DebugElement;
     childDetailDisplayId: DebugElement;
-    childDetailDisplayName: DebugElement;
+    childDetailDisplayFirstName: DebugElement;
+    childDetailDisplaySurname: DebugElement;
     childDetailDisplayDateOfBirth: DebugElement;
     goToChildrenPageButton: DebugElement;
 
@@ -51,11 +53,10 @@ describe('Child-Detail Component', () => {
 
       if (this.childDetailDisplay !== null) {
 
-        let childDetailDisplayItems = this.childDetailDisplay.queryAll(By.css('p'));
-
-        this.childDetailDisplayId = childDetailDisplayItems[1];
-        this.childDetailDisplayName = childDetailDisplayItems[2];
-        this.childDetailDisplayDateOfBirth = childDetailDisplayItems[3];
+        this.childDetailDisplayId = this.childDetailDisplay.query(By.css('#id'));
+        this.childDetailDisplayFirstName = this.childDetailDisplay.query(By.css('#firstName'));
+        this.childDetailDisplaySurname = this.childDetailDisplay.query(By.css('#surname'));
+        this.childDetailDisplayDateOfBirth = this.childDetailDisplay.query(By.css('#dateOfBirth'));
       }
     }
   }
@@ -74,7 +75,8 @@ describe('Child-Detail Component', () => {
         { provide: Router, useClass: RouterSpy },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ChildService, useClass: ChildServiceSpy }
-      ]
+      ],
+      imports: [ FormsModule ]
     })
     .compileComponents();
   }));
@@ -95,19 +97,21 @@ describe('Child-Detail Component', () => {
   });
 
   it(`should get Child details by id (from url /child/:id) at initialization from ChildService
-    and display it on the page`, () => {
+    and display it on the page`, fakeAsync(() => {
 
     childServiceSpy.getChildById.and.returnValue(of(testChild));
 
     fixture.detectChanges();
+    tick();
     childDetailPage.initPage();
 
     expect(childDetailPage.childDetailDisplayId.nativeElement.textContent).toBe(testChild.id.toString());
-    expect(childDetailPage.childDetailDisplayName.nativeElement.textContent).toBe(testChild.firstName + ' ' + testChild.surname);
-    expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.textContent).toBe(testChild.dateOfBirth);
+    expect(childDetailPage.childDetailDisplayFirstName.nativeElement.value).toBe(testChild.firstName);
+    expect(childDetailPage.childDetailDisplaySurname.nativeElement.value).toBe(testChild.surname);
+    expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toBe(testChild.dateOfBirth);
 
     expect(childDetailPage.errorMessageDisplay).toBeNull();
-  });
+  }));
 
 
   it('should display the error message when query for child by id failed', () => {

@@ -3,9 +3,10 @@ import { browser, by, element, ElementFinder, ElementArrayFinder } from 'protrac
 export class ChildDetailPage {
 
   childDetailDisplay = element(by.css('#childDetailDisplay'));
-  childDetailIdDisplay = this.childDetailDisplay.all(by.css('p')).get(1);
-  childDetailNameDisplay = this.childDetailDisplay.all(by.css('p')).get(2);
-  childDetailDateOfBirthDisplay = this.childDetailDisplay.all(by.css('p')).get(3);
+  childDetailIdDisplay = this.childDetailDisplay.element(by.css('#id'));
+  childDetailFirstNameDisplay = this.childDetailDisplay.element(by.css('#firstName'));
+  childDetailSurnameDisplay = this.childDetailDisplay.element(by.css('#surname'));
+  childDetailDateOfBirthDisplay = this.childDetailDisplay.element(by.css('#dateOfBirth'));
   goToChildrenPageButton = element(by.css('#goToChildrenPageButton'));
 
   navigateToPage(childId: number): void {

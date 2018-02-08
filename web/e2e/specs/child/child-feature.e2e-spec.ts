@@ -29,8 +29,9 @@ describe('By the Child feature the User', () => {
     expect(childDetailPage.childDetailDisplay.isDisplayed()).toBeTruthy();
 
     expect(childDetailPage.childDetailIdDisplay.getText()).toBe("9");
-    expect(childDetailPage.childDetailNameDisplay.getText()).toBe('Peter Jones');
-    expect(childDetailPage.childDetailDateOfBirthDisplay.getText()).toBe('06/06/1970');
+    expect(childDetailPage.childDetailFirstNameDisplay.getAttribute('value')).toBe('Peter');
+    expect(childDetailPage.childDetailSurnameDisplay.getAttribute('value')).toBe('Jones');
+    expect(childDetailPage.childDetailDateOfBirthDisplay.getAttribute('value')).toBe('06/06/1970');
   });
 
   it('should be able to navigate from Child Detail page to Children page', () => {

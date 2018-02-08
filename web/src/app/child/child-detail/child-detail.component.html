@@ -1,8 +1,20 @@
-<div *ngIf="child" id="childDetailDisplay">
-	<p>Child details:</p>
-	<p>{{child.id}}</p>
-	<p>{{child.firstName}} {{child.surname}}</p>
-	<p>{{child.dateOfBirth}}</p>
+<div *ngIf="child" id="childDetailDisplay" class="container">
+	<h3>Child Details</h3>
+	<form>
+		<span id="id" class="hidden">{{child.id}}</span>
+		<div class="form-group">
+			<label for="firstName">First Name</label>
+			<input type="text" id="firstName" class="form-control" [(ngModel)]="child.firstName" name="firstName" readonly>
+		</div>
+		<div class="form-group">
+			<label for="surname">Surname</label>
+			<input type="text" id="surname" class="form-control" [(ngModel)]="child.surname" name="surname" readonly>
+		</div>
+		<div class="form-group">
+			<label for="dateOfBirth">Date of Birth</label>
+			<input type="text" id="dateOfBirth" class="form-control" [(ngModel)]="child.dateOfBirth" name="dateOfBirth" readonly>
+		</div>
+	</form>
 </div>
 <p *ngIf="queryErrorMessage" id="errorMessageDisplay">{{queryErrorMessage}}</p>
 <button (click)="goToChildrenPage()" id="goToChildrenPageButton">Children</button>
