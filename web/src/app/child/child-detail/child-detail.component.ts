@@ -43,4 +43,8 @@ export class ChildDetailComponent implements OnInit {
   goToChildrenPage(): void {
     this.router.navigate(["/child/all"]);
   }
+
+  save(): void {
+    
+  }
 }

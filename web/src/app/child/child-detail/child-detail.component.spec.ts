@@ -38,13 +38,20 @@ describe('Child-Detail Component', () => {
   }
 
   class ChildDetailPage {
-    errorMessageDisplay: DebugElement;
+    
     childDetailDisplay: DebugElement;
     childDetailDisplayId: DebugElement;
     childDetailDisplayFirstName: DebugElement;
     childDetailDisplaySurname: DebugElement;
     childDetailDisplayDateOfBirth: DebugElement;
+
+    childDetailDisplayFirstNameFormGroup: DebugElement;
+    childDetailDisplaySurnameFormGroup: DebugElement;
+    childDetailDisplayDateOfBirthFormGroup: DebugElement;
+
+    errorMessageDisplay: DebugElement;
     goToChildrenPageButton: DebugElement;
+    saveButton: DebugElement;
 
     initPage(): void {
       this.errorMessageDisplay = fixture.debugElement.query(By.css('#errorMessageDisplay'));
@@ -57,6 +64,12 @@ describe('Child-Detail Component', () => {
         this.childDetailDisplayFirstName = this.childDetailDisplay.query(By.css('#firstName'));
         this.childDetailDisplaySurname = this.childDetailDisplay.query(By.css('#surname'));
         this.childDetailDisplayDateOfBirth = this.childDetailDisplay.query(By.css('#dateOfBirth'));
+
+        this.childDetailDisplayFirstNameFormGroup = this.childDetailDisplay.query(By.css('#firstNameFormGroup'));
+        this.childDetailDisplaySurnameFormGroup = this.childDetailDisplay.query(By.css('#surnameFormGroup'));
+        this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css('#dateOfBirthFormGroup'));
+
+        this.saveButton = this.childDetailDisplay.query(By.css('#saveButton'));
       }
     }
   }
@@ -113,6 +126,44 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.errorMessageDisplay).toBeNull();
   }));
 
+  it('should have the First Name field required', fakeAsync(() => {
+
+    initPageWithTestChild();
+
+    expectFormGroupToHasErrorForEmptyInput(
+      childDetailPage.childDetailDisplayFirstNameFormGroup, childDetailPage.childDetailDisplayFirstName);
+  }));
+
+  it('should have the Surname field required', fakeAsync(() => {
+
+    initPageWithTestChild();
+
+    expectFormGroupToHasErrorForEmptyInput(
+      childDetailPage.childDetailDisplaySurnameFormGroup, childDetailPage.childDetailDisplaySurname);
+  }));
+
+  it('should have the Date of Birth field required', fakeAsync(() => {
+
+    initPageWithTestChild();
+
+    expectFormGroupToHasErrorForEmptyInput(
+      childDetailPage.childDetailDisplayDateOfBirthFormGroup, childDetailPage.childDetailDisplayDateOfBirth);
+  }));
+
+  it('should have the Save button disabled if the form is invalid or pristine (not dirty)', fakeAsync(() => {
+
+    initPageWithTestChild();
+
+    expect(childDetailPage.saveButton.nativeElement.disabled).toBeTruthy();
+
+    changeInputValue(childDetailPage.childDetailDisplayFirstName, 'Another value');
+
+    expect(childDetailPage.saveButton.nativeElement.disabled).toBeFalsy();
+
+    changeInputValue(childDetailPage.childDetailDisplayFirstName, '');
+
+    expect(childDetailPage.saveButton.nativeElement.disabled).toBeTruthy();
+  }));
 
   it('should display the error message when query for child by id failed', () => {
 
@@ -147,4 +198,30 @@ describe('Child-Detail Component', () => {
     testChild.surname = 'SURNAME';
     testChild.dateOfBirth = '10/12/2017';
   };
+
+  function initPageWithTestChild() {
+
+    childServiceSpy.getChildById.and.returnValue(of(testChild));
+
+    fixture.detectChanges();
+    tick();
+    childDetailPage.initPage();
+  }
+
+  function expectFormGroupToHasErrorForEmptyInput(formGroup: DebugElement, input: DebugElement) {
+
+    expect(formGroup.classes['has-error']).toBeFalsy();
+
+    changeInputValue(input, '');
+
+    expect(formGroup.classes['has-error']).toBeTruthy();
+  }
+
+  function changeInputValue(input: DebugElement, value: string) {
+
+    input.nativeElement.value = value;
+    input.triggerEventHandler('input', {'target': input.nativeElement});
+
+    fixture.detectChanges();
+  }
 });
