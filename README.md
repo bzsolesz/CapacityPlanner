@@ -7,7 +7,7 @@ Stories to come:
 - @CreatedBy @LastModfiedBy auditing
 - introduce application logging
 
-- implement child detail save
+- rethink error handling of saving child (unsaved data should not be lost by displaying error message due to a failure)
 - discard changes on child detail form
 - animation for saving changes
 - date picker for date of birth field of child detail

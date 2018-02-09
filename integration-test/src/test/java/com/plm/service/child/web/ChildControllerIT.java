@@ -1,16 +1,11 @@
 package com.plm.service.child.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.plm.service.child.AbstractITBase;
 import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.domain.Child;
 import org.junit.Test;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -20,8 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ChildControllerIT extends AbstractITBase {
-
-    private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.now();
 
     @Test
     @Transactional
@@ -98,26 +91,5 @@ public class ChildControllerIT extends AbstractITBase {
                     .accept(APPLICATION_JSON));
 
         response.andExpect(status().isBadRequest());
-    }
-
-    private ChildEntity persistTestChildEntity() {
-
-        ChildEntity childEntity = new ChildEntity();
-        childEntity.setDateOfBirth(TEST_DATE_OF_BIRTH);
-
-        Integer childEntityId = (Integer) testEntityManager.persistAndGetId(childEntity);
-        testEntityManager.flush();
-
-        childEntity.setId(childEntityId);
-
-        return childEntity;
-    }
-
-    private String childAsJson(Child child) throws JsonProcessingException {
-
-        ObjectMapper jsonMapper = new ObjectMapper();
-        jsonMapper.registerModule(new JavaTimeModule());
-
-        return jsonMapper.writeValueAsString(child);
     }
 }

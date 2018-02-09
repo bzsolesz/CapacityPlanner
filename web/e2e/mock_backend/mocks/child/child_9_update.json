@@ -1,0 +1,12 @@
+{
+  "expression": "/ChildService/child/9",
+  "method": "PUT",
+  "name": "updateChild_9",
+  "isArray": false,
+  "responses": {
+    "happyPath": {
+      "default": true,
+      "status": 204
+    }
+  }
+}

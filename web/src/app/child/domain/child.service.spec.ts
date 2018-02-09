@@ -15,7 +15,7 @@ describe('Child Service', () => {
   var testChild1: Child;
   var testChild2: Child;
 
-  var getTestChild1Url: string;
+  var testChild1Url: string;
   var getAllChildrenUrl: string = 'http://localhost:8081/ChildService/child/all';
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('Child Service', () => {
 
     initTestChildren();
 
-    getTestChild1Url = "http://localhost:8081/ChildService/child/" + testChild1.id;
+    testChild1Url = "http://localhost:8081/ChildService/child/" + testChild1.id;
   });
 
   it('getChildById - should make a HTTP GET request to ChildService/child/${id} server endpoint and return the Child', () => {
@@ -40,7 +40,7 @@ describe('Child Service', () => {
       }
     );
 
-    const testRequest = httpMock.expectOne(getTestChild1Url);
+    const testRequest = httpMock.expectOne(testChild1Url);
 
     expect(testRequest.request.method).toBe("GET");
 
@@ -51,7 +51,7 @@ describe('Child Service', () => {
 
     expectGenericErrorMessage(
       () => { return testedService.getChildById(testChild1.id); },
-      getTestChild1Url
+      testChild1Url
     );
   });
 
@@ -66,7 +66,7 @@ describe('Child Service', () => {
       }
     );
 
-    httpMock.expectOne(getTestChild1Url).flush('', {status: 404, statusText: ''});
+    httpMock.expectOne(testChild1Url).flush('', {status: 404, statusText: ''});
   });
 
   it('getAllChildren - should make a HTTP GET request to ChildService/child/all server endpoint and return all Children', () => {
@@ -102,6 +102,26 @@ describe('Child Service', () => {
     expectGenericErrorMessage(
       () => { return testedService.getAllChildren(); },
       getAllChildrenUrl
+    );
+  });
+
+  it('updateChild - should make a HTTP PUT request to ChildService/child/${id} server endpoint and update the Child', () => {
+
+    testedService.updateChild(testChild1).subscribe();
+
+    const testRequest = httpMock.expectOne(testChild1Url);
+
+    expect(testRequest.request.method).toBe("PUT");
+    expect(testRequest.request.body).toEqual(testChild1)
+
+    testRequest.flush(null);
+  });
+
+  it('updateChild - should return a generic error message if an error happened', () => {
+
+    expectGenericErrorMessage(
+      () => { return testedService.updateChild(testChild1); },
+      testChild1Url
     );
   });
 

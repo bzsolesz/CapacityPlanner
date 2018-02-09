@@ -20,6 +20,10 @@ exports.config = {
     defaultTimeoutInterval: 30000,
     print: function() {}
   },
+  ngApimockOpts: {
+    angularVersion: 5,
+    hybrid: false
+  },
   onPrepare() {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
@@ -38,5 +42,7 @@ exports.config = {
         cssOverrideFile: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
       }
     ).getJasmine2Reporter());
+
+    browser.ngApimock = require('./e2e/mock_backend/target/protractor.mock.js');
   }
 };

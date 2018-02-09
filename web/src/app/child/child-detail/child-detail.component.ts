@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgForm } from '@angular/forms'
 
 import { Child } from '../domain/child';
 import { ChildService } from '../domain/child.service';
@@ -11,6 +12,9 @@ export class ChildDetailComponent implements OnInit {
 
   child: Child;
   queryErrorMessage: string;
+
+  @ViewChild(NgForm)
+  childForm: NgForm;
 
   constructor(
     private router: Router,
@@ -40,11 +44,20 @@ export class ChildDetailComponent implements OnInit {
     );
   }
 
-  goToChildrenPage(): void {
-    this.router.navigate(["/child/all"]);
+  save(child: Child): void {
+    this.childService.updateChild(child).subscribe(
+      () => {
+        this.childForm.reset();
+        this.getChildById(child.id);
+      },
+      (error: Error) => {
+        this.child = null;
+        this.queryErrorMessage = error.message;        
+      }
+    );
   }
 
-  save(): void {
-    
+  goToChildrenPage(): void {
+    this.router.navigate(["/child/all"]);
   }
 }

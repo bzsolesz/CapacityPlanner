@@ -35,6 +35,7 @@ describe('Child-Detail Component', () => {
 
   class ChildServiceSpy {
     getChildById = jasmine.createSpy('getChildById');
+    updateChild = jasmine.createSpy('updateChild');
   }
 
   class ChildDetailPage {
@@ -49,6 +50,7 @@ describe('Child-Detail Component', () => {
     childDetailDisplaySurnameFormGroup: DebugElement;
     childDetailDisplayDateOfBirthFormGroup: DebugElement;
 
+    childDetailForm: DebugElement;
     errorMessageDisplay: DebugElement;
     goToChildrenPageButton: DebugElement;
     saveButton: DebugElement;
@@ -69,6 +71,7 @@ describe('Child-Detail Component', () => {
         this.childDetailDisplaySurnameFormGroup = this.childDetailDisplay.query(By.css('#surnameFormGroup'));
         this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css('#dateOfBirthFormGroup'));
 
+        this.childDetailForm = this.childDetailDisplay.query(By.css('form'));
         this.saveButton = this.childDetailDisplay.query(By.css('#saveButton'));
       }
     }
@@ -126,6 +129,20 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.errorMessageDisplay).toBeNull();
   }));
 
+  it('should display the error message when query for child by id failed', () => {
+
+    var error: Error = new Error("An error has happened");
+
+    childServiceSpy.getChildById.and.returnValue(Observable.throw(error));
+
+    fixture.detectChanges();
+    childDetailPage.initPage();
+
+    expect(childDetailPage.errorMessageDisplay.nativeElement.textContent).toBe(error.message);
+
+    expect(childDetailPage.childDetailDisplay).toBeNull();
+  });
+
   it('should have the First Name field required', fakeAsync(() => {
 
     initPageWithTestChild();
@@ -165,11 +182,39 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.saveButton.nativeElement.disabled).toBeTruthy();
   }));
 
-  it('should display the error message when query for child by id failed', () => {
+  it(`should save Child (url /child/:id) by ChildService after Save button is clicked 
+    and query update Child again`, fakeAsync(() => {
+
+    childServiceSpy.updateChild.and.returnValue(of(null));
+
+    initPageWithTestChild();
+
+    spyOn(testedComponent.childForm, 'reset');
+
+    const updateFirstName = 'UPDATED_FIRST_NAME';
+    changeInputValue(childDetailPage.childDetailDisplayFirstName, updateFirstName);
+
+    childServiceSpy.getChildById.calls.reset();
+
+    childDetailPage.saveButton.nativeElement.click();
+
+    expect(childServiceSpy.updateChild).toHaveBeenCalledWith(testChild);
+    expect(testedComponent.childForm.reset).toHaveBeenCalled();
+    expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id);
+  }));
+
+  it('should display the error message when updating Child failed', fakeAsync(() => {
 
     var error: Error = new Error("An error has happened");
 
-    childServiceSpy.getChildById.and.returnValue(Observable.throw(error));
+    childServiceSpy.updateChild.and.returnValue(Observable.throw(error));
+
+    initPageWithTestChild();
+
+    const updateFirstName = 'UPDATED_FIRST_NAME';
+    changeInputValue(childDetailPage.childDetailDisplayFirstName, updateFirstName);
+
+    childDetailPage.saveButton.nativeElement.click();
 
     fixture.detectChanges();
     childDetailPage.initPage();
@@ -177,7 +222,7 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.errorMessageDisplay.nativeElement.textContent).toBe(error.message);
 
     expect(childDetailPage.childDetailDisplay).toBeNull();
-  });
+  }));
 
   it('should have a button for navigating to the Children page', () => {
 

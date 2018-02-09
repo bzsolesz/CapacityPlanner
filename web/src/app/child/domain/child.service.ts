@@ -46,4 +46,17 @@ export class ChildService {
       )
     )
   }
+
+  updateChild(child: Child): Observable<void> {
+
+    const serviceUrl = `${environment.childServiceUrl}/${child.id}`;
+
+    return this.httpClient.put<void>(serviceUrl, child).pipe(
+      catchError(
+        (error: HttpErrorResponse): Observable<void> => {
+          return Observable.throw(new Error(ChildService.GENERIC_ERROR_MESSAGE));
+        }
+      )
+    );
+  }
 }
