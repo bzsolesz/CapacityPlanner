@@ -6,6 +6,7 @@ Stories to come:
 - @CreatedDate @LastModfiedDate auditing
 - @CreatedBy @LastModfiedBy auditing
 - introduce application logging
+- introduce static code quality checker for java and javascript (like: checkstyle, lint)
 
 - rethink error handling of saving child (unsaved data should not be lost by displaying error message due to a failure)
 - discard changes on child detail form
