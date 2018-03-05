@@ -1,12 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { async, fakeAsync, tick } from '@angular/core/testing';
+import { DebugElement, Directive, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Router, ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
+import * as utility from "../../utility";
+import { defaultDatePickerConfig } from "../../ngx-bootstrap";
 
 import { ChildDetailComponent } from './child-detail.component';
 import { ChildService } from '../domain/child.service';
@@ -31,6 +33,13 @@ describe('Child-Detail Component', () => {
       this._testParamMap = convertToParamMap(params);
       this.subject.next(this._testParamMap);
     }
+  }
+
+  @Directive({
+    selector: '[bsDatepicker]'
+  })
+  class DatePickerStub {
+    @Input() bsConfig: any;
   }
 
   class ChildServiceSpy {
@@ -86,7 +95,7 @@ describe('Child-Detail Component', () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [ ChildDetailComponent ],
+      declarations: [ ChildDetailComponent, DatePickerStub ],
       providers: [
         { provide: Router, useClass: RouterSpy },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
@@ -124,7 +133,8 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.childDetailDisplayId.nativeElement.textContent).toBe(testChild.id.toString());
     expect(childDetailPage.childDetailDisplayFirstName.nativeElement.value).toBe(testChild.firstName);
     expect(childDetailPage.childDetailDisplaySurname.nativeElement.value).toBe(testChild.surname);
-    expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toBe(testChild.dateOfBirth);
+    expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toEqual(
+      utility.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
 
     expect(childDetailPage.errorMessageDisplay).toBeNull();
   }));
@@ -167,6 +177,12 @@ describe('Child-Detail Component', () => {
       childDetailPage.childDetailDisplayDateOfBirthFormGroup, childDetailPage.childDetailDisplayDateOfBirth);
   }));
 
+  it("should set default config for the date of birth datepicker", fakeAsync(() => {
+    initPageWithTestChild();
+
+    expect(childDetailPage.childDetailDisplayDateOfBirth.injector.get(DatePickerStub).bsConfig).toBe(defaultDatePickerConfig);
+  }));
+
   it('should have the Save button disabled if the form is invalid or pristine (not dirty)', fakeAsync(() => {
 
     initPageWithTestChild();
@@ -191,13 +207,25 @@ describe('Child-Detail Component', () => {
 
     spyOn(testedComponent.childForm, 'reset');
 
-    const updateFirstName = 'UPDATED_FIRST_NAME';
-    changeInputValue(childDetailPage.childDetailDisplayFirstName, updateFirstName);
+    const updatedFirstName = "UPDATED_FIRST_NAME";
+    changeInputValue(childDetailPage.childDetailDisplayFirstName, updatedFirstName);
+
+    const updatedSurname = "UPDATED_SURNAME_NAME";
+    changeInputValue(childDetailPage.childDetailDisplaySurname, updatedSurname);
+
+    spyOn(utility, "fromDateToEnGBString").and.callFake((dateString: string) => {
+      return new Date(dateString).toLocaleDateString("en-GB");
+    });
+    const updatedDateOfBirth = "31/12/2018";
+    changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, utility.fromEnGbBStringToDate(updatedDateOfBirth).toString());
 
     childServiceSpy.getChildById.calls.reset();
 
     childDetailPage.saveButton.nativeElement.click();
 
+    expect(testChild.firstName).toBe(updatedFirstName);
+    expect(testChild.surname).toBe(updatedSurname);
+    expect(testChild.dateOfBirth).toBe(updatedDateOfBirth);
     expect(childServiceSpy.updateChild).toHaveBeenCalledWith(testChild);
     expect(testedComponent.childForm.reset).toHaveBeenCalled();
     expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id);

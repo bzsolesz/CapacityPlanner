@@ -1,8 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { NgxBootstrapModule } from './ngx-bootstrap/ngx-bootstrap.module';
-
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,7 +13,6 @@ import { ChildModule } from './child/child.module';
   ],
   imports: [
     BrowserModule,
-    NgxBootstrapModule,
     ChildModule,
     AppRoutingModule
   ],

@@ -7,6 +7,11 @@ Stories to come:
 - @CreatedBy @LastModfiedBy auditing
 - introduce application logging
 - introduce static code quality checker for java and javascript (like: checkstyle, lint)
+- introduce index.ts for each module and reorganize javascript imports
+- remove CORS filter and replace it with proxy between front-end and backend servers
+- reorganize routes in web module to have them defined only once
+- replace single quotes with double quotes
+- replace var with let
 
 - rethink error handling of saving child (unsaved data should not be lost by displaying error message due to a failure)
 - discard changes on child detail form
