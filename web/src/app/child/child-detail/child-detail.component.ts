@@ -50,7 +50,6 @@ export class ChildDetailComponent implements OnInit {
   }
 
   save(child: Child): void {
-    debugger;
     child.dateOfBirth = fromDateToEnGBString(this.dateOfBirthPickerValue);
     this.childService.updateChild(child).subscribe(
       () => {
