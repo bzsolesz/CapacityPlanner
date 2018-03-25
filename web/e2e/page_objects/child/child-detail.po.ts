@@ -3,7 +3,6 @@ import { browser, by, element, ElementFinder, ElementArrayFinder } from 'protrac
 export class ChildDetailPage {
 
   childDetailDisplay = element(by.css('#childDetailDisplay'));
-  childDetailIdDisplay = this.childDetailDisplay.element(by.css('#id'));
   childDetailFirstNameInput = this.childDetailDisplay.element(by.css('#firstName'));
   childDetailSurnameInput = this.childDetailDisplay.element(by.css('#surname'));
   childDetailDateOfBirthInput = this.childDetailDisplay.element(by.css('#dateOfBirth'));

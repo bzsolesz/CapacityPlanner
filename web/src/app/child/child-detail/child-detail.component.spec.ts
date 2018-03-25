@@ -130,7 +130,6 @@ describe('Child-Detail Component', () => {
     tick();
     childDetailPage.initPage();
 
-    expect(childDetailPage.childDetailDisplayId.nativeElement.textContent).toBe(testChild.id.toString());
     expect(childDetailPage.childDetailDisplayFirstName.nativeElement.value).toBe(testChild.firstName);
     expect(childDetailPage.childDetailDisplaySurname.nativeElement.value).toBe(testChild.surname);
     expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toEqual(

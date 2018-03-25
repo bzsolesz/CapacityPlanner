@@ -36,7 +36,6 @@ describe('By the Child feature the User', () => {
 
     expect(childDetailPage.childDetailDisplay.isDisplayed()).toBeTruthy();
 
-    expect(childDetailPage.childDetailIdDisplay.getText()).toBe("9");
     expect(childDetailPage.childDetailFirstNameInput.getAttribute('value')).toBe('Peter');
     expect(childDetailPage.childDetailSurnameInput.getAttribute('value')).toBe('Jones');
     expect(childDetailPage.childDetailDateOfBirthInput.getAttribute('value')).toBe('06/06/1970');
@@ -66,7 +65,8 @@ describe('By the Child feature the User', () => {
 
     childDetailPage.navigateToPage(9);
 
-    expect(childDetailPage.childDetailIdDisplay.getText()).toBe("9");
+    expect(childDetailPage.childDetailFirstNameInput.getAttribute('value')).toBe('Peter');
+    expect(childDetailPage.childDetailSurnameInput.getAttribute('value')).toBe('Jones');
 
     childDetailPage.goToChildrenPageButton.click();
 
