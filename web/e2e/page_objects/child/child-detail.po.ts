@@ -1,4 +1,5 @@
 import { browser, by, element, ElementFinder, ElementArrayFinder } from 'protractor';
+import { promise } from 'selenium-webdriver';
 
 export class ChildDetailPage {
 
@@ -10,7 +11,7 @@ export class ChildDetailPage {
   childDetailSaveButton = this.childDetailDisplay.element(by.css('#saveButton'));
   goToChildrenPageButton = element(by.css('#goToChildrenPageButton'));
 
-  navigateToPage(childId: number): void {
-    browser.get(`/child/${childId}`);
+  navigateToPage(childId: number): promise.Promise<any> {
+    return browser.get(`/child/${childId}`);
   };
 }
