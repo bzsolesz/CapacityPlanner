@@ -19,3 +19,5 @@ Stories to come:
 - warning for unsaved changes on navgition away from child detail form
 - introduce steps and given/when/then in ui tests
 - fix tslint errors in web and force build failure
+- capture and check somehow "void" requests sent by web to back-end during e2e testing
+- suppress spring boot/web log during build process
