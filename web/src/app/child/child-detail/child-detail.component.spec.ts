@@ -1,33 +1,33 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement, Directive, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Router, ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
+import { DebugElement, Directive, Input } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { of } from "rxjs/observable/of";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Router, ActivatedRoute, ParamMap, convertToParamMap } from "@angular/router";
+import { FormsModule } from "@angular/forms";
 
 import * as utility from "../../utility";
 import { defaultDatePickerConfig } from "../../ngx-bootstrap";
 
-import { ChildDetailComponent } from './child-detail.component';
-import { ChildService } from '../domain/child.service';
-import { Child } from '../domain/child';
+import { ChildDetailComponent } from "./child-detail.component";
+import { ChildService } from "../domain/child.service";
+import { Child } from "../domain/child";
 
-describe('Child-Detail Component', () => {
+describe("Child-Detail Component", () => {
 
-  var fixture: ComponentFixture<ChildDetailComponent>;
-  var testedComponent: ChildDetailComponent;
+  let fixture: ComponentFixture<ChildDetailComponent>;
+  let testedComponent: ChildDetailComponent;
 
   class RouterSpy {
-    navigate = jasmine.createSpy('navigate');
+    public navigate: jasmine.Spy = jasmine.createSpy("navigate");
   }
 
   class ActivatedRouteStub {
     private _testParamMap: ParamMap;
-    private subject = new BehaviorSubject(this._testParamMap);
+    private subject: BehaviorSubject<ParamMap> = new BehaviorSubject(this._testParamMap);
 
-    paramMap = this.subject.asObservable();
+    public paramMap: Observable<ParamMap> = this.subject.asObservable();
 
     set testParamMap(params: {}) {
       this._testParamMap = convertToParamMap(params);
@@ -36,72 +36,74 @@ describe('Child-Detail Component', () => {
   }
 
   @Directive({
-    selector: '[bsDatepicker]'
+    // tslint:disable-next-line: directive-selector
+    selector: "[bsDatepicker]"
   })
-  class DatePickerStub {
-    @Input() bsConfig: any;
+  class DatePickerStubDirective {
+    @Input()
+    public bsConfig: object;
   }
 
   class ChildServiceSpy {
-    getChildById = jasmine.createSpy('getChildById');
-    updateChild = jasmine.createSpy('updateChild');
+    public getChildById: jasmine.Spy = jasmine.createSpy("getChildById");
+    public updateChild: jasmine.Spy = jasmine.createSpy("updateChild");
   }
 
   class ChildDetailPage {
-    
-    childDetailDisplay: DebugElement;
-    childDetailDisplayId: DebugElement;
-    childDetailDisplayFirstName: DebugElement;
-    childDetailDisplaySurname: DebugElement;
-    childDetailDisplayDateOfBirth: DebugElement;
 
-    childDetailDisplayFirstNameFormGroup: DebugElement;
-    childDetailDisplaySurnameFormGroup: DebugElement;
-    childDetailDisplayDateOfBirthFormGroup: DebugElement;
+    public childDetailDisplay: DebugElement;
+    public childDetailDisplayId: DebugElement;
+    public childDetailDisplayFirstName: DebugElement;
+    public childDetailDisplaySurname: DebugElement;
+    public childDetailDisplayDateOfBirth: DebugElement;
 
-    childDetailForm: DebugElement;
-    errorMessageDisplay: DebugElement;
-    goToChildrenPageButton: DebugElement;
-    saveButton: DebugElement;
+    public childDetailDisplayFirstNameFormGroup: DebugElement;
+    public childDetailDisplaySurnameFormGroup: DebugElement;
+    public childDetailDisplayDateOfBirthFormGroup: DebugElement;
 
-    initPage(): void {
-      this.errorMessageDisplay = fixture.debugElement.query(By.css('#errorMessageDisplay'));
-      this.childDetailDisplay = fixture.debugElement.query(By.css('#childDetailDisplay'));
-      this.goToChildrenPageButton = fixture.debugElement.query(By.css('#goToChildrenPageButton'));
+    public childDetailForm: DebugElement;
+    public errorMessageDisplay: DebugElement;
+    public goToChildrenPageButton: DebugElement;
+    public saveButton: DebugElement;
+
+    public initPage(): void {
+      this.errorMessageDisplay = fixture.debugElement.query(By.css("#errorMessageDisplay"));
+      this.childDetailDisplay = fixture.debugElement.query(By.css("#childDetailDisplay"));
+      this.goToChildrenPageButton = fixture.debugElement.query(By.css("#goToChildrenPageButton"));
 
       if (this.childDetailDisplay !== null) {
 
-        this.childDetailDisplayId = this.childDetailDisplay.query(By.css('#id'));
-        this.childDetailDisplayFirstName = this.childDetailDisplay.query(By.css('#firstName'));
-        this.childDetailDisplaySurname = this.childDetailDisplay.query(By.css('#surname'));
-        this.childDetailDisplayDateOfBirth = this.childDetailDisplay.query(By.css('#dateOfBirth'));
+        this.childDetailDisplayId = this.childDetailDisplay.query(By.css("#id"));
+        this.childDetailDisplayFirstName = this.childDetailDisplay.query(By.css("#firstName"));
+        this.childDetailDisplaySurname = this.childDetailDisplay.query(By.css("#surname"));
+        this.childDetailDisplayDateOfBirth = this.childDetailDisplay.query(By.css("#dateOfBirth"));
 
-        this.childDetailDisplayFirstNameFormGroup = this.childDetailDisplay.query(By.css('#firstNameFormGroup'));
-        this.childDetailDisplaySurnameFormGroup = this.childDetailDisplay.query(By.css('#surnameFormGroup'));
-        this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css('#dateOfBirthFormGroup'));
+        this.childDetailDisplayFirstNameFormGroup = this.childDetailDisplay.query(By.css("#firstNameFormGroup"));
+        this.childDetailDisplaySurnameFormGroup = this.childDetailDisplay.query(By.css("#surnameFormGroup"));
+        this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css("#dateOfBirthFormGroup"));
 
-        this.childDetailForm = this.childDetailDisplay.query(By.css('form'));
-        this.saveButton = this.childDetailDisplay.query(By.css('#saveButton'));
+        this.childDetailForm = this.childDetailDisplay.query(By.css("form"));
+        this.saveButton = this.childDetailDisplay.query(By.css("#saveButton"));
       }
     }
   }
 
-  var routerSpy: RouterSpy;
-  var activatedRouteStub: ActivatedRouteStub;
-  var childServiceSpy: ChildServiceSpy;
-  var childDetailPage: ChildDetailPage;
-  var testChild: Child;
+  let routerSpy: RouterSpy;
+  let activatedRouteStub: ActivatedRouteStub;
+  let childServiceSpy: ChildServiceSpy;
+  let childDetailPage: ChildDetailPage;
+  let testChild: Child;
 
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [ ChildDetailComponent, DatePickerStub ],
+      declarations: [ ChildDetailComponent, DatePickerStubDirective ],
+      imports: [ FormsModule ],
       providers: [
         { provide: Router, useClass: RouterSpy },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ChildService, useClass: ChildServiceSpy }
-      ],
-      imports: [ FormsModule ]
+      ]
     })
     .compileComponents();
   }));
@@ -111,7 +113,9 @@ describe('Child-Detail Component', () => {
     testedComponent = fixture.componentInstance;
 
     routerSpy = TestBed.get(Router);
+    // tslint:disable-next-line: no-any
     activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
+    // tslint:disable-next-line: no-any
     childServiceSpy = fixture.debugElement.injector.get(ChildService) as any;
 
     childDetailPage = new ChildDetailPage();
@@ -138,9 +142,9 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.errorMessageDisplay).toBeNull();
   }));
 
-  it('should display the error message when query for child by id failed', () => {
+  it("should display the error message when query for child by id failed", () => {
 
-    var error: Error = new Error("An error has happened");
+    const error: Error = new Error("An error has happened");
 
     childServiceSpy.getChildById.and.returnValue(Observable.throw(error));
 
@@ -152,7 +156,7 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.childDetailDisplay).toBeNull();
   });
 
-  it('should have the First Name field required', fakeAsync(() => {
+  it("should have the First Name field required", fakeAsync(() => {
 
     initPageWithTestChild();
 
@@ -160,7 +164,7 @@ describe('Child-Detail Component', () => {
       childDetailPage.childDetailDisplayFirstNameFormGroup, childDetailPage.childDetailDisplayFirstName);
   }));
 
-  it('should have the Surname field required', fakeAsync(() => {
+  it("should have the Surname field required", fakeAsync(() => {
 
     initPageWithTestChild();
 
@@ -168,7 +172,7 @@ describe('Child-Detail Component', () => {
       childDetailPage.childDetailDisplaySurnameFormGroup, childDetailPage.childDetailDisplaySurname);
   }));
 
-  it('should have the Date of Birth field required', fakeAsync(() => {
+  it("should have the Date of Birth field required", fakeAsync(() => {
 
     initPageWithTestChild();
 
@@ -179,43 +183,43 @@ describe('Child-Detail Component', () => {
   it("should set default config for the date of birth datepicker", fakeAsync(() => {
     initPageWithTestChild();
 
-    expect(childDetailPage.childDetailDisplayDateOfBirth.injector.get(DatePickerStub).bsConfig).toBe(defaultDatePickerConfig);
+    expect(childDetailPage.childDetailDisplayDateOfBirth.injector.get(DatePickerStubDirective).bsConfig).toBe(defaultDatePickerConfig);
   }));
 
-  it('should have the Save button disabled if the form is invalid or pristine (not dirty)', fakeAsync(() => {
+  it("should have the Save button disabled if the form is invalid or pristine (not dirty)", fakeAsync(() => {
 
     initPageWithTestChild();
 
     expect(childDetailPage.saveButton.nativeElement.disabled).toBeTruthy();
 
-    changeInputValue(childDetailPage.childDetailDisplayFirstName, 'Another value');
+    changeInputValue(childDetailPage.childDetailDisplayFirstName, "Another value");
 
     expect(childDetailPage.saveButton.nativeElement.disabled).toBeFalsy();
 
-    changeInputValue(childDetailPage.childDetailDisplayFirstName, '');
+    changeInputValue(childDetailPage.childDetailDisplayFirstName, "");
 
     expect(childDetailPage.saveButton.nativeElement.disabled).toBeTruthy();
   }));
 
-  it(`should save Child (url /child/:id) by ChildService after Save button is clicked 
+  it(`should save Child (url /child/:id) by ChildService after Save button is clicked
     and query update Child again`, fakeAsync(() => {
 
     childServiceSpy.updateChild.and.returnValue(of(null));
 
     initPageWithTestChild();
 
-    spyOn(testedComponent.childForm, 'reset');
+    spyOn(testedComponent.childForm, "reset");
 
-    const updatedFirstName = "UPDATED_FIRST_NAME";
+    const updatedFirstName: string = "UPDATED_FIRST_NAME";
     changeInputValue(childDetailPage.childDetailDisplayFirstName, updatedFirstName);
 
-    const updatedSurname = "UPDATED_SURNAME_NAME";
+    const updatedSurname: string = "UPDATED_SURNAME_NAME";
     changeInputValue(childDetailPage.childDetailDisplaySurname, updatedSurname);
 
     spyOn(utility, "fromDateToEnGBString").and.callFake((dateString: string) => {
       return new Date(dateString).toLocaleDateString("en-GB");
     });
-    const updatedDateOfBirth = "31/12/2018";
+    const updatedDateOfBirth: string = "31/12/2018";
     changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, utility.fromEnGbBStringToDate(updatedDateOfBirth).toString());
 
     childServiceSpy.getChildById.calls.reset();
@@ -230,15 +234,15 @@ describe('Child-Detail Component', () => {
     expect(childServiceSpy.getChildById).toHaveBeenCalledWith(testChild.id);
   }));
 
-  it('should display the error message when updating Child failed', fakeAsync(() => {
+  it("should display the error message when updating Child failed", fakeAsync(() => {
 
-    var error: Error = new Error("An error has happened");
+    const error: Error = new Error("An error has happened");
 
     childServiceSpy.updateChild.and.returnValue(Observable.throw(error));
 
     initPageWithTestChild();
 
-    const updateFirstName = 'UPDATED_FIRST_NAME';
+    const updateFirstName: string = "UPDATED_FIRST_NAME";
     changeInputValue(childDetailPage.childDetailDisplayFirstName, updateFirstName);
 
     childDetailPage.saveButton.nativeElement.click();
@@ -251,27 +255,23 @@ describe('Child-Detail Component', () => {
     expect(childDetailPage.childDetailDisplay).toBeNull();
   }));
 
-  it('should have a button for navigating to the Children page', () => {
+  it("should have a button for navigating to the Children page", () => {
 
     childServiceSpy.getChildById.and.returnValue(of(testChild));
 
     fixture.detectChanges();
     childDetailPage.initPage();
 
-    childDetailPage.goToChildrenPageButton.triggerEventHandler('click', null);
+    childDetailPage.goToChildrenPageButton.triggerEventHandler("click", null);
 
     expect(routerSpy.navigate).toHaveBeenCalledWith(["/child/all"]);
   });
 
-  function initTestChild() {
-    testChild = new Child();
-    testChild.id = 999;
-    testChild.firstName = 'FIRST_NAME';
-    testChild.surname = 'SURNAME';
-    testChild.dateOfBirth = '10/12/2017';
-  };
+  function initTestChild(): void {
+    testChild = new Child(999, "FIRST_NAME", "SURNAME", "10/12/2017");
+  }
 
-  function initPageWithTestChild() {
+  function initPageWithTestChild(): void {
 
     childServiceSpy.getChildById.and.returnValue(of(testChild));
 
@@ -280,19 +280,19 @@ describe('Child-Detail Component', () => {
     childDetailPage.initPage();
   }
 
-  function expectFormGroupToHasErrorForEmptyInput(formGroup: DebugElement, input: DebugElement) {
+  function expectFormGroupToHasErrorForEmptyInput(formGroup: DebugElement, input: DebugElement): void {
 
-    expect(formGroup.classes['has-error']).toBeFalsy();
+    expect(formGroup.classes["has-error"]).toBeFalsy();
 
-    changeInputValue(input, '');
+    changeInputValue(input, "");
 
-    expect(formGroup.classes['has-error']).toBeTruthy();
+    expect(formGroup.classes["has-error"]).toBeTruthy();
   }
 
-  function changeInputValue(input: DebugElement, value: string) {
+  function changeInputValue(input: DebugElement, value: string): void {
 
     input.nativeElement.value = value;
-    input.triggerEventHandler('input', {'target': input.nativeElement});
+    input.triggerEventHandler("input", {"target": input.nativeElement});
 
     fixture.detectChanges();
   }

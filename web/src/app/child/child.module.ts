@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
 
-import { NgxBootstrapModule } from '../ngx-bootstrap/ngx-bootstrap.module';
+import { NgxBootstrapModule } from "../ngx-bootstrap/ngx-bootstrap.module";
 
-import { ChildDetailComponent } from './child-detail/child-detail.component';
-import { ChildListComponent } from './child-list/child-list.component';
-import { ChildService } from './domain/child.service';
+import { ChildDetailComponent } from "./child-detail/child-detail.component";
+import { ChildListComponent } from "./child-list/child-list.component";
+import { ChildService } from "./domain/child.service";
 
-import { ChildRoutingModule } from './child-routing.module';
+import { ChildRoutingModule } from "./child-routing.module";
 
 @NgModule({
   declarations: [
@@ -27,4 +27,4 @@ import { ChildRoutingModule } from './child-routing.module';
     ChildService
   ]
 })
-export class ChildModule { }
+export class ChildModule {}

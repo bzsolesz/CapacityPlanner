@@ -10,14 +10,11 @@ Stories to come:
 - introduce index.ts for each module and reorganize javascript imports
 - remove CORS filter and replace it with proxy between front-end and backend servers
 - reorganize routes in web module to have them defined only once
-- replace single quotes with double quotes
-- replace var with let
 
 - rethink error handling of saving child (unsaved data should not be lost by displaying error message due to a failure)
 - discard changes on child detail form
 - animation for saving changes
 - warning for unsaved changes on navgition away from child detail form
 - introduce steps and given/when/then in ui tests
-- fix tslint errors in web and force build failure
 - capture and check somehow "void" requests sent by web to back-end during e2e testing
 - suppress spring boot/web log during build process

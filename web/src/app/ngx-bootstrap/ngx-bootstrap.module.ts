@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
 
 export const defaultDatePickerConfig: Partial<BsDatepickerConfig> = {
   dateInputFormat: "DD/MM/YYYY",
@@ -9,11 +9,11 @@ export const defaultDatePickerConfig: Partial<BsDatepickerConfig> = {
 };
 
 @NgModule({
+  exports: [
+    BsDatepickerModule
+  ],
   imports: [
     BsDatepickerModule.forRoot()
-  ],
-  exports: [
-  	BsDatepickerModule
   ]
 })
 export class NgxBootstrapModule { }

@@ -57,7 +57,7 @@
     "no-empty": true,
     "no-empty-interface": true,
     "no-eval": true,
-    "no-inferrable-types": true,
+    "no-inferrable-types": false,
     "no-misused-new": true,
     "no-non-null-assertion": true,
     "no-shadowed-variable": true,
@@ -81,7 +81,7 @@
     "prefer-const": true,
     "quotemark": [
       true,
-      "single"
+      "double"
     ],
     "radix": true,
     "semicolon": [
@@ -107,6 +107,7 @@
     "variable-name": [
       true,
       "check-format",
+      "allow-leading-underscore",
       "ban-keywords"
     ],
     "whitespace": [
@@ -147,7 +148,18 @@
     "no-reference": true,
     "no-var-requires": true,
     "use-isnan": true,
-    "typedef": true,
+    "typedef": [
+      true,
+      "call-signature",
+      "arrow-call-signature",
+      "parameter",
+      "arrow-parameter",
+      "property-declaration",
+      "variable-declaration",
+      "member-variable-declaration",
+      "object-destructuring",
+      "array-destructuring"
+    ],
     "no-unused-variable": true,
     "no-default-export": true,
     "no-duplicate-variable": true,

@@ -1,25 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import { Child } from '../domain/child';
-import { ChildService } from '../domain/child.service';
+import { Child } from "../domain/child";
+import { ChildService } from "../domain/child.service";
 
 @Component({
-  templateUrl: './child-list.component.html'
+  templateUrl: "./child-list.component.html"
 })
 export class ChildListComponent implements OnInit {
 
-  children: Child[] = [];
-  queryErrorMessage: string = null;
+  public children: Child[] = [];
+  public queryErrorMessage: string = null;
 
   constructor(private childService: ChildService) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.getAllChildren();
   }
 
-  getAllChildren(): void {
+  public getAllChildren(): void {
     this.childService.getAllChildren().subscribe(
-      (children) => {
+      (children: Child[]) => {
         this.children = children;
         this.queryErrorMessage = null;
       },
@@ -27,6 +27,6 @@ export class ChildListComponent implements OnInit {
         this.children = [];
         this.queryErrorMessage = error.message;
       }
-    )
+    );
   }
 }
