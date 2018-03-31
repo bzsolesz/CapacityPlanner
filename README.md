@@ -17,3 +17,4 @@ Stories to come:
 - discard changes on child detail form
 - animation for saving changes
 - warning for unsaved changes on navgition away from child detail form
+- introduce steps and given/when/then in ui tests
