@@ -6,7 +6,7 @@ Stories to come:
 - @CreatedDate @LastModfiedDate auditing
 - @CreatedBy @LastModfiedBy auditing
 - introduce application logging
-- introduce static code quality checker for java and javascript (like: checkstyle, lint)
+- introduce static code quality checker for java (like: checkstyle)
 - introduce index.ts for each module and reorganize javascript imports
 - remove CORS filter and replace it with proxy between front-end and backend servers
 - reorganize routes in web module to have them defined only once
@@ -18,3 +18,4 @@ Stories to come:
 - animation for saving changes
 - warning for unsaved changes on navgition away from child detail form
 - introduce steps and given/when/then in ui tests
+- fix tslint errors in web and force build failure

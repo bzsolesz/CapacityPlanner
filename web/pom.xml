@@ -38,6 +38,23 @@
               </arguments>
             </configuration>
           </execution>
+          <execution>
+            <id>run tslint</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>node_modules/.bin/ng</executable>
+                <arguments>
+                  <argument>lint</argument>
+                  <argument>--format</argument>
+                  <argument>stylish</argument>
+                  <argument>--force</argument>
+                  <argument>true</argument>
+                </arguments>
+            </configuration>  
+          </execution>
         </executions>
       </plugin>
     </plugins>
