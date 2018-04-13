@@ -37,7 +37,6 @@ class ChildServiceImpl implements ChildService {
     @Override
     @Transactional(readOnly = true)
     public Set<Child> getAllChildren() {
-
         Iterable<ChildEntity> allChildrenEntity = childEntityRepository.findAll();
 
         return StreamSupport.stream(allChildrenEntity.spliterator(), false)
@@ -48,7 +47,13 @@ class ChildServiceImpl implements ChildService {
     @Override
     @Transactional
     public void updateChild(Child child) {
-
         childEntityRepository.save(child.asChildEntity());
+    }
+
+    @Override
+    @Transactional
+    public int addChild(Child child) {
+        ChildEntity addedChild = childEntityRepository.save(child.asChildEntity());
+        return addedChild.getId();
     }
 }

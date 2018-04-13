@@ -28,6 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,6 +126,23 @@ public class ChildControllerTest {
                         .accept(APPLICATION_JSON));
 
         response.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldAddAChildAndReturnItsId() throws Exception {
+
+        int addedChildId = 3;
+
+        when(childServiceMock.addChild(testChild1)).thenReturn(addedChildId);
+
+        ResultActions response = mockMvc.perform(
+                post("/child")
+                        .content(childAsJson(testChild1))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON));
+
+        response.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(addedChildId));
     }
 
     private void expectChildJSON(ResultActions response, String jsonPath, Child child) throws Exception {

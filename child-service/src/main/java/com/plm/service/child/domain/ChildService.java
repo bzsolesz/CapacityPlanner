@@ -28,4 +28,12 @@ public interface ChildService {
      * @param child the child to update
      */
     void updateChild(Child child);
+
+    /**
+     * Add a <code>Child</code> to the data storage.
+     *
+     * @param child the child to add
+     * @return the id of the added child
+     */
+    int addChild(Child child);
 }

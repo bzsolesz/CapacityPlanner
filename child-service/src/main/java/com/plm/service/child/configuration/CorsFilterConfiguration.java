@@ -24,6 +24,7 @@ public class CorsFilterConfiguration {
         config.setAllowedOrigins(serviceClientCrossOriginList);
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.PUT);
+        config.addAllowedMethod(HttpMethod.POST);
         config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);

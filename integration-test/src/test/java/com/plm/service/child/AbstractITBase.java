@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.domain.Child;
+import com.plm.service.child.web.AddedChildView;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,6 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
@@ -42,6 +44,12 @@ public class AbstractITBase {
         jsonMapper.registerModule(new JavaTimeModule());
 
         return jsonMapper.writeValueAsString(child);
+    }
+
+    protected AddedChildView parseAddedChildView(String addedChildViewString) throws IOException {
+        ObjectMapper jsonMapper = new ObjectMapper();
+
+        return jsonMapper.readValue(addedChildViewString, AddedChildView.class);
     }
 
     protected ChildEntity persistTestChildEntity() {
