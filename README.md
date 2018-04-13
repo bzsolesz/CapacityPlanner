@@ -3,8 +3,8 @@
 	<h1>Backlog</h1>
 	<h4>Security</h4>
 	<ul>
-		<li>Setup certificate based mutual TLS connection between client and server</li>
-		<li>Introduce WebService security</li>
+		<li>setup certificate based mutual TLS connection between client and server</li>
+		<li>introduce WebService security</li>
 		<li>remove CORS filter and replace it with proxy between front-end and backend servers</li>
 	</ul>
 	<h4>Update child feature</h4>
@@ -13,9 +13,8 @@
 		<li>discard changes on child detail form</li>
 		<li>animation for saving changes</li>
 		<li>warning for unsaved changes on navgition away from child detail form</li>
-		<li>introduce steps and given/when/then in ui tests</li>
 	</ul>
-	<h4>Tehnical debt / technical improvement</h4>
+	<h4>Tehnical debt / Technical improvement</h4>
 	<ul>
 		<li>try out Lombok to manage boiler plate code for POJOs</li>
 		<li>introduce index.ts for each module and reorganize javascript imports</li>
@@ -27,11 +26,12 @@
 		<li>@CreatedBy @LastModfiedBy auditing</li>
 		<li>introduce application logging</li>
 	</ul>
-	<h4>Devops (build / deployment / testing)</h4>
+	<h4>Devops (Build / Deployment / Testing)</h4>
 	<ul>
 		<li>introduce static code quality checker for java (like: checkstyle)</li>
 		<li>suppress spring boot/web log during build process</li>
 		<li>capture and check somehow "void" requests sent by web to back-end during e2e testing</li>
+		<li>introduce steps and given/when/then in ui tests</li>
 	</ul>
 </body>
 </html>
