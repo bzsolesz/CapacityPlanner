@@ -69,15 +69,10 @@ describe("Child-List Component", () => {
 
     expect(childListPage.childListDisplay).not.toBeNull();
 
-    const childListItems: DebugElement[] = childListPage.childListDisplay.queryAll(By.css("li"));
+    const childListItems: DebugElement[] = childListPage.childListDisplay.queryAll(By.css("a"));
     expect(childListItems.length).toBe(2);
     expectChildListItemToBeChild(childListItems[0], testChildren[0]);
     expectChildListItemToBeChild(childListItems[1], testChildren[1]);
-
-    const childListItemLinks: DebugElement[] = childListPage.childListDisplay.queryAll(By.css("a"));
-    expect(childListItemLinks.length).toBe(2);
-    expectChildListItemLinkToBeChildDetailLink(childListItemLinks[0], testChildren[0]);
-    expectChildListItemLinkToBeChildDetailLink(childListItemLinks[1], testChildren[1]);
 
     expectNoErrorMessage();
   });
@@ -122,10 +117,8 @@ describe("Child-List Component", () => {
   function expectChildListItemToBeChild(childListItem: DebugElement, child: Child): void {
     expect(childListItem.nativeElement.textContent)
       .toContain(`${child.firstName} ${child.surname} (${child.dateOfBirth})`);
-  }
 
-  function expectChildListItemLinkToBeChildDetailLink(childListItemLink: DebugElement, child: Child): void {
-    expect(childListItemLink.nativeElement.getAttribute("href")).toBe(`/child/${child.id}`);
+    expect(childListItem.nativeElement.getAttribute("href")).toBe(`/child/${child.id}`);
   }
 
   function expectNoChildren(): void {

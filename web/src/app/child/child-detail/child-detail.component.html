@@ -1,7 +1,12 @@
-<div *ngIf="child" id="childDetailDisplay" class="container">
+<div *ngIf="child" id="childDetailDisplay" class="container-fluid">
 	<form #childForm="ngForm" (ngSubmit)="save(child);" class="form-horizontal">
 		<div class="form-group">
-			<div class="col-md-offset-2 col-md-8">
+			<div class="col-md-2">
+				<button (click)="goToChildrenPage()" id="goToChildrenPageButton" class="btn btn-default">
+					<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;Children
+				</button>
+			</div>
+			<div class="col-md-2">
 				<h4>Child Details</h4>
 			</div>
 		</div>
@@ -28,10 +33,11 @@
 		</div>
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-8">
-				<button class="btn btn-success" type="submit" [disabled]="childForm.form.invalid || childForm.form.pristine" id="saveButton">Save</button>	
+				<button class="btn btn-primary" type="submit" [disabled]="childForm.form.invalid || childForm.form.pristine" id="saveButton">
+					<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Save
+				</button>
 			</div>			
 		</div>
 	</form>
 </div>
 <p *ngIf="queryErrorMessage" id="errorMessageDisplay">{{queryErrorMessage}}</p>
-<button (click)="goToChildrenPage()" id="goToChildrenPageButton">Children</button>
