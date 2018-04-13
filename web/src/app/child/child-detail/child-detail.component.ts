@@ -1,16 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { Router, ActivatedRoute, ParamMap } from "@angular/router";
+import { NgForm } from "@angular/forms";
 
-import { Child } from '../domain/child';
-import { ChildService } from '../domain/child.service';
+import { fromDateToEnGBString, fromEnGbBStringToDate } from "../../utility";
+import { defaultDatePickerConfig } from "../../ngx-bootstrap";
+
+import { Child } from "../domain/child";
+import { ChildService } from "../domain/child.service";
 
 @Component({
-  templateUrl: './child-detail.component.html'
+  templateUrl: "./child-detail.component.html"
 })
 export class ChildDetailComponent implements OnInit {
 
-  child: Child;
-  queryErrorMessage: string;
+  public child: Child;
+  public queryErrorMessage: string;
+  public dateOfBirthPickerValue: Date;
+  public datePickerConfig: object = defaultDatePickerConfig;
+
+  @ViewChild(NgForm)
+  public childForm: NgForm;
 
   constructor(
     private router: Router,
@@ -18,19 +27,19 @@ export class ChildDetailComponent implements OnInit {
     private childService: ChildService
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     let childId: string;
     this.route.paramMap.subscribe(
-      params => {childId = params.get("id");}
+      (params: ParamMap) => childId = params.get("id")
     );
-
-    this.getChildById(parseInt(childId));
+    this.getChildById(parseInt(childId, 10));
   }
 
-  getChildById(id: number): void {
+  public getChildById(id: number): void {
     this.childService.getChildById(id).subscribe(
-      child => {
-        this.child = child
+      (child: Child) => {
+        this.child = child;
+        this.dateOfBirthPickerValue = fromEnGbBStringToDate(child.dateOfBirth);
         this.queryErrorMessage = null;
       },
       (error: Error) => {
@@ -40,7 +49,21 @@ export class ChildDetailComponent implements OnInit {
     );
   }
 
-  goToChildrenPage(): void {
+  public save(child: Child): void {
+    child.dateOfBirth = fromDateToEnGBString(this.dateOfBirthPickerValue);
+    this.childService.updateChild(child).subscribe(
+      () => {
+        this.childForm.reset();
+        this.getChildById(child.id);
+      },
+      (error: Error) => {
+        this.child = null;
+        this.queryErrorMessage = error.message;
+      }
+    );
+  }
+
+  public goToChildrenPage(): void {
     this.router.navigate(["/child/all"]);
   }
 }

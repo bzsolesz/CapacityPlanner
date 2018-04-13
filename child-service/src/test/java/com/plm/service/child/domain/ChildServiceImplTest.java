@@ -9,11 +9,16 @@ import org.mockito.Mock;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -41,7 +46,7 @@ public class ChildServiceImplTest {
 
         testedService = new ChildServiceImpl(childEntityRepository);
 
-        when(childEntityRepository.findOne(TEST_CHILD_ID1)).thenReturn(childEntityMock1);
+        when(childEntityRepository.findOneOptionalById(TEST_CHILD_ID1)).thenReturn(Optional.of(childEntityMock1));
 
         initChildEntityMock(childEntityMock1, TEST_CHILD_ID1);
         initChildEntityMock(childEntityMock2, TEST_CHILD_ID2);
@@ -59,7 +64,7 @@ public class ChildServiceImplTest {
     @Test(expected = EntityNotFoundException.class)
     public void shouldThrowEntityNotFoundExceptionIfChildWasNotFound() throws Exception {
 
-        when(childEntityRepository.findOne(TEST_CHILD_ID1)).thenReturn(null);
+        when(childEntityRepository.findOneOptionalById(TEST_CHILD_ID1)).thenReturn(Optional.empty());
 
         testedService.getChildById(TEST_CHILD_ID1);
     }
@@ -67,7 +72,7 @@ public class ChildServiceImplTest {
     @Test
     public void shouldReturnAnEmptySetIfNoChild() throws Exception {
 
-        when(childEntityRepository.findAll()).thenReturn(Arrays.asList());
+        when(childEntityRepository.findAll()).thenReturn(Collections.emptyList());
 
         Set<Child> allChildren = testedService.getAllChildren();
 
@@ -87,6 +92,25 @@ public class ChildServiceImplTest {
         assertTrue(allChildren.contains(new Child(childEntityMock1)));
         assertTrue(allChildren.contains(new Child(childEntityMock2)));
         assertTrue(allChildren.contains(new Child(childEntityMock3)));
+    }
+
+    @Test
+    public void shouldPersistTheUpdateChildEntity() throws Exception {
+
+        doAnswer(invocationOnMock -> {
+
+            ChildEntity childEntityToSave = invocationOnMock.getArgumentAt(0, ChildEntity.class);
+
+            assertEquals(TEST_CHILD_ID1, childEntityToSave.getId());
+
+            return childEntityMock1;
+        }).when(childEntityRepository).save(any(ChildEntity.class));
+
+        Child testChild = new Child(TEST_CHILD_ID1, null, null, LocalDate.now());
+
+        testedService.updateChild(testChild);
+
+        verify(childEntityRepository).save(any(ChildEntity.class));
     }
 
     private void initChildEntityMock(ChildEntity childEntityMock, int id) {

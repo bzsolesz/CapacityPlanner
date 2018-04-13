@@ -1,25 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { async } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
+import { async } from "@angular/core/testing";
+import { Component, DebugElement } from "@angular/core";
 
-import { AppComponent} from './app.component';
+import { AppComponent } from "./app.component";
 
-describe('App Component', () => {
+describe("App Component", () => {
 
-  var fixture: ComponentFixture<AppComponent>;
-  var testedComponent: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let testedComponent: AppComponent;
 
   @Component({
-    selector: 'router-outlet',
-    template: '<div></div>'
+    // tslint:disable-next-line: component-selector
+    selector: "router-outlet",
+    template: "<div></div>"
   })
-  class RouterOutletStub {}
+  class RouterOutletStubComponent {}
 
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [AppComponent, RouterOutletStub]
+      declarations: [ AppComponent, RouterOutletStubComponent ]
     }).compileComponents();
   }));
 
@@ -29,12 +30,12 @@ describe('App Component', () => {
     testedComponent = fixture.componentInstance;
   });
 
-  it('should display the Router Outlet for routed views', () => {
+  it("should display the Router Outlet for routed views", () => {
 
     fixture.detectChanges();
 
-    var routerOutletDisplay = fixture.debugElement.query(By.css('router-outlet'));    
+    const routerOutletDisplay: DebugElement = fixture.debugElement.query(By.css("router-outlet"));
 
     expect(routerOutletDisplay).not.toBeNull();
-  })
+  });
 });

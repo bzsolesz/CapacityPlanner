@@ -10,15 +10,20 @@ exports.config = {
     './e2e/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'safari'
+    'browserName': 'chrome'
   },
-  seleniumAddress: 'http://localhost:4444/',
+  baseUrl: "http://localhost:4200",
+  seleniumAddress: 'http://localhost:9515/',
   directConnect: false,
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
     print: function() {}
+  },
+  ngApimockOpts: {
+    angularVersion: 5,
+    hybrid: false
   },
   onPrepare() {
     require('ts-node').register({
@@ -38,5 +43,7 @@ exports.config = {
         cssOverrideFile: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
       }
     ).getJasmine2Reporter());
+
+    browser.ngApimock = require('./e2e/mock_backend/target/protractor.mock.js');
   }
 };

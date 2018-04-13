@@ -2,19 +2,19 @@ package com.plm.service.child.web;
 
 import com.plm.service.child.AbstractITBase;
 import com.plm.service.child.dao.ChildEntity;
+import com.plm.service.child.domain.Child;
 import org.junit.Test;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
-
+import static org.junit.Assert.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ChildControllerIT extends AbstractITBase {
-
-    private static final LocalDate TEST_DATE_OF_BIRTH = LocalDate.now();
 
     @Test
     @Transactional
@@ -51,16 +51,45 @@ public class ChildControllerIT extends AbstractITBase {
                 .andExpect(jsonPath("$[1].id").value(childEntity2.getId()));
     }
 
-    private ChildEntity persistTestChildEntity() {
+    @Test
+    @Transactional
+    public void shouldUpdateChild() throws Exception {
 
-        ChildEntity childEntity = new ChildEntity();
-        childEntity.setDateOfBirth(TEST_DATE_OF_BIRTH);
+        ChildEntity childEntity = persistTestChildEntity();
 
-        Integer childEntityId = (Integer) testEntityManager.persistAndGetId(childEntity);
-        testEntityManager.flush();
+        Child updatedChild =
+                new Child(childEntity.getId(), "UPDATED_FIRST_NAME", "UPDATED_SURNAME", childEntity.getDateOfBirth());
 
-        childEntity.setId(childEntityId);
+        String updatedChildJson = childAsJson(updatedChild);
 
-        return childEntity;
+        ResultActions response = mockMvc.perform(
+                put("/child/{id}", childEntity.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(updatedChildJson)
+                        .accept(APPLICATION_JSON));
+
+        response.andExpect(status().isNoContent());
+
+        ChildEntity updatedChildEntity = testEntityManager.find(ChildEntity.class, childEntity.getId());
+
+        assertEquals(updatedChild.getFirstName(), updatedChildEntity.getFirstName());
+        assertEquals(updatedChild.getSurname(), updatedChildEntity.getSurname());
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnHttp400ForChildIdMismatchDuringUpdate() throws Exception {
+
+        ChildEntity childEntity = persistTestChildEntity();
+
+        Child child = new Child(childEntity.getId(), null, null, childEntity.getDateOfBirth());
+
+        ResultActions response = mockMvc.perform(
+                put("/child/{id}", childEntity.getId() + 1)
+                    .contentType(APPLICATION_JSON)
+                    .content(childAsJson(child))
+                    .accept(APPLICATION_JSON));
+
+        response.andExpect(status().isBadRequest());
     }
 }

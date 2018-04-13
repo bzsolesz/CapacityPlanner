@@ -5,7 +5,9 @@ import com.plm.service.child.dao.ChildEntityRepository;
 import com.plm.service.common.domain.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -16,28 +18,37 @@ class ChildServiceImpl implements ChildService {
     private ChildEntityRepository childEntityRepository;
 
     @Autowired
-    public ChildServiceImpl(ChildEntityRepository childEntityRepository) {
+    ChildServiceImpl(ChildEntityRepository childEntityRepository) {
         this.childEntityRepository = childEntityRepository;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Child getChildById(int id) {
-        ChildEntity childEntity = childEntityRepository.findOne(id);
+        Optional<ChildEntity> childEntity = childEntityRepository.findOneOptionalById(id);
 
-        if (childEntity != null) {
-            return new Child(childEntity);
+        if (childEntity.isPresent()) {
+            return new Child(childEntity.get());
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Child> getAllChildren() {
 
         Iterable<ChildEntity> allChildrenEntity = childEntityRepository.findAll();
 
         return StreamSupport.stream(allChildrenEntity.spliterator(), false)
-                .map(childEntity -> new Child(childEntity))
+                .map(Child::new)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public void updateChild(Child child) {
+
+        childEntityRepository.save(child.asChildEntity());
     }
 }

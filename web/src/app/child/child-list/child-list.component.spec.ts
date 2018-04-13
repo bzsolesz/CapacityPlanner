@@ -1,37 +1,37 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { async } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { async } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
+import { DebugElement } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { of } from "rxjs/observable/of";
+import { RouterTestingModule } from "@angular/router/testing";
 
-import { ChildListComponent } from './child-list.component';
-import { ChildService } from '../domain/child.service';
-import { Child } from '../domain/child';
+import { ChildListComponent } from "./child-list.component";
+import { ChildService } from "../domain/child.service";
+import { Child } from "../domain/child";
 
-describe('Child-List Component', () => {
+describe("Child-List Component", () => {
 
-  var fixture: ComponentFixture<ChildListComponent>;
-  var testedComponent: ChildListComponent;
+  let fixture: ComponentFixture<ChildListComponent>;
+  let testedComponent: ChildListComponent;
 
   class ChildServiceSpy {
-    getAllChildren = jasmine.createSpy('getAllChildren');
+    public getAllChildren: jasmine.Spy = jasmine.createSpy("getAllChildren");
   }
 
   class ChildListPage {
-    childListDisplay: DebugElement;
-    errorMessageDisplay: DebugElement;
+    public childListDisplay: DebugElement;
+    public errorMessageDisplay: DebugElement;
 
-    initPage(): void {
+    public initPage(): void {
       this.childListDisplay = fixture.debugElement.query(By.css("#childListDisplay"));
       this.errorMessageDisplay = fixture.debugElement.query(By.css("#errorMessageDisplay"));
-    };
+    }
   }
 
-  var childServiceSpy: ChildServiceSpy;
-  var childListPage: ChildListPage;
-  var testChildren: Child[];
+  let childServiceSpy: ChildServiceSpy;
+  let childListPage: ChildListPage;
+  let testChildren: Child[];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,6 +47,7 @@ describe('Child-List Component', () => {
     fixture = TestBed.createComponent(ChildListComponent);
     testedComponent = fixture.componentInstance;
 
+    // tslint:disable-next-line: no-any
     childServiceSpy = fixture.debugElement.injector.get(ChildService) as any;
 
     childListPage = new ChildListPage();
@@ -68,12 +69,12 @@ describe('Child-List Component', () => {
 
     expect(childListPage.childListDisplay).not.toBeNull();
 
-    var childListItems = childListPage.childListDisplay.queryAll(By.css('li'));
+    const childListItems: DebugElement[] = childListPage.childListDisplay.queryAll(By.css("li"));
     expect(childListItems.length).toBe(2);
     expectChildListItemToBeChild(childListItems[0], testChildren[0]);
     expectChildListItemToBeChild(childListItems[1], testChildren[1]);
 
-    var childListItemLinks = childListPage.childListDisplay.queryAll(By.css('a'));
+    const childListItemLinks: DebugElement[] = childListPage.childListDisplay.queryAll(By.css("a"));
     expect(childListItemLinks.length).toBe(2);
     expectChildListItemLinkToBeChildDetailLink(childListItemLinks[0], testChildren[0]);
     expectChildListItemLinkToBeChildDetailLink(childListItemLinks[1], testChildren[1]);
@@ -81,7 +82,7 @@ describe('Child-List Component', () => {
     expectNoErrorMessage();
   });
 
-  it('should display empty list if no Child', () => {
+  it("should display empty list if no Child", () => {
 
     childServiceSpy.getAllChildren.and.returnValue(of([]));
 
@@ -94,9 +95,9 @@ describe('Child-List Component', () => {
     expectNoErrorMessage();
   });
 
-  it('should display the error message when query for all Children failed', () => {
+  it("should display the error message when query for all Children failed", () => {
 
-    var error: Error = new Error("An error has happened");
+    const error: Error = new Error("An error has happened");
 
     childServiceSpy.getAllChildren.and.returnValue(Observable.throw(error));
 
@@ -112,39 +113,29 @@ describe('Child-List Component', () => {
   });
 
   function initTestChildren(): void {
-    var testChild1: Child = new Child();
-    var testChild2: Child = new Child();
-
-    testChild1.id = 1;
-    testChild1.firstName = "firstName1";
-    testChild1.surname = "surname1";
-    testChild1.dateOfBirth = "01/01/1981"
-
-    testChild2.id = 2;
-    testChild2.firstName = "firstName2";
-    testChild2.surname = "surname2";
-    testChild2.dateOfBirth = "02/02/1982"
+    const testChild1: Child = new Child(1, "firstName1", "surname1", "01/01/1981");
+    const testChild2: Child = new Child(2, "firstName2", "surname2", "02/02/1982");
 
     testChildren = [testChild1, testChild2];
-  };
+  }
 
-  function expectChildListItemToBeChild(childListItem: DebugElement, child: Child) {
+  function expectChildListItemToBeChild(childListItem: DebugElement, child: Child): void {
     expect(childListItem.nativeElement.textContent)
       .toContain(`${child.firstName} ${child.surname} (${child.dateOfBirth})`);
   }
 
-  function expectChildListItemLinkToBeChildDetailLink(childListItemLink: DebugElement, child: Child) {
+  function expectChildListItemLinkToBeChildDetailLink(childListItemLink: DebugElement, child: Child): void {
     expect(childListItemLink.nativeElement.getAttribute("href")).toBe(`/child/${child.id}`);
-  };
+  }
 
-  function expectNoChildren() {
+  function expectNoChildren(): void {
     expect(testedComponent.children.length).toBe(0);
 
     expect(childListPage.childListDisplay).not.toBeNull();
-    expect(childListPage.childListDisplay.queryAll(By.css('li')).length).toBe(0);
+    expect(childListPage.childListDisplay.queryAll(By.css("li")).length).toBe(0);
   }
 
-  function expectNoErrorMessage() {
+  function expectNoErrorMessage(): void {
     expect(testedComponent.queryErrorMessage).toBeNull();
     expect(childListPage.errorMessageDisplay).toBeNull();
   }

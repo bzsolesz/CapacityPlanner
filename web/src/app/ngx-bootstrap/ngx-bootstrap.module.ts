@@ -1,13 +1,19 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
+
+export const defaultDatePickerConfig: Partial<BsDatepickerConfig> = {
+  dateInputFormat: "DD/MM/YYYY",
+  showWeekNumbers: false
+};
 
 @NgModule({
-  imports: [
-    CommonModule
-    //import ngx-bootstrap modules here with .forRoot()
-  ],
   exports: [
-    //export ngx-bootstrap modules here
+    BsDatepickerModule
+  ],
+  imports: [
+    BsDatepickerModule.forRoot()
   ]
 })
 export class NgxBootstrapModule { }

@@ -2,8 +2,9 @@
   "expression": "/ChildService/child/all",
   "method": "GET",
   "isArray": true,
+  "name": "getChild_All",
   "responses": {
-    "happy path": {
+    "happyPath": {
       "default": true,
       "status": 200,
       "data": [
@@ -11,7 +12,25 @@
           "id" : "9",
           "firstName" : "Peter",
           "surname" : "Jones",
-          "dateOfBirth" : "06/06/1970"
+          "dateOfBirth" : "06/04/2018"
+        },
+        {
+          "id" : "10",
+          "firstName" : "Mark",
+          "surname" : "Spencer",
+          "dateOfBirth" : "26/02/1981"
+        }        
+      ]
+    },
+    "updatedChild_9": {
+      "default": false,
+      "status": 200,
+      "data": [
+        {
+          "id" : "9",
+          "firstName" : "Peter Updated",
+          "surname" : "Jones",
+          "dateOfBirth" : "01/04/2018"
         },
         {
           "id" : "10",
@@ -21,5 +40,6 @@
         }        
       ]
     }
+
   }
 }

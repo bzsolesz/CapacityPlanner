@@ -3,7 +3,7 @@ const ngApimock = require('ng-apimock')();
 const app = express();
 
 ngApimock.run({
-   "src": "mocks",
+   "src": `${__dirname}/mocks`,
    "outputDir": "target",
    "done": function() {}
 });

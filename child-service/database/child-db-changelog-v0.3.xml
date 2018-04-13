@@ -23,4 +23,13 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="Grant select on Child table for Child Service user" author="bzsolesz">
+        <preConditions>
+            <dbms type="mysql" />
+            <tableExists tableName="child" />
+        </preConditions>
+        <sql>GRANT SELECT ON child TO child_service@localhost</sql>
+        <comment>Grant select on Child table for Child Service user</comment>
+    </changeSet>
+
 </databaseChangeLog>
