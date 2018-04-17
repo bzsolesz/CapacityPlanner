@@ -1,43 +1,47 @@
-<div *ngIf="child" id="childDetailDisplay" class="container-fluid">
-	<form #childForm="ngForm" (ngSubmit)="save(child);" class="form-horizontal">
-		<div class="form-group">
-			<div class="col-md-2">
-				<button (click)="goToChildrenPage()" id="goToChildrenPageButton" class="btn btn-default">
-					<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;Children
-				</button>
-			</div>
-			<div class="col-md-2">
-				<h4>Child Details</h4>
+<div class="panel-body">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4>Child Details</h4>
+		</div>
+		<div class="panel-body">
+			<div *ngIf="child" id="childDetailDisplay" class="container-fluid">
+				<form #childForm="ngForm" (ngSubmit)="save(child);" class="form-horizontal">
+					<div class="form-group" [class.has-error]="firstName.invalid" id="firstNameFormGroup">
+						<label for="firstName" class="control-label col-md-2">First Name *</label>
+						<div class="col-md-8">
+							<input type="text" id="firstName" class="form-control" [(ngModel)]="child.firstName" name="firstName" required #firstName="ngModel">
+						</div>
+					</div>
+					<div class="form-group" [class.has-error]="surname.invalid" id="surnameFormGroup">
+						<label for="surname" class="control-label col-md-2">Surname *</label>
+						<div class="col-md-8">
+							<input type="text" id="surname" class="form-control" [(ngModel)]="child.surname" name="surname" required #surname="ngModel">
+						</div>
+					</div>
+					<div class="form-group" [class.has-error]="dateOfBirth.invalid" id="dateOfBirthFormGroup">
+						<label for="dateOfBirth" class="control-label col-md-2">Date of Birth *</label>
+						<div class="col-md-8">
+							<div class="input-group">
+								<input type="text" id="dateOfBirth" class="form-control" bsDatepicker [bsConfig]=datePickerConfig [(ngModel)]="dateOfBirthPickerValue" name="dateOfBirth" required #dateOfBirth="ngModel"/>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-2">
+							<button (click)="goToChildrenPage()" id="goToChildrenPageButton" class="btn btn-default">
+								<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;Children
+							</button>						
+						</div>
+						<div class="col-md-8">
+							<button class="btn btn-primary" type="submit" [disabled]="childForm.form.invalid || childForm.form.pristine" id="saveButton">
+								<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Save
+							</button>
+						</div>			
+					</div>
+				</form>
 			</div>
 		</div>
-		<div class="form-group" [class.has-error]="firstName.invalid" id="firstNameFormGroup">
-			<label for="firstName" class="control-label col-md-2">First Name *</label>
-			<div class="col-md-8">
-				<input type="text" id="firstName" class="form-control" [(ngModel)]="child.firstName" name="firstName" required #firstName="ngModel">
-			</div>
-		</div>
-		<div class="form-group" [class.has-error]="surname.invalid" id="surnameFormGroup">
-			<label for="surname" class="control-label col-md-2">Surname *</label>
-			<div class="col-md-8">
-				<input type="text" id="surname" class="form-control" [(ngModel)]="child.surname" name="surname" required #surname="ngModel">
-			</div>
-		</div>
-		<div class="form-group" [class.has-error]="dateOfBirth.invalid" id="dateOfBirthFormGroup">
-			<label for="dateOfBirth" class="control-label col-md-2">Date of Birth *</label>
-			<div class="col-md-8">
-				<div class="input-group">
-					<input type="text" id="dateOfBirth" class="form-control" bsDatepicker [bsConfig]=datePickerConfig [(ngModel)]="dateOfBirthPickerValue" name="dateOfBirth" required #dateOfBirth="ngModel"/>
-					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-				</div>
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-md-offset-2 col-md-8">
-				<button class="btn btn-primary" type="submit" [disabled]="childForm.form.invalid || childForm.form.pristine" id="saveButton">
-					<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Save
-				</button>
-			</div>			
-		</div>
-	</form>
+	</div>		
 </div>
 <p *ngIf="queryErrorMessage" id="errorMessageDisplay">{{queryErrorMessage}}</p>

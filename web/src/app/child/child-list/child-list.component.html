@@ -1,13 +1,15 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-offset-2 col-md-2">
+<div class="panel-body">
+	<div class="panel panel-default">
+		<div class="panel-heading">
 			<h4>Children</h4>
 		</div>
-	</div>
-	<div id="childListDisplay" class="list-group">
-		<a *ngFor="let child of children" [routerLink]="['/child', child.id]" class="list-group-item col-md-offset-2 col-md-8">
-			{{child.firstName}} {{child.surname}} ({{child.dateOfBirth}})
-		</a>
-	</div>
-</div>
+		<div class="panel-body">
+			<div id="childListDisplay" class="list-group">
+				<a *ngFor="let child of children" [routerLink]="['/child', child.id]" class="list-group-item">
+					{{child.firstName}} {{child.surname}} ({{child.dateOfBirth}})
+				</a>
+			</div>
+		</div>
+	</div>		
+</div>		
 <p *ngIf="queryErrorMessage" id="errorMessageDisplay">{{queryErrorMessage}}</p>
