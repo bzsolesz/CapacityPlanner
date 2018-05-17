@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
-import { DebugElement, Directive, Input } from "@angular/core";
+import { DebugElement } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import * as utility from "../../utility";
 import { defaultDatePickerConfig } from "../../ngx-bootstrap";

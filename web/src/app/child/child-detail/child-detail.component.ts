@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { Router, ActivatedRoute, ParamMap, UrlSegment, Data } from "@angular/router";
+import { Router, ActivatedRoute, ParamMap, Data } from "@angular/router";
 import { NgForm } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 // TODO move operator additions to a centralized space

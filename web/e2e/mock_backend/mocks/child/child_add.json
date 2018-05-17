@@ -1,0 +1,15 @@
+{
+    "expression": "/ChildService/child",
+    "method": "POST",
+    "name": "addNewChild",
+    "isArray": false,
+    "responses": {
+      "happyPath": {
+        "default": true,
+        "status": 201,
+        "data": {
+          "id" : "11"
+        }
+      }
+    }
+  }
