@@ -56,4 +56,8 @@ class ChildServiceImpl implements ChildService {
         ChildEntity addedChild = childEntityRepository.save(child.asChildEntity());
         return addedChild.getId();
     }
+
+    @Override
+    @Transactional
+    public void deleteChild(int id) { childEntityRepository.delete(id); }
 }

@@ -8,5 +8,6 @@
     <include file="child-db-changelog-v0.3.xml"/>
     <include file="child-db-changelog-v0.8.xml"/>
     <include file="child-db-changelog-v0.9.xml"/>
+    <include file="child-db-changelog-v0.10.xml"/>
 
 </databaseChangeLog>

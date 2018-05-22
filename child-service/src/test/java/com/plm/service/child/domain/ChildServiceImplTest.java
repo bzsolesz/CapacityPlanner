@@ -139,6 +139,13 @@ public class ChildServiceImplTest {
         assertEquals(TEST_CHILD_ID1, addedChildId);
     }
 
+    @Test
+    public void shouldDeleteTheChild() {
+        testedService.deleteChild(TEST_CHILD_ID1);
+
+        verify(childEntityRepositoryMock).delete(TEST_CHILD_ID1);
+    }
+
     private void initChildEntityMock(ChildEntity childEntityMock, int id) {
 
         when(childEntityMock.getId()).thenReturn(id);

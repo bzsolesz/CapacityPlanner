@@ -36,4 +36,11 @@ public interface ChildService {
      * @return the id of the added child
      */
     int addChild(Child child);
+
+    /**
+     * Delete a <code>Child</code> from the data storage
+     *
+     * @param id id of the Child to delete
+     */
+    void deleteChild(int id);
 }

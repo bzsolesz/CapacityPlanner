@@ -27,6 +27,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -143,6 +144,15 @@ public class ChildControllerTest {
 
         response.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(addedChildId));
+    }
+
+    @Test
+    public void shouldDeleteTheChild() throws Exception {
+        int childId = 123;
+
+        mockMvc.perform(delete("/child/{id}", childId)).andExpect(status().isNoContent());
+
+        verify(childServiceMock).deleteChild(childId);
     }
 
     private void expectChildJSON(ResultActions response, String jsonPath, Child child) throws Exception {

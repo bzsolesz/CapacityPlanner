@@ -20,6 +20,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -43,6 +44,7 @@ public class SwaggerConfiguration {
                 .globalResponseMessage(GET, createHttpGetGlobalResponseMessages())
                 .globalResponseMessage(PUT, createHttpPutGlobalResponseMessages())
                 .globalResponseMessage(POST, createHttpPostGlobalResponseMessages())
+                .globalResponseMessage(DELETE, createHttpDeleteGlobalResponseMessages())
                 .useDefaultResponseMessages(false);
     }
 
@@ -76,6 +78,19 @@ public class SwaggerConfiguration {
                 new ResponseMessage(
                         INTERNAL_SERVER_ERROR.value(),
                         "An error happened during creating the resource!",
+                        null, Collections.emptyMap(), Collections.emptyList())
+        );
+    }
+
+    private List<ResponseMessage> createHttpDeleteGlobalResponseMessages() {
+        return Arrays.asList(
+                new ResponseMessage(
+                        NO_CONTENT.value(),
+                        "Resource delete succeeded.",
+                        null, Collections.emptyMap(), Collections.emptyList()),
+                new ResponseMessage(
+                        INTERNAL_SERVER_ERROR.value(),
+                        "An error happened during resource delete!",
                         null, Collections.emptyMap(), Collections.emptyList())
         );
     }
