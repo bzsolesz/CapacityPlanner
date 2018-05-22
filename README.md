@@ -7,7 +7,7 @@
 		<li>introduce WebService security</li>
 		<li>remove CORS filter and replace it with proxy between front-end and backend servers</li>
 	</ul>
-	<h4>Update child feature</h4>
+	<h4>Update/Add child feature</h4>
 	<ul>
 		<li>rethink error handling of saving child (unsaved data should not be lost by displaying error message due to a failure)</li>
 		<li>discard changes on child detail form</li>
