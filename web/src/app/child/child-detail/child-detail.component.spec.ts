@@ -189,6 +189,7 @@ describe("Child-Detail Component", () => {
   and query update Child again`, fakeAsync(() => {
     const addedChild: AddedChild = {id: 999};
     childServiceSpy.addChild.and.returnValue(of(addedChild));
+    childServiceSpy.getChildById.and.returnValue(of(testChild));
 
     activatedRouteStub.testData = {pageAction: ChildDetailPageAction.ADD};
     initPage();
