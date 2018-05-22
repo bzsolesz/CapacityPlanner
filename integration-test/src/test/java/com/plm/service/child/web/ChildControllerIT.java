@@ -7,9 +7,12 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -91,5 +94,28 @@ public class ChildControllerIT extends AbstractITBase {
                     .accept(APPLICATION_JSON));
 
         response.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void shouldAddTheNewChildAndReturnItsId() throws Exception {
+        String added_first_name = "ADDED_FIRST_NAME";
+        String added_surname = "ADDED_SURNAME";
+        Child child = new Child(0, added_first_name, added_surname, LocalDate.now());
+
+        ResultActions response = mockMvc.perform(
+                post("/child")
+                        .contentType(APPLICATION_JSON)
+                        .content(childAsJson(child))
+                        .accept(APPLICATION_JSON));
+
+        response.andExpect(status().isCreated());
+
+        AddedChildView addedChildView = parseAddedChildView(response.andReturn().getResponse().getContentAsString());
+
+        ChildEntity persistedChildEntity = testEntityManager.find(ChildEntity.class, addedChildView.getId());
+
+        assertEquals(added_first_name, persistedChildEntity.getFirstName());
+        assertEquals(added_surname, persistedChildEntity.getSurname());
     }
 }

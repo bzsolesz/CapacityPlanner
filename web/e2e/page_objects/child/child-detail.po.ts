@@ -7,8 +7,8 @@ export class ChildDetailPage {
   public readonly childDetailFirstNameInput: ElementFinder = this.childDetailDisplay.element(by.css("#firstName"));
   public readonly childDetailSurnameInput: ElementFinder = this.childDetailDisplay.element(by.css("#surname"));
   public readonly childDetailDateOfBirthInput: ElementFinder = this.childDetailDisplay.element(by.css("#dateOfBirth"));
-  public readonly childDetailDatePickerFirstDayOfMonth: ElementFinder = element(by.css("body")).all(by.css("[role=gridcell]")).first();
-  public readonly childDetailSaveButton: ElementFinder = this.childDetailDisplay.element(by.css("#saveButton"));
+  public readonly childDetailDatePickerEighthDayOfMonth: ElementFinder = element(by.css("body")).all(by.css("[role=gridcell]")).get(7);
+  public readonly childDetailSaveButton: ElementFinder = element(by.css("#saveButton"));
   public readonly goToChildrenPageButton: ElementFinder = element(by.css("#goToChildrenPageButton"));
 
   // tslint:disable-next-line: no-any

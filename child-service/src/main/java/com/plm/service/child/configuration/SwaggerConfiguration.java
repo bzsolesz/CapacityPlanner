@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -18,6 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Profile("swagger")
 @Configuration
@@ -35,30 +40,42 @@ public class SwaggerConfiguration {
                 .apis(RequestHandlerSelectors.basePackage("com.plm.service.child.web"))
                 .paths(PathSelectors.any())
                 .build()
-                .globalResponseMessage(RequestMethod.GET, createHttpGetGlobalResponseMessages())
-                .globalResponseMessage(RequestMethod.PUT, createHttpPutGlobalResponseMessages())
+                .globalResponseMessage(GET, createHttpGetGlobalResponseMessages())
+                .globalResponseMessage(PUT, createHttpPutGlobalResponseMessages())
+                .globalResponseMessage(POST, createHttpPostGlobalResponseMessages())
                 .useDefaultResponseMessages(false);
     }
 
     private List<ResponseMessage> createHttpGetGlobalResponseMessages() {
-
         return Collections.singletonList(
                 new ResponseMessage(
-                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        INTERNAL_SERVER_ERROR.value(),
                         "An error happened during resource lookup!",
                         null, Collections.emptyMap(), Collections.emptyList()));
     }
 
     private List<ResponseMessage> createHttpPutGlobalResponseMessages() {
-
         return Arrays.asList(
                 new ResponseMessage(
-                        HttpStatus.NO_CONTENT.value(),
+                        NO_CONTENT.value(),
                         "Resource update succeeded.",
                         null, Collections.emptyMap(), Collections.emptyList()),
                 new ResponseMessage(
-                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        INTERNAL_SERVER_ERROR.value(),
                         "An error happened during resource update!",
+                        null, Collections.emptyMap(), Collections.emptyList())
+        );
+    }
+
+    private List<ResponseMessage> createHttpPostGlobalResponseMessages() {
+        return Arrays.asList(
+                new ResponseMessage(
+                        CREATED.value(),
+                        "Resource was created.",
+                        null, Collections.emptyMap(), Collections.emptyList()),
+                new ResponseMessage(
+                        INTERNAL_SERVER_ERROR.value(),
+                        "An error happened during creating the resource!",
                         null, Collections.emptyMap(), Collections.emptyList())
         );
     }
