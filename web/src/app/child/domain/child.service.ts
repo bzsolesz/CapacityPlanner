@@ -45,6 +45,13 @@ export class ChildService {
     );
   }
 
+  public deleteChild(id: number): Observable<void> {
+    const serviceUrl: string = `${environment.childServiceUrl}/${id}`;
+    return this.httpClient.delete<void>(serviceUrl).pipe(
+      catchError(this.errorHandler<void>())
+    );
+  }
+
   private errorHandler<T>(errorCodeErrorMessageMap: Map<number, string> = new Map()): (error: HttpErrorResponse) => Observable<T> {
     return (error: HttpErrorResponse): Observable<T> => {
       const errorMessage: string = errorCodeErrorMessageMap.get(error.status) || ChildService.GENERIC_ERROR_MESSAGE;

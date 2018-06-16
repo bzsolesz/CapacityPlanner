@@ -13,6 +13,8 @@ import { ChildService } from "../domain/child.service";
 import { Child } from "../domain/child";
 import { ActivatedRouteStub, DatePickerDirectiveStub } from "../../test-utils";
 import { AddedChild } from "../domain/added-child";
+import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
+import { ConfirmationDialogServiceStub } from "../../test-utils";
 
 describe("Child-Detail Component", () => {
   let fixture: ComponentFixture<ChildDetailComponent>;
@@ -22,6 +24,7 @@ describe("Child-Detail Component", () => {
   let childServiceSpy: ChildServiceSpy;
   let childDetailPage: ChildDetailPage;
   let testChild: Child;
+  let confirmationDialogSpy: jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -30,7 +33,8 @@ describe("Child-Detail Component", () => {
       providers: [
         { provide: Router, useClass: RouterSpy },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        { provide: ChildService, useClass: ChildServiceSpy }
+        { provide: ChildService, useClass: ChildServiceSpy },
+        { provide: ConfirmationDialogService, useClass: ConfirmationDialogServiceStub }
       ]
     }).compileComponents();
   }));
@@ -43,6 +47,7 @@ describe("Child-Detail Component", () => {
     activatedRouteStub = fixture.debugElement.injector.get(ActivatedRoute) as any;
     // tslint:disable-next-line: no-any
     childServiceSpy = fixture.debugElement.injector.get(ChildService) as any;
+    confirmationDialogSpy = spyOn(TestBed.get(ConfirmationDialogService), "showModal");
     childDetailPage = new ChildDetailPage(fixture);
 
     initTestChild();
@@ -212,8 +217,7 @@ describe("Child-Detail Component", () => {
     expect(childServiceSpy.addChild).toHaveBeenCalledWith(
       {id: undefined, firstName: updatedFirstName, surname: updatedSurname, dateOfBirth: updatedDateOfBirth}
     );
-    expect(testedComponent.childForm.reset).toHaveBeenCalled();
-    expect(childServiceSpy.getChildById).toHaveBeenCalledWith(addedChild.id);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(["/child", addedChild.id]);
   }));
 
   it("should display the error message when adding Child failed", fakeAsync(() => {
@@ -246,6 +250,44 @@ describe("Child-Detail Component", () => {
 
     expect(routerSpy.navigate).toHaveBeenCalledWith(["/child/all"]);
   });
+
+  it("should not display delete button on the Add Child page", fakeAsync(() => {
+    activatedRouteStub.testData = {pageAction: ChildDetailPageAction.ADD};
+    initPage();
+
+    expect(childDetailPage.deleteButton).toBeNull();
+  }));
+
+  it("should display delete button on the View Child page", fakeAsync(() => {
+    initPageWithTestChild();
+
+    expect(childDetailPage.deleteButton).not.toBeNull();
+    expect(childDetailPage.deleteButton.nativeElement.textContent.trim()).toEqual("Delete");
+  }));
+
+  it("should Delete the Child if the user confirmed it and return to the Child List page", fakeAsync(() => {
+    confirmationDialogSpy.and.returnValue(of(true));
+    childServiceSpy.deleteChild.and.returnValue(of(undefined));
+
+    initPageWithTestChild();
+
+    childDetailPage.deleteButton.nativeElement.click();
+
+    expect(confirmationDialogSpy).toHaveBeenCalledWith("Are you sure you want to delete this child?");
+    expect(childServiceSpy.deleteChild).toHaveBeenCalled();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(["/child/all"]);
+  }));
+
+  it("shoud not Delete the Child if the user does not confirm it", fakeAsync(() => {
+    confirmationDialogSpy.and.returnValue(of(false));
+
+    initPageWithTestChild();
+
+    childDetailPage.deleteButton.nativeElement.click();
+
+    expect(childServiceSpy.deleteChild).not.toHaveBeenCalled();
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+  }));
 
   function initTestChild(): void {
     testChild = {id: 999, firstName: "FIRST_NAME", surname: "SURNAME", dateOfBirth: "10/12/2017"};
@@ -310,6 +352,7 @@ class ChildDetailPage {
   public errorMessageDisplay: DebugElement;
   public goToChildrenPageButton: DebugElement;
   public saveButton: DebugElement;
+  public deleteButton: DebugElement;
 
   public initPage(): void {
     this.errorMessageDisplay = this.fixture.debugElement.query(By.css("#errorMessageDisplay"));
@@ -326,6 +369,7 @@ class ChildDetailPage {
       this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css("#dateOfBirthFormGroup"));
       this.childDetailForm = this.childDetailDisplay.query(By.css("form"));
       this.saveButton = this.childDetailDisplay.query(By.css("#saveButton"));
+      this.deleteButton = this.childDetailDisplay.query(By.css("#deleteButton"));
     }
   }
 }
@@ -338,4 +382,5 @@ class ChildServiceSpy {
   public getChildById: jasmine.Spy = jasmine.createSpy("getChildById");
   public updateChild: jasmine.Spy = jasmine.createSpy("updateChild");
   public addChild: jasmine.Spy = jasmine.createSpy("addChild");
+  public deleteChild: jasmine.Spy = jasmine.createSpy("deleteChild");
 }

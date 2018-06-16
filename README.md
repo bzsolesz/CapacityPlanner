@@ -13,12 +13,20 @@
 		<li>discard changes on child detail form</li>
 		<li>animation for saving changes</li>
 		<li>warning for unsaved changes on navgition away from child detail form</li>
+		<li>confirm user the successful adding/saving</li>
+	</ul>
+	<h4>Delete child feature</h4>
+	<ul>
+		<li>confirm user the successful deletion</li>
 	</ul>
 	<h4>Tehnical debt / Technical improvement</h4>
 	<ul>
 		<li>try out Lombok to manage boiler plate code for POJOs</li>
 		<li>introduce index.ts for each module and reorganize javascript imports</li>
 		<li>reorganize routes in web module to have them defined only once</li>
+		<li>move utility module into shared</li>
+		<li>remove area... html attributes</li>
+		<li>remove compileComponents and async call from component tests</li>
 	</ul>
 	<h4>Audit / Logging</h4>
 	<ul>
