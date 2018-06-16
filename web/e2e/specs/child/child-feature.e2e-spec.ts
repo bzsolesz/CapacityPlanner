@@ -19,11 +19,11 @@ describe("By the Child feature the User", () => {
   it("should be able to see the list of Children", () => {
     childListPage.navigateToPage();
 
-    expect(childListPage.childListDisplay.isDisplayed()).toBeTruthy();
+    expect(childListPage.mainDisplay.isDisplayed()).toBeTruthy();
 
-    expect(childListPage.childListItemDisplays.count()).toBe(2);
-    expect(childListPage.childListItemDisplays.get(0).getText()).toContain("Peter Jones (06/04/2018)");
-    expect(childListPage.childListItemDisplays.get(1).getText()).toContain("Mark Spencer (26/02/1981)");
+    expect(childListPage.listItems.count()).toBe(2);
+    expect(childListPage.listItems.get(0).getText()).toContain("Peter Jones (06/04/2018)");
+    expect(childListPage.listItems.get(1).getText()).toContain("Mark Spencer (26/02/1981)");
   });
 
   it("should be able to see the Child details by clicking on the link in the list", () => {
@@ -31,11 +31,11 @@ describe("By the Child feature the User", () => {
 
     childListPage.clickOnChildListItemLink(0);
 
-    expect(childDetailPage.childDetailDisplay.isDisplayed()).toBeTruthy();
+    expect(childDetailPage.mainDisplay.isDisplayed()).toBeTruthy();
 
-    expect(childDetailPage.childDetailFirstNameInput.getAttribute("value")).toBe("Peter");
-    expect(childDetailPage.childDetailSurnameInput.getAttribute("value")).toBe("Jones");
-    expect(childDetailPage.childDetailDateOfBirthInput.getAttribute("value")).toBe("06/04/2018");
+    expect(childDetailPage.firstNameInput.getAttribute("value")).toBe("Peter");
+    expect(childDetailPage.surnameInput.getAttribute("value")).toBe("Jones");
+    expect(childDetailPage.dateOfBirthInput.getAttribute("value")).toBe("06/04/2018");
   });
 
   it("should be able to update a Child", () => {
@@ -44,29 +44,29 @@ describe("By the Child feature the User", () => {
       ngApimock.selectScenario("getChild_All", "updatedChild_9");
     });
 
-    expect(childDetailPage.childDetailFirstNameInput.getAttribute("value")).toBe("Peter");
-    expect(childDetailPage.childDetailDateOfBirthInput.getAttribute("value")).toBe("06/04/2018");
+    expect(childDetailPage.firstNameInput.getAttribute("value")).toBe("Peter");
+    expect(childDetailPage.dateOfBirthInput.getAttribute("value")).toBe("06/04/2018");
 
-    childDetailPage.childDetailFirstNameInput.sendKeys(" Updated");
-    childDetailPage.childDetailDateOfBirthInput.click();
-    childDetailPage.childDetailDatePickerEighthDayOfMonth.click();
+    childDetailPage.firstNameInput.sendKeys(" Updated");
+    childDetailPage.dateOfBirthInput.click();
+    childDetailPage.datePickerEighthDayOfMonth.click();
 
-    childDetailPage.childDetailSaveButton.click();
+    childDetailPage.saveButton.click();
 
     childListPage.navigateToPage();
 
-    expect(childListPage.childListItemDisplays.get(0).getText()).toContain("Peter Updated Jones (08/04/2018)");
+    expect(childListPage.listItems.get(0).getText()).toContain("Peter Updated Jones (08/04/2018)");
   });
 
   it("should be able to navigate from Child Detail page to Children page", () => {
     childDetailPage.navigateToPage(9);
 
-    expect(childDetailPage.childDetailFirstNameInput.getAttribute("value")).toBe("Peter");
-    expect(childDetailPage.childDetailSurnameInput.getAttribute("value")).toBe("Jones");
+    expect(childDetailPage.firstNameInput.getAttribute("value")).toBe("Peter");
+    expect(childDetailPage.surnameInput.getAttribute("value")).toBe("Jones");
 
     childDetailPage.goToChildrenPageButton.click();
 
-    expect(childListPage.childListItemDisplays.count()).toBe(2);
+    expect(childListPage.listItems.count()).toBe(2);
   });
 
   it("should be able to add a Child", () => {
@@ -76,40 +76,40 @@ describe("By the Child feature the User", () => {
       ngApimock.selectScenario("getChild_All", "newChildAdded");
     });
 
-    expect(childDetailPage.childDetailFirstNameInput.getAttribute("value")).toBe("");
-    expect(childDetailPage.childDetailSurnameInput.getAttribute("value")).toBe("");
-    expect(childDetailPage.childDetailDateOfBirthInput.getAttribute("value")).toBe("");
+    expect(childDetailPage.firstNameInput.getAttribute("value")).toBe("");
+    expect(childDetailPage.surnameInput.getAttribute("value")).toBe("");
+    expect(childDetailPage.dateOfBirthInput.getAttribute("value")).toBe("");
 
-    childDetailPage.childDetailFirstNameInput.sendKeys("New");
-    childDetailPage.childDetailSurnameInput.sendKeys("Child");
-    childDetailPage.childDetailDateOfBirthInput.click();
-    childDetailPage.childDetailDatePickerEighthDayOfMonth.click();
+    childDetailPage.firstNameInput.sendKeys("New");
+    childDetailPage.surnameInput.sendKeys("Child");
+    childDetailPage.dateOfBirthInput.click();
+    childDetailPage.datePickerEighthDayOfMonth.click();
 
-    childDetailPage.childDetailSaveButton.click();
+    childDetailPage.saveButton.click();
 
-    expect(childDetailPage.childDetailFirstNameInput.getAttribute("value")).toBe("New");
-    expect(childDetailPage.childDetailSurnameInput.getAttribute("value")).toBe("Child");
-    expect(childDetailPage.childDetailDateOfBirthInput.getAttribute("value")).toBe("08/03/1999");
+    expect(childDetailPage.firstNameInput.getAttribute("value")).toBe("New");
+    expect(childDetailPage.surnameInput.getAttribute("value")).toBe("Child");
+    expect(childDetailPage.dateOfBirthInput.getAttribute("value")).toBe("08/03/1999");
 
     childDetailPage.goToChildrenPageButton.click();
 
-    expect(childListPage.childListItemDisplays.get(2).getText()).toContain("New Child (08/03/1999)");
+    expect(childListPage.listItems.get(2).getText()).toContain("New Child (08/03/1999)");
   });
 
   it("should be able to Delete a Child", () => {
     childListPage.navigateToPage();
 
-    expect(childListPage.childListItemDisplays.count()).toBe(2);
-    expect(childListPage.childListItemDisplays.get(0).getText()).toContain("Peter Jones (06/04/2018)");
+    expect(childListPage.listItems.count()).toBe(2);
+    expect(childListPage.listItems.get(0).getText()).toContain("Peter Jones (06/04/2018)");
 
     childDetailPage.navigateToPage(9);
-    childDetailPage.childDetailDeleteButton.click();
+    childDetailPage.deleteButton.click();
 
     confirmationDialogPage.okButton.click().then(() => {
       ngApimock.selectScenario("getChild_All", "childDeleted");
     });
 
-    expect(childListPage.childListItemDisplays.count()).toBe(1);
-    expect(childListPage.childListItemDisplays.get(0).getText()).toContain("Mark Spencer (26/02/1981)");
+    expect(childListPage.listItems.count()).toBe(1);
+    expect(childListPage.listItems.get(0).getText()).toContain("Mark Spencer (26/02/1981)");
   });
 });
