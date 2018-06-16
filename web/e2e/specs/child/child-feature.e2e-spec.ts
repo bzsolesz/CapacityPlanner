@@ -2,6 +2,7 @@ import { browser } from "protractor";
 
 import { ChildListPage } from "../../page_objects/child/child-list.po";
 import { ChildDetailPage } from "../../page_objects/child/child-detail.po";
+import { ConfirmationDialogPage } from "../../page_objects/shared/confirmation-dialog.po";
 
 describe("By the Child feature the User", () => {
 
@@ -9,6 +10,7 @@ describe("By the Child feature the User", () => {
   const ngApimock: any = browser["ngApimock"];
   const childListPage: ChildListPage = new ChildListPage();
   const childDetailPage: ChildDetailPage = new ChildDetailPage();
+  const confirmationDialogPage: ConfirmationDialogPage = new ConfirmationDialogPage();
 
   beforeEach(() => {
     ngApimock.setAllScenariosToDefault();
@@ -92,5 +94,22 @@ describe("By the Child feature the User", () => {
     childDetailPage.goToChildrenPageButton.click();
 
     expect(childListPage.childListItemDisplays.get(2).getText()).toContain("New Child (08/03/1999)");
+  });
+
+  it("should be able to Delete a Child", () => {
+    childListPage.navigateToPage();
+
+    expect(childListPage.childListItemDisplays.count()).toBe(2);
+    expect(childListPage.childListItemDisplays.get(0).getText()).toContain("Peter Jones (06/04/2018)");
+
+    childDetailPage.navigateToPage(9);
+    childDetailPage.childDetailDeleteButton.click();
+
+    confirmationDialogPage.okButton.click().then(() => {
+      ngApimock.selectScenario("getChild_All", "childDeleted");
+    });
+
+    expect(childListPage.childListItemDisplays.count()).toBe(1);
+    expect(childListPage.childListItemDisplays.get(0).getText()).toContain("Mark Spencer (26/02/1981)");
   });
 });
