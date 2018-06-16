@@ -289,6 +289,22 @@ describe("Child-Detail Component", () => {
     expect(routerSpy.navigate).not.toHaveBeenCalled();
   }));
 
+  it("should display the error message when deleting a Child failed", fakeAsync(() => {
+    const error: Error = new Error("An error has happened");
+    childServiceSpy.deleteChild.and.returnValue(Observable.throw(error));
+    confirmationDialogSpy.and.returnValue(of(true));
+
+    initPageWithTestChild();
+
+    childDetailPage.deleteButton.nativeElement.click();
+
+    fixture.detectChanges();
+    childDetailPage.initPage();
+
+    expect(childDetailPage.errorMessageDisplay.nativeElement.textContent).toBe(error.message);
+    expect(childDetailPage.childDetailDisplay).toBeNull();
+  }));
+
   function initTestChild(): void {
     testChild = {id: 999, firstName: "FIRST_NAME", surname: "SURNAME", dateOfBirth: "10/12/2017"};
   }
