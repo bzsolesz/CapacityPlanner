@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -117,5 +119,17 @@ public class ChildControllerIT extends AbstractITBase {
 
         assertEquals(added_first_name, persistedChildEntity.getFirstName());
         assertEquals(added_surname, persistedChildEntity.getSurname());
+    }
+
+    @Test
+    @Transactional
+    public void shouldDeleteTheChild() throws Exception {
+        ChildEntity childEntity = persistTestChildEntity();
+
+        ResultActions response = mockMvc.perform(delete("/child/{id}", childEntity.getId()));
+
+        response.andExpect(status().isNoContent());
+
+        assertNull(testEntityManager.find(ChildEntity.class, childEntity.getId()));
     }
 }

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +57,14 @@ public class ChildController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<AddedChildView> addChild(@RequestBody Child child) {
         int addedChildId = childService.addChild(child);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(new AddedChildView(addedChildId));
     };
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteChild(@PathVariable int id) {
+        childService.deleteChild(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

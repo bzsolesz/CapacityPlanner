@@ -10,8 +10,13 @@ import org.junit.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -114,6 +119,38 @@ public class CorsFilterIT extends AbstractITBase {
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(testChildJson))
+                .andExpect(status().isNoContent())
+                .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, testOriginUrl));
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnOkToPostRequestFromKnownOrigin() throws Exception {
+        String testOriginUrl = buildTestOriginUrl(KNOWN_PROTOCOL, KNOWN_HOST, KNOWN_PORT);
+
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.registerModule(new JavaTimeModule());
+
+        Child testChild = new Child(-1, "FIRST_NAME", "SURNAME", LocalDate.now());
+
+        String testChildJson = jsonMapper.writeValueAsString(testChild);
+
+        mockMvc.perform(post("/child")
+                .header(HttpHeaders.ORIGIN, testOriginUrl)
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(testChildJson))
+                .andExpect(status().isCreated())
+                .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, testOriginUrl));
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnOkToDeleteRequestFromAKnownOrigin() throws Exception {
+        String testOriginUrl = buildTestOriginUrl(KNOWN_PROTOCOL, KNOWN_HOST, KNOWN_PORT);
+
+        mockMvc.perform(delete("/child/{id}", testChildEntity.getId())
+                .header(HttpHeaders.ORIGIN, testOriginUrl))
                 .andExpect(status().isNoContent())
                 .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, testOriginUrl));
     }

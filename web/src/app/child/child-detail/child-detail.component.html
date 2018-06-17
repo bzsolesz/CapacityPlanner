@@ -36,7 +36,10 @@
 						<div class="col-md-8">
 							<button class="btn btn-primary" type="submit" [disabled]="childForm.form.invalid || childForm.form.pristine" id="saveButton">
 								<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Save
-							</button>	
+							</button>
+							<button class="btn btn-default" type="button" id="deleteButton" *ngIf="isItViewChildPage" (click)="showConfirmationDialog()">
+								<span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Delete
+							</button>
 						</div>			
 					</div>
 				</form>

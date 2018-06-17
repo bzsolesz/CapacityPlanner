@@ -128,6 +128,19 @@ describe("Child Service", () => {
     );
   });
 
+  it("deleteChild - should make a HTTP DELETE request to ChildService/child/${id} server endpoint to delete the child", () => {
+    testedService.deleteChild(testChild1.id).subscribe();
+
+    httpMock.expectOne({url: testChild1Url, method: "DELETE"}).flush({});
+  });
+
+  it("deleteChild - should return a generic error message if an error happened", () => {
+    expectGenericErrorMessage(
+      () => testedService.deleteChild(testChild1.id),
+      testChild1Url
+    );
+  });
+
   afterEach(() => {
     httpMock.verify();
   });

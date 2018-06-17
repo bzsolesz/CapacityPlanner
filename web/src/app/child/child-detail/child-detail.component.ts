@@ -1,15 +1,13 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute, ParamMap, Data } from "@angular/router";
 import { NgForm } from "@angular/forms";
-import { Observable } from "rxjs/Observable";
-// TODO move operator additions to a centralized space
-import "rxjs/add/operator/map";
 import { fromDateToEnGBString, fromEnGbBStringToDate } from "../../utility";
 import { defaultDatePickerConfig } from "../../ngx-bootstrap";
 import { Child } from "../domain/child";
 import { ChildService } from "../domain/child.service";
 import { AddedChild } from "../domain/added-child";
 import { ChildDetailPageAction } from "./child-detail-page-action";
+import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
 
 @Component({
   templateUrl: "./child-detail.component.html"
@@ -19,7 +17,7 @@ export class ChildDetailComponent implements OnInit {
   public queryErrorMessage: string;
   public dateOfBirthPickerValue: Date;
   public datePickerConfig: object = defaultDatePickerConfig;
-  public pageAction: ChildDetailPageAction;
+  public isItViewChildPage: boolean;
 
   @ViewChild(NgForm)
   public childForm: NgForm;
@@ -27,13 +25,14 @@ export class ChildDetailComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private childService: ChildService
+    private childService: ChildService,
+    private confirmationDialogService: ConfirmationDialogService
   ) { }
 
   public ngOnInit(): void {
     this.route.data.subscribe((data: Data) => {
-      this.pageAction = data["pageAction"];
-      this.isViewPageAction() ? this.initViewChildPage() : this.initAddChildPage();
+      this.isItViewChildPage = data["pageAction"] === ChildDetailPageAction.VIEW;
+      this.isItViewChildPage ? this.initViewChildPage() : this.initAddChildPage();
     });
   }
 
@@ -50,32 +49,45 @@ export class ChildDetailComponent implements OnInit {
 
   public submit(child: Child): void {
     child.dateOfBirth = fromDateToEnGBString(this.dateOfBirthPickerValue);
+    this.isItViewChildPage ? this.update(child) : this.add(child);
+  }
 
-    const submitChild: Observable<number> = this.isViewPageAction() ? this.update(child) : this.add(child);
-
-    submitChild.subscribe(
-      (childId: number) => {
+  public update(child: Child): void {
+    this.childService.updateChild(child).subscribe(
+      () => {
         this.childForm.reset();
-        this.getChildById(childId);
+        this.getChildById(child.id);
       },
       (error: Error) => this.errorHandler(error)
     );
   }
 
-  public update(child: Child): Observable<number> {
-    return this.childService.updateChild(child).map(() => child.id);
-  }
-
-  public add(child: Child): Observable<number> {
-    return this.childService.addChild(child).map((addedChild: AddedChild) => addedChild.id);
+  public add(child: Child): void {
+    this.childService.addChild(child).subscribe(
+      (addedChild: AddedChild) => this.router.navigate(["/child", addedChild.id]),
+      (error: Error) => this.errorHandler(error)
+    );
   }
 
   public goToChildrenPage(): void {
     this.router.navigate(["/child/all"]);
   }
 
-  public isViewPageAction(): boolean {
-    return this.pageAction === ChildDetailPageAction.VIEW;
+  public showConfirmationDialog(): void {
+    this.confirmationDialogService
+      .showModal("Are you sure you want to delete this child?")
+      .subscribe((isConfirmed: boolean) => {
+        if (isConfirmed) {
+          this.deleteChild();
+        }
+      });
+  }
+
+  public deleteChild(): void {
+    this.childService.deleteChild(this.child.id).subscribe(
+      () => this.goToChildrenPage(),
+      (error: Error) => this.errorHandler(error)
+    );
   }
 
   private initViewChildPage(): void {
