@@ -27,6 +27,7 @@
 		<li>move utility module into shared</li>
 		<li>remove area... html attributes</li>
 		<li>remove compileComponents and async call from component tests</li>
+		<li>remove package default Child constructor and mandatory fields setter and replace them with JsonCreator and JsonProperty</li>
 	</ul>
 	<h4>Audit / Logging</h4>
 	<ul>

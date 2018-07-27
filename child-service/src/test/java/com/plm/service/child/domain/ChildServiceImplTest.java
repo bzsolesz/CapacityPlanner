@@ -72,7 +72,7 @@ public class ChildServiceImplTest {
     }
 
     @Test
-    public void shouldReturnAnEmptySetIfNoChild() throws Exception {
+    public void shouldReturnAnEmptySetIfNoChild() {
 
         when(childEntityRepositoryMock.findAll()).thenReturn(Collections.emptyList());
 
@@ -83,7 +83,7 @@ public class ChildServiceImplTest {
     }
 
     @Test
-    public void shouldReturnTheSetOfAllChildren() throws Exception {
+    public void shouldReturnTheSetOfAllChildren() {
 
         when(childEntityRepositoryMock.findAll()).thenReturn(
                 Arrays.asList(childEntityMock1, childEntityMock2, childEntityMock3));
@@ -97,7 +97,7 @@ public class ChildServiceImplTest {
     }
 
     @Test
-    public void shouldPersistTheUpdateChildEntity() throws Exception {
+    public void shouldPersistTheUpdateChildEntity() {
 
         doAnswer(invocationOnMock -> {
 

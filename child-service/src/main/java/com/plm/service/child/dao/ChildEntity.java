@@ -1,9 +1,13 @@
 package com.plm.service.child.dao;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
@@ -14,10 +18,15 @@ public class ChildEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String surname;
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "attendance_id")
+    private WeeklyAttendanceEntity attendance;
 
     public ChildEntity() {
     }
@@ -36,6 +45,10 @@ public class ChildEntity {
         return dateOfBirth;
     }
 
+    public WeeklyAttendanceEntity getAttendance() {
+        return attendance;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -50,5 +63,9 @@ public class ChildEntity {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setAttendance(WeeklyAttendanceEntity attendance) {
+        this.attendance = attendance;
     }
 }

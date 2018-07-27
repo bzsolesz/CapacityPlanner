@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Create initial version of Weekly Attendance table" author="bzsolesz">
+        <comment>Create the initial version of the Weekly Attendance table with from/to for weekdays</comment>
+        <createTable tableName="weekly_attendance">
+            <column name="id" type="java.sql.Types.INTEGER" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="monday_from" type="java.sql.Types.Time"/>
+            <column name="monday_to" type="java.sql.Types.Time"/>
+            <column name="tuesday_from" type="java.sql.Types.Time"/>
+            <column name="tuesday_to" type="java.sql.Types.Time"/>
+            <column name="wednesday_from" type="java.sql.Types.Time"/>
+            <column name="wednesday_to" type="java.sql.Types.Time"/>
+            <column name="thursday_from" type="java.sql.Types.Time"/>
+            <column name="thursday_to" type="java.sql.Types.Time"/>
+            <column name="friday_from" type="java.sql.Types.Time"/>
+            <column name="friday_to" type="java.sql.Types.Time"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Grant select on Weekly Attendance table for Child Service user" author="bzsolesz">
+        <preConditions>
+            <dbms type="mysql"/>
+            <tableExists tableName="weekly_attendance"/>
+        </preConditions>
+        <sql>GRANT SELECT ON weekly_attendance TO child_service@localhost</sql>
+        <comment>Grant select on Weekly Attendance table for Child Service user</comment>
+    </changeSet>
+
+    <changeSet id="Add attendance column to Child table to have a Weekly Attendance" author="bzsolesz">
+        <preConditions>
+            <and>
+                <tableExists tableName="child"/>
+                <tableExists tableName="weekly_attendance"/>
+            </and>
+        </preConditions>
+        <addColumn tableName="child">
+            <column name="attendance_id" type="java.sql.Types.INTEGER">
+                <constraints foreignKeyName="fk_child_attendance" references="weekly_attendance(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

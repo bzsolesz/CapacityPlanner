@@ -24,19 +24,19 @@ public class ChildControllerIT extends AbstractITBase {
     @Test
     @Transactional
     public void shouldReturnChildById() throws Exception {
-
         ChildEntity childEntity = persistTestChildEntity();
 
         mockMvc.perform(get("/child/{id}", childEntity.getId())
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(childEntity.getId()));
+                .andExpect(jsonPath("$.id").value(childEntity.getId()))
+                .andExpect(jsonPath("$.attendance.monday.from").value(timeFormatter.format(MONDAY_FROM)))
+                .andExpect(jsonPath("$.attendance.monday.to").value(timeFormatter.format(MONDAY_TO)));
     }
 
     @Test
     @Transactional
     public void shouldReturnHttp404ForNotFoundChild() throws Exception {
-
         mockMvc.perform(get("/child/{id}", -999)
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -45,7 +45,6 @@ public class ChildControllerIT extends AbstractITBase {
     @Test
     @Transactional
     public void shouldReturnAllChildren() throws Exception {
-
         ChildEntity childEntity1 = persistTestChildEntity();
         ChildEntity childEntity2 = persistTestChildEntity();
 
@@ -53,13 +52,14 @@ public class ChildControllerIT extends AbstractITBase {
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(childEntity1.getId()))
-                .andExpect(jsonPath("$[1].id").value(childEntity2.getId()));
+                .andExpect(jsonPath("$[1].id").value(childEntity2.getId()))
+                .andExpect(jsonPath("$[0].attendance.monday.from").value(timeFormatter.format(MONDAY_FROM)))
+                .andExpect(jsonPath("$[0].attendance.monday.to").value(timeFormatter.format(MONDAY_TO)));
     }
 
     @Test
     @Transactional
     public void shouldUpdateChild() throws Exception {
-
         ChildEntity childEntity = persistTestChildEntity();
 
         Child updatedChild =
@@ -84,7 +84,6 @@ public class ChildControllerIT extends AbstractITBase {
     @Test
     @Transactional
     public void shouldReturnHttp400ForChildIdMismatchDuringUpdate() throws Exception {
-
         ChildEntity childEntity = persistTestChildEntity();
 
         Child child = new Child(childEntity.getId(), null, null, childEntity.getDateOfBirth());
