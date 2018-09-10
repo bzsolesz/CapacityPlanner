@@ -21,26 +21,30 @@
 	</ul>
 	<h4>Tehnical debt / Technical improvement</h4>
 	<ul>
-		<li>try out Lombok to manage boiler plate code for POJOs</li>
+		<li>use Lombok to manage boiler plate code for POJOs</li>
 		<li>introduce index.ts for each module and reorganize javascript imports</li>
 		<li>reorganize routes in web module to have them defined only once</li>
 		<li>move utility module into shared</li>
 		<li>remove area... html attributes</li>
-		<li>remove compileComponents and async call from component tests</li>
 		<li>remove package default Child constructor and mandatory fields setter and replace them with JsonCreator and JsonProperty</li>
 	</ul>
 	<h4>Audit / Logging</h4>
 	<ul>
 		<li>@CreatedDate @LastModfiedDate auditing</li>
 		<li>@CreatedBy @LastModfiedBy auditing</li>
-		<li>introduce application logging</li>
+		<li>introduce application logging (SL4J)</li>
 	</ul>
 	<h4>Devops (Build / Deployment / Testing)</h4>
 	<ul>
 		<li>introduce static code quality checker for java (like: checkstyle)</li>
 		<li>suppress spring boot/web log during build process</li>
+		<li>use wiremock for api mocking instead of ng-api-mock</li>
 		<li>capture and check somehow "void" requests sent by web to back-end during e2e testing</li>
-		<li>introduce steps and given/when/then in ui tests</li>
+		<li>remove compileComponents and async call from component tests</li>		
+		<li>introduce CommonTestSteps + given/when/then in ui tests</li>
+		<li>move test-utils stubs to their production object</li>
+		<li>introduce default objects for web mocks</li>
+		<li>Page (objects) in web unit tests</li>
 	</ul>
 </body>
 </html>

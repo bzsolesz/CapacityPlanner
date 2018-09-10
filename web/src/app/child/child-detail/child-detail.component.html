@@ -1,7 +1,7 @@
 <div class="panel-body">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h4>Child Details</h4>
+			<h3 class="panel-title">Child Details</h3>
 		</div>
 		<div class="panel-body">
 			<div *ngIf="child" id="childDetailDisplay" class="container-fluid">
@@ -27,6 +27,7 @@
 							</div>
 						</div>
 					</div>
+					<app-weekly-attendance [attendance]="child.attendance"></app-weekly-attendance>
 					<div class="form-group">
 						<div class="col-md-2">
 							<button (click)="goToChildrenPage()" id="goToChildrenPageButton" class="btn btn-default">

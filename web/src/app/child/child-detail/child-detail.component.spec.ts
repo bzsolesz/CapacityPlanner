@@ -14,7 +14,7 @@ import { Child } from "../domain/child";
 import { ActivatedRouteStub, DatePickerDirectiveStub } from "../../test-utils";
 import { AddedChild } from "../domain/added-child";
 import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
-import { ConfirmationDialogServiceStub } from "../../test-utils";
+import { ConfirmationDialogServiceStub, WeeklyAttendanceComponentStub } from "../../test-utils";
 
 describe("Child-Detail Component", () => {
   let fixture: ComponentFixture<ChildDetailComponent>;
@@ -28,7 +28,7 @@ describe("Child-Detail Component", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChildDetailComponent, DatePickerDirectiveStub ],
+      declarations: [ ChildDetailComponent, DatePickerDirectiveStub, WeeklyAttendanceComponentStub ],
       imports: [ FormsModule ],
       providers: [
         { provide: Router, useClass: RouterSpy },
@@ -69,6 +69,7 @@ describe("Child-Detail Component", () => {
     expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toEqual(
       utility.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
     expect(childDetailPage.errorMessageDisplay).toBeNull();
+    expect(childDetailPage.weeklyAttendanceDisplay.nativeElement.textContent).toEqual("08:30-18:30");
   }));
 
   it("should display the error message when query for child by id failed", () => {
@@ -306,7 +307,13 @@ describe("Child-Detail Component", () => {
   }));
 
   function initTestChild(): void {
-    testChild = {id: 999, firstName: "FIRST_NAME", surname: "SURNAME", dateOfBirth: "10/12/2017"};
+    testChild = {
+      id: 999,
+      firstName: "FIRST_NAME",
+      surname: "SURNAME",
+      dateOfBirth: "10/12/2017",
+      attendance: {id: 888, monday: {from: "08:30", to: "18:30"}}
+    };
   }
 
   function initPageWithTestChild(): void {
@@ -369,6 +376,7 @@ class ChildDetailPage {
   public goToChildrenPageButton: DebugElement;
   public saveButton: DebugElement;
   public deleteButton: DebugElement;
+  public weeklyAttendanceDisplay: DebugElement;
 
   public initPage(): void {
     this.errorMessageDisplay = this.fixture.debugElement.query(By.css("#errorMessageDisplay"));
@@ -383,6 +391,7 @@ class ChildDetailPage {
       this.childDetailDisplayFirstNameFormGroup = this.childDetailDisplay.query(By.css("#firstNameFormGroup"));
       this.childDetailDisplaySurnameFormGroup = this.childDetailDisplay.query(By.css("#surnameFormGroup"));
       this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css("#dateOfBirthFormGroup"));
+      this.weeklyAttendanceDisplay = this.childDetailDisplay.query(By.css("app-weekly-attendance"));
       this.childDetailForm = this.childDetailDisplay.query(By.css("form"));
       this.saveButton = this.childDetailDisplay.query(By.css("#saveButton"));
       this.deleteButton = this.childDetailDisplay.query(By.css("#deleteButton"));
