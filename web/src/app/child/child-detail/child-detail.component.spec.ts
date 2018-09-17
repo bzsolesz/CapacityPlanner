@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
 import { Observable } from "rxjs/Observable";
@@ -26,7 +26,7 @@ describe("Child-Detail Component", () => {
   let testChild: Child;
   let confirmationDialogSpy: jasmine.Spy;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ ChildDetailComponent, DatePickerDirectiveStub, WeeklyAttendanceComponentStub ],
       imports: [ FormsModule ],
@@ -36,10 +36,7 @@ describe("Child-Detail Component", () => {
         { provide: ChildService, useClass: ChildServiceSpy },
         { provide: ConfirmationDialogService, useClass: ConfirmationDialogServiceStub }
       ]
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
+    });
     fixture = TestBed.createComponent(ChildDetailComponent);
     testedComponent = fixture.componentInstance;
     routerSpy = TestBed.get(Router);

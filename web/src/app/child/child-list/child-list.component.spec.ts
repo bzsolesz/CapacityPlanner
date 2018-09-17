@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, fakeAsync } from "@angular/core/testing";
-import { async } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
 import { Observable } from "rxjs/Observable";
@@ -17,7 +16,7 @@ describe("Child-List Component", () => {
   let childListPage: ChildListPage;
   let testChildren: Child[];
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ChildListComponent,
@@ -25,10 +24,7 @@ describe("Child-List Component", () => {
       ],
       imports: [ RouterTestingModule ],
       providers: [ { provide: ChildService, useClass: ChildServiceSpy } ]
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
+    });
     fixture = TestBed.createComponent(ChildListComponent);
     testedComponent = fixture.componentInstance;
     // tslint:disable-next-line: no-any

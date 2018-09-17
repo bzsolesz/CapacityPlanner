@@ -40,7 +40,6 @@
 		<li>suppress spring boot/web log during build process</li>
 		<li>use wiremock for api mocking instead of ng-api-mock</li>
 		<li>capture and check somehow "void" requests sent by web to back-end during e2e testing</li>
-		<li>remove compileComponents and async call from component tests</li>		
 		<li>introduce CommonTestSteps + given/when/then in ui tests</li>
 		<li>move test-utils stubs to their production object</li>
 		<li>introduce default objects for web mocks</li>
