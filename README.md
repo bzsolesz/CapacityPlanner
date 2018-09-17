@@ -25,7 +25,6 @@
 		<li>introduce index.ts for each module and reorganize javascript imports</li>
 		<li>reorganize routes in web module to have them defined only once</li>
 		<li>move utility module into shared</li>
-		<li>remove area... html attributes</li>
 		<li>remove package default Child constructor and mandatory fields setter and replace them with JsonCreator and JsonProperty</li>
 	</ul>
 	<h4>Audit / Logging</h4>

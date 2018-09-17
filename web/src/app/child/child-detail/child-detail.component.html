@@ -31,12 +31,12 @@
 					<div class="form-group">
 						<div class="col-md-2">
 							<button (click)="goToChildrenPage()" id="goToChildrenPageButton" class="btn btn-default">
-								<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;Children
+								<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Children
 							</button>
 						</div>
 						<div class="col-md-8">
 							<button class="btn btn-primary" type="submit" [disabled]="childForm.form.invalid || childForm.form.pristine" id="saveButton">
-								<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>&nbsp;Save
+								<span class="glyphicon glyphicon-floppy-save"></span>&nbsp;Save
 							</button>
 							<button class="btn btn-default" type="button" id="deleteButton" *ngIf="isItViewChildPage" (click)="showConfirmationDialog()">
 								<span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Delete
