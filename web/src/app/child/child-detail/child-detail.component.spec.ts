@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormsModule } from "@angular/forms";
-import * as utility from "../../utility";
+import * as shared from "../../shared";
 import { defaultDatePickerConfig } from "../../ngx-bootstrap";
 import { ChildDetailComponent } from "./child-detail.component";
 import { ChildDetailPageAction } from "./child-detail-page-action";
@@ -64,7 +64,7 @@ describe("Child-Detail Component", () => {
     expect(childDetailPage.childDetailDisplayFirstName.nativeElement.value).toBe(testChild.firstName);
     expect(childDetailPage.childDetailDisplaySurname.nativeElement.value).toBe(testChild.surname);
     expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toEqual(
-      utility.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
+      shared.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
     expect(childDetailPage.errorMessageDisplay).toBeNull();
     expect(childDetailPage.weeklyAttendanceDisplay.nativeElement.textContent).toEqual("08:30-18:30");
   }));
@@ -350,10 +350,10 @@ describe("Child-Detail Component", () => {
   }
 
   function changeDateOfBirthInputValue(value: string): void {
-    spyOn(utility, "fromDateToEnGBString").and.callFake((dateString: string) => {
+    spyOn(shared, "fromDateToEnGBString").and.callFake((dateString: string) => {
       return new Date(dateString).toLocaleDateString("en-GB");
     });
-    changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, utility.fromEnGbBStringToDate(value).toString());
+    changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, shared.fromEnGbBStringToDate(value).toString());
   }
 });
 
