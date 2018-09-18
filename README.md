@@ -36,7 +36,6 @@
 	<h4>Devops (Build / Deployment / Testing)</h4>
 	<ul>
 		<li>introduce static code quality checker for java (like: checkstyle)</li>
-		<li>suppress spring boot/web log during build process</li>
 		<li>use wiremock for api mocking instead of ng-api-mock</li>
 		<li>capture and check somehow "void" requests sent by web to back-end during e2e testing</li>
 		<li>introduce CommonTestSteps + given/when/then in ui tests</li>
