@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { WeeklyAttendance } from "../child/domain";
+import { WeeklyAttendance } from "../domain";
 
 @Component({
   selector: "app-weekly-attendance",

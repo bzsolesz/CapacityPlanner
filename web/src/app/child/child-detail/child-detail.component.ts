@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute, ParamMap, Data } from "@angular/router";
 import { NgForm } from "@angular/forms";
-import { fromDateToEnGBString, fromEnGbBStringToDate } from "../../shared";
+import { fromDateToEnGBString, fromEnGbBStringToDate } from "../../shared/date";
 import { defaultDatePickerConfig } from "../../ngx-bootstrap";
-import { Child } from "../domain/child";
-import { ChildService } from "../domain/child.service";
-import { AddedChild } from "../domain/added-child";
+import { Child, ChildService, AddedChild } from "../domain";
 import { ChildDetailPageAction } from "./child-detail-page-action";
-import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
+import { ConfirmationDialogService } from "../../shared/confirmation-dialog";
 
 @Component({
   templateUrl: "./child-detail.component.html"

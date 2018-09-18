@@ -5,16 +5,14 @@ import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormsModule } from "@angular/forms";
-import * as shared from "../../shared";
-import { defaultDatePickerConfig } from "../../ngx-bootstrap";
+import * as dateUtil from "../../shared/date";
+import { defaultDatePickerConfig, DatePickerDirectiveStub } from "../../ngx-bootstrap";
 import { ChildDetailComponent } from "./child-detail.component";
 import { ChildDetailPageAction } from "./child-detail-page-action";
-import { ChildService } from "../domain/child.service";
-import { Child } from "../domain/child";
-import { ActivatedRouteStub, DatePickerDirectiveStub } from "../../test-utils";
-import { AddedChild } from "../domain/added-child";
-import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
-import { ConfirmationDialogServiceStub, WeeklyAttendanceComponentStub } from "../../test-utils";
+import { ChildService, Child, AddedChild } from "../domain";
+import { ActivatedRouteStub } from "../../test-utils";
+import { ConfirmationDialogService, ConfirmationDialogServiceStub } from "../../shared/confirmation-dialog";
+import { WeeklyAttendanceComponentStub } from "../weekly-attendance/weekly-attendance.component.stub";
 
 describe("Child-Detail Component", () => {
   let fixture: ComponentFixture<ChildDetailComponent>;
@@ -64,7 +62,7 @@ describe("Child-Detail Component", () => {
     expect(childDetailPage.childDetailDisplayFirstName.nativeElement.value).toBe(testChild.firstName);
     expect(childDetailPage.childDetailDisplaySurname.nativeElement.value).toBe(testChild.surname);
     expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toEqual(
-      shared.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
+      dateUtil.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
     expect(childDetailPage.errorMessageDisplay).toBeNull();
     expect(childDetailPage.weeklyAttendanceDisplay.nativeElement.textContent).toEqual("08:30-18:30");
   }));
@@ -350,10 +348,10 @@ describe("Child-Detail Component", () => {
   }
 
   function changeDateOfBirthInputValue(value: string): void {
-    spyOn(shared, "fromDateToEnGBString").and.callFake((dateString: string) => {
+    spyOn(dateUtil, "fromDateToEnGBString").and.callFake((dateString: string) => {
       return new Date(dateString).toLocaleDateString("en-GB");
     });
-    changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, shared.fromEnGbBStringToDate(value).toString());
+    changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, dateUtil.fromEnGbBStringToDate(value).toString());
   }
 });
 

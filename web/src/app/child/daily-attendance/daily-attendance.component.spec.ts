@@ -1,9 +1,8 @@
-import { DailyAttendance } from "../domain";
+import { DailyAttendance, defaultDailyAttendance } from "../domain";
 import { TestBed } from "@angular/core/testing";
 import { DailyAttendanceComponent } from "./daily-attendance.component";
 import { Component } from "@angular/core";
-import { defaultDailyAttendance } from "../domain/daily-attendance.stub";
-import { CommonStepSteps } from "../../test-utils/common-test-steps";
+import { CommonTestSteps } from "../../test-utils";
 
 describe("Daily Attendance Component", () => {
   let steps: Steps;
@@ -29,7 +28,7 @@ describe("Daily Attendance Component", () => {
   });
 });
 
-class Steps extends CommonStepSteps<HostComponentStub> {
+class Steps extends CommonTestSteps<HostComponentStub> {
   public givenDailyAttendance(): void {
     this.component.attendance = defaultDailyAttendance();
   }

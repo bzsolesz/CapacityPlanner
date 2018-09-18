@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-
-import { Child } from "../domain/child";
-import { ChildService } from "../domain/child.service";
+import { Child, ChildService } from "../domain";
 
 @Component({
   templateUrl: "./child-list.component.html"

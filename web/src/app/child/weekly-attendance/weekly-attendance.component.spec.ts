@@ -1,10 +1,9 @@
 import { TestBed } from "@angular/core/testing";
 import { WeeklyAttendanceComponent } from "./weekly-attendance.component";
-import { WeeklyAttendance } from "../domain/weekly-attendance";
+import { WeeklyAttendance, defaultWeeklyAttendance } from "../domain";
 import { Component } from "@angular/core";
-import { CommonStepSteps } from "../../test-utils/common-test-steps";
+import { CommonTestSteps } from "../../test-utils";
 import { DailyAttendanceComponentStub } from "../daily-attendance/daily-attendance.component.stub";
-import { defaultWeeklyAttendance } from "../domain/weekly-attendance.stub";
 
 describe("Weekly Attendance Component", () => {
   let steps: Steps;
@@ -32,7 +31,7 @@ describe("Weekly Attendance Component", () => {
   });
 });
 
-class Steps extends CommonStepSteps<HostComponentStub> {
+class Steps extends CommonTestSteps<HostComponentStub> {
   public givenWeeklyAttendance(): void {
     this.component.attendance = defaultWeeklyAttendance();
   }

@@ -12,17 +12,16 @@
 		<li>rethink error handling of saving child (unsaved data should not be lost by displaying error message due to a failure)</li>
 		<li>discard changes on child detail form</li>
 		<li>animation for saving changes</li>
-		<li>warning for unsaved changes on navgition away from child detail form</li>
+		<li>warning for unsaved changes on navigation away from child detail form</li>
 		<li>confirm user the successful adding/saving</li>
 	</ul>
 	<h4>Delete child feature</h4>
 	<ul>
 		<li>confirm user the successful deletion</li>
 	</ul>
-	<h4>Tehnical debt / Technical improvement</h4>
+	<h4>Technical debt / Technical improvement</h4>
 	<ul>
 		<li>use Lombok to manage boiler plate code for POJOs</li>
-		<li>introduce index.ts for each module and reorganize javascript imports</li>
 		<li>reorganize routes in web module to have them defined only once</li>
 		<li>remove package default Child constructor and mandatory fields setter and replace them with JsonCreator and JsonProperty</li>
 	</ul>
@@ -32,13 +31,12 @@
 		<li>@CreatedBy @LastModfiedBy auditing</li>
 		<li>introduce application logging (SL4J)</li>
 	</ul>
-	<h4>Devops (Build / Deployment / Testing)</h4>
+	<h4>DevOps (Build / Deployment / Testing)</h4>
 	<ul>
 		<li>introduce static code quality checker for java (like: checkstyle)</li>
-		<li>use wiremock for api mocking instead of ng-api-mock</li>
+		<li>use Wiremock for api mocking instead of ng-apimock</li>
 		<li>capture and check somehow "void" requests sent by web to back-end during e2e testing</li>
 		<li>introduce CommonTestSteps + given/when/then in ui tests</li>
-		<li>move test-utils stubs to their production object</li>
 		<li>introduce default objects for web mocks</li>
 		<li>Page (objects) in web unit tests</li>
 	</ul>

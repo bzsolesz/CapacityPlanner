@@ -5,8 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ChildListComponent } from "./child-list.component";
-import { ChildService } from "../domain/child.service";
-import { Child } from "../domain/child";
+import { ChildService, Child } from "../domain";
 import { RouterLinkDirectiveStub } from "../../test-utils";
 
 describe("Child-List Component", () => {

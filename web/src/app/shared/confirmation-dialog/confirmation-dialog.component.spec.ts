@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from "@angular/core/testing";
 import { ConfirmationDialogComponent } from "./confirmation-dialog.component";
 import { BsModalRef } from "ngx-bootstrap";
-import { BsModalRefStub } from "../../test-utils";
+import { BsModalRefStub } from "../../ngx-bootstrap";
 
 describe("Confirmation-Dialog Component", () => {
   let fixture: ComponentFixture<ConfirmationDialogComponent>;

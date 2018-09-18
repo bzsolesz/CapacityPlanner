@@ -1,7 +1,7 @@
 import { ComponentFixture } from "@angular/core/testing";
 import { DebugElement } from "@angular/core";
 
-export class CommonStepSteps<T> {
+export class CommonTestSteps<T> {
   protected component: T;
   protected debugElement: DebugElement;
 
