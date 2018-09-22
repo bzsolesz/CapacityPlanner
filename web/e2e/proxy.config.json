@@ -2,11 +2,11 @@
   "/ChildService": {
     "target": "http://localhost:3000",
     "secure": false,
-    "logLevel": "debug"
+    "logLevel": "error"
   },
   "/ngapimock/*": {
     "target": "http://localhost:3000",
     "secure": false,
-    "logLevel": "debug"
+    "logLevel": "error"
   }
 }

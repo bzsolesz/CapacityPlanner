@@ -1,20 +1,18 @@
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormsModule } from "@angular/forms";
-import * as utility from "../../utility";
-import { defaultDatePickerConfig } from "../../ngx-bootstrap";
+import * as dateUtil from "../../shared/date";
+import { defaultDatePickerConfig, DatePickerDirectiveStub } from "../../ngx-bootstrap";
 import { ChildDetailComponent } from "./child-detail.component";
 import { ChildDetailPageAction } from "./child-detail-page-action";
-import { ChildService } from "../domain/child.service";
-import { Child } from "../domain/child";
-import { ActivatedRouteStub, DatePickerDirectiveStub } from "../../test-utils";
-import { AddedChild } from "../domain/added-child";
-import { ConfirmationDialogService } from "../../shared/confirmation-dialog/confirmation-dialog.service";
-import { ConfirmationDialogServiceStub } from "../../test-utils";
+import { ChildService, Child, AddedChild } from "../domain";
+import { ActivatedRouteStub } from "../../test-utils";
+import { ConfirmationDialogService, ConfirmationDialogServiceStub } from "../../shared/confirmation-dialog";
+import { WeeklyAttendanceComponentStub } from "../weekly-attendance/weekly-attendance.component.stub";
 
 describe("Child-Detail Component", () => {
   let fixture: ComponentFixture<ChildDetailComponent>;
@@ -26,9 +24,9 @@ describe("Child-Detail Component", () => {
   let testChild: Child;
   let confirmationDialogSpy: jasmine.Spy;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChildDetailComponent, DatePickerDirectiveStub ],
+      declarations: [ ChildDetailComponent, DatePickerDirectiveStub, WeeklyAttendanceComponentStub ],
       imports: [ FormsModule ],
       providers: [
         { provide: Router, useClass: RouterSpy },
@@ -36,10 +34,7 @@ describe("Child-Detail Component", () => {
         { provide: ChildService, useClass: ChildServiceSpy },
         { provide: ConfirmationDialogService, useClass: ConfirmationDialogServiceStub }
       ]
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
+    });
     fixture = TestBed.createComponent(ChildDetailComponent);
     testedComponent = fixture.componentInstance;
     routerSpy = TestBed.get(Router);
@@ -67,8 +62,9 @@ describe("Child-Detail Component", () => {
     expect(childDetailPage.childDetailDisplayFirstName.nativeElement.value).toBe(testChild.firstName);
     expect(childDetailPage.childDetailDisplaySurname.nativeElement.value).toBe(testChild.surname);
     expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toEqual(
-      utility.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
+      dateUtil.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
     expect(childDetailPage.errorMessageDisplay).toBeNull();
+    expect(childDetailPage.weeklyAttendanceDisplay.nativeElement.textContent).toEqual("08:30-18:30");
   }));
 
   it("should display the error message when query for child by id failed", () => {
@@ -306,7 +302,13 @@ describe("Child-Detail Component", () => {
   }));
 
   function initTestChild(): void {
-    testChild = {id: 999, firstName: "FIRST_NAME", surname: "SURNAME", dateOfBirth: "10/12/2017"};
+    testChild = {
+      id: 999,
+      firstName: "FIRST_NAME",
+      surname: "SURNAME",
+      dateOfBirth: "10/12/2017",
+      attendance: {id: 888, monday: {from: "08:30", to: "18:30"}}
+    };
   }
 
   function initPageWithTestChild(): void {
@@ -346,10 +348,10 @@ describe("Child-Detail Component", () => {
   }
 
   function changeDateOfBirthInputValue(value: string): void {
-    spyOn(utility, "fromDateToEnGBString").and.callFake((dateString: string) => {
+    spyOn(dateUtil, "fromDateToEnGBString").and.callFake((dateString: string) => {
       return new Date(dateString).toLocaleDateString("en-GB");
     });
-    changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, utility.fromEnGbBStringToDate(value).toString());
+    changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, dateUtil.fromEnGbBStringToDate(value).toString());
   }
 });
 
@@ -369,6 +371,7 @@ class ChildDetailPage {
   public goToChildrenPageButton: DebugElement;
   public saveButton: DebugElement;
   public deleteButton: DebugElement;
+  public weeklyAttendanceDisplay: DebugElement;
 
   public initPage(): void {
     this.errorMessageDisplay = this.fixture.debugElement.query(By.css("#errorMessageDisplay"));
@@ -383,6 +386,7 @@ class ChildDetailPage {
       this.childDetailDisplayFirstNameFormGroup = this.childDetailDisplay.query(By.css("#firstNameFormGroup"));
       this.childDetailDisplaySurnameFormGroup = this.childDetailDisplay.query(By.css("#surnameFormGroup"));
       this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css("#dateOfBirthFormGroup"));
+      this.weeklyAttendanceDisplay = this.childDetailDisplay.query(By.css("app-weekly-attendance"));
       this.childDetailForm = this.childDetailDisplay.query(By.css("form"));
       this.saveButton = this.childDetailDisplay.query(By.css("#saveButton"));
       this.deleteButton = this.childDetailDisplay.query(By.css("#deleteButton"));

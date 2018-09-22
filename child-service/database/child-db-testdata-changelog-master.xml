@@ -7,7 +7,7 @@
 
     <changeSet id="Reload test data into Child table" author="bzsolesz" runAlways="true" runOnChange="true">
         <preConditions>
-            <tableExists tableName="child" />
+            <tableExists tableName="child"/>
         </preConditions>
         <delete tableName="child"/>
         <insert tableName="child">
@@ -21,6 +21,53 @@
             <column name="date_of_birth" valueDate="1982-02-26"/>
         </insert>
         <comment>Delete from and load test data into Child table</comment>
+    </changeSet>
+
+    <changeSet id="Reload test data into Weekly Attendance table" author="bzsolesz" runAlways="true" runOnChange="true">
+        <preConditions>
+            <tableExists tableName="weekly_attendance"/>
+        </preConditions>
+        <delete tableName="weekly_attendance"/>
+        <insert tableName="weekly_attendance">
+            <column name="monday_from" value="08:30:00"/>
+            <column name="monday_to" value="18:30:00"/>
+            <column name="tuesday_from" value="08:30:00"/>
+            <column name="tuesday_to" value="18:30:00"/>
+            <column name="wednesday_from" value="08:30:00"/>
+            <column name="wednesday_to" value="18:30:00"/>
+            <column name="thursday_from" value="08:30:00"/>
+            <column name="thursday_to" value="18:30:00"/>
+            <column name="friday_from" value="08:30:00"/>
+            <column name="friday_to" value="18:30:00"/>
+        </insert>
+        <insert tableName="weekly_attendance">
+            <column name="monday_from" value="08:00:00"/>
+            <column name="monday_to" value="18:30:00"/>
+            <column name="tuesday_from" value="08:30:00"/>
+            <column name="tuesday_to" value="18:30:00"/>
+            <column name="thursday_from" value="08:00:00"/>
+            <column name="thursday_to" value="18:30:00"/>
+        </insert>
+        <comment>Delete from and load test data into Weekly Attendance table</comment>
+    </changeSet>
+
+    <changeSet id="Link Weekly Attendance to Child" author="bzsolesz" runAlways="true" runOnChange="true">
+        <preConditions>
+            <and>
+                <dbms type="mysql"/>
+                <tableExists tableName="child"/>
+                <tableExists tableName="weekly_attendance"/>
+            </and>
+        </preConditions>
+        <update tableName="child">
+            <column name="attendance_id" valueComputed="(SELECT id FROM weekly_attendance ORDER BY ID LIMIT 0,1)"/>
+            <where>first_name = 'Peter' and surname = 'Jones'</where>
+        </update>
+        <update tableName="child">
+            <column name="attendance_id" valueComputed="(SELECT id FROM weekly_attendance ORDER BY ID LIMIT 1,2)"/>
+            <where>first_name = 'Mark' and surname = 'Spencer'</where>
+        </update>
+        <comment>Link Weekly Attendance to Child</comment>
     </changeSet>
 
 </databaseChangeLog>

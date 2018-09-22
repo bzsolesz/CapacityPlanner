@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.plm.service.child.domain.Child;
 import com.plm.service.child.domain.ChildService;
+import com.plm.service.child.domain.DailyAttendance;
+import com.plm.service.child.domain.WeeklyAttendance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,6 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(ChildController.class)
 public class ChildControllerTest {
+
+    private static final String MONDAY_FROM = "08:30";
+    private static final String MONDAY_TO = "18:30";
 
     @MockBean
     private ChildService childServiceMock;
@@ -68,6 +74,20 @@ public class ChildControllerTest {
     }
 
     @Test
+    public void shouldNotReturnChildAttendanceIfNotSet() throws Exception {
+        testChild1.setAttendance(null);
+
+        int testChildId = testChild1.getId();
+
+        when(childServiceMock.getChildById(testChildId)).thenReturn(testChild1);
+
+        ResultActions response = mockMvc.perform(get("/child/{id}", testChildId).accept(APPLICATION_JSON));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.attendance").doesNotExist());
+    }
+
+    @Test
     public void shouldReturnEmptySetIfNoChild() throws Exception {
 
         when(childServiceMock.getAllChildren()).thenReturn(Collections.emptySet());
@@ -89,6 +109,21 @@ public class ChildControllerTest {
 
         expectChildJSON(response, "$[0]", testChild1);
         expectChildJSON(response, "$[1]", testChild2);
+    }
+
+    @Test
+    public void shouldNotReturnChildrenAttendanceIfNotSet() throws Exception {
+        testChild1.setAttendance(null);
+        testChild2.setAttendance(null);
+
+        when(childServiceMock.getAllChildren()).thenReturn(
+                new LinkedHashSet<>(Arrays.asList(testChild1, testChild2)));
+
+        ResultActions response = mockMvc.perform(get("/child/all").accept(APPLICATION_JSON));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].attendance").doesNotExist())
+                .andExpect(jsonPath("$[1].attendance").doesNotExist());
     }
 
     @Test
@@ -155,17 +190,26 @@ public class ChildControllerTest {
         verify(childServiceMock).deleteChild(childId);
     }
 
-    private void expectChildJSON(ResultActions response, String jsonPath, Child child) throws Exception {
+    private void expectChildJSON(ResultActions response, String rootPath, Child child) throws Exception {
 
-        response.andExpect(jsonPath(jsonPath + ".id").value(child.getId()))
-                .andExpect(jsonPath(jsonPath + ".firstName").value(child.getFirstName()))
-                .andExpect(jsonPath(jsonPath + ".surname").value(child.getSurname()))
-                .andExpect(jsonPath(jsonPath + ".dateOfBirth").value(
+        response.andExpect(jsonPath(rootPath + ".id").value(child.getId()))
+                .andExpect(jsonPath(rootPath + ".firstName").value(child.getFirstName()))
+                .andExpect(jsonPath(rootPath + ".surname").value(child.getSurname()))
+                .andExpect(jsonPath(rootPath + ".dateOfBirth").value(
                         child.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+
+        response.andExpect(jsonPath(rootPath + ".attendance.monday.from").value(MONDAY_FROM))
+                .andExpect(jsonPath(rootPath + ".attendance.monday.to").value(MONDAY_TO))
+                .andExpect(jsonPath(rootPath + ".attendance.tuesday").doesNotExist());
     }
 
     private Child initTestChild(int id) {
-        return new Child(id, "firstName" + id, "surname" + id, LocalDate.now());
+        Child child = new Child(id, "firstName" + id, "surname" + id, LocalDate.now());
+
+        DailyAttendance mondayAttendance = new DailyAttendance(LocalTime.of(8, 30), LocalTime.of(18, 30 ));
+        child.setAttendance(new WeeklyAttendance.Builder(id).monday(mondayAttendance).build());
+
+        return child;
     }
 
     private String childAsJson(Child child) throws JsonProcessingException {

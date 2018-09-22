@@ -1,18 +1,20 @@
 package com.plm.service.child.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.plm.service.child.dao.ChildEntity;
 
 import java.time.LocalDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Child {
-
     private int id;
     private String firstName;
     private String surname;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateOfBirth;
+    private WeeklyAttendance attendance;
 
     public Child(int id, String firstName, String surname, LocalDate dateOfBirth) {
         this.id = id;
@@ -24,23 +26,42 @@ public class Child {
     Child() {
     }
 
-    Child(ChildEntity childEntity) {
-        this.id = childEntity.getId();
-        this.firstName = childEntity.getFirstName();
-        this.surname = childEntity.getSurname();
-        this.dateOfBirth = childEntity.getDateOfBirth();
+    Child(ChildEntity entity) {
+        this.id = entity.getId();
+        this.firstName = entity.getFirstName();
+        this.surname = entity.getSurname();
+        this.dateOfBirth = entity.getDateOfBirth();
+
+        if (entity.getAttendance() != null) {
+            this.attendance = new WeeklyAttendance(entity.getAttendance());
+        }
     }
 
-    ChildEntity asChildEntity() {
+    ChildEntity asEntity() {
+        ChildEntity entity = new ChildEntity();
 
-        ChildEntity childEntity = new ChildEntity();
+        entity.setId(this.id);
+        entity.setFirstName(this.firstName);
+        entity.setSurname(this.surname);
+        entity.setDateOfBirth(this.dateOfBirth);
 
-        childEntity.setId(this.id);
-        childEntity.setFirstName(this.firstName);
-        childEntity.setSurname(this.surname);
-        childEntity.setDateOfBirth(this.dateOfBirth);
+        if (this.attendance != null) {
+            entity.setAttendance(this.attendance.asEntity());
+        }
 
-        return childEntity;
+        return entity;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) { return true; }
+        if (object == null || getClass() != object.getClass()) { return false; }
+        return id == ((Child) object).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 
     public int getId() {
@@ -59,19 +80,8 @@ public class Child {
         return dateOfBirth;
     }
 
-    @Override
-    public boolean equals(Object object) {
-
-        if (this == object) return true;
-
-        if (object == null || getClass() != object.getClass()) return false;
-
-        return id == ((Child) object).id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
+    public WeeklyAttendance getAttendance() {
+        return attendance;
     }
 
     void setId(int id) {
@@ -88,5 +98,9 @@ public class Child {
 
     void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setAttendance(WeeklyAttendance attendance) {
+        this.attendance = attendance;
     }
 }

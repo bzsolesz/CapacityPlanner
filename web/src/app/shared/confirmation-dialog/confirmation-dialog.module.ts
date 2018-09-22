@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
-import { NgxBootstrapModule } from "../ngx-bootstrap/ngx-bootstrap.module";
-import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
-import { ConfirmationDialogService } from "./confirmation-dialog/confirmation-dialog.service";
+import { NgxBootstrapModule } from "../../ngx-bootstrap";
+import { ConfirmationDialogComponent } from "./confirmation-dialog.component";
+import { ConfirmationDialogService } from "./confirmation-dialog.service";
 
 @NgModule({
   declarations: [
@@ -20,4 +20,4 @@ import { ConfirmationDialogService } from "./confirmation-dialog/confirmation-di
     ConfirmationDialogService
   ]
 })
-export class SharedModule { }
+export class ConfirmationDialogModule { }
