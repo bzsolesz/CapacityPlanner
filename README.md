@@ -19,6 +19,10 @@
 	<ul>
 		<li>confirm user the successful deletion</li>
 	</ul>
+	<h4>Display weekly attendance feature</h4>
+	<ul>
+		<li>Web unit and e2e tests</li>
+	</ul>
 	<h4>Technical debt / Technical improvement</h4>
 	<ul>
 		<li>use Lombok to manage boiler plate code for POJOs</li>

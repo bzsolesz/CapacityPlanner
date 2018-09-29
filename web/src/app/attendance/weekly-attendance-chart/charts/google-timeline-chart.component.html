@@ -1,0 +1,31 @@
+<form class="form-inline" (ngSubmit)="redraw()">
+  <div class="form-group">
+    <label for="size" class="control-label">Size:</label>
+    <select class="form-control" [(ngModel)]="size" name="size">
+      <option value="6">6</option>
+      <option value="8">8</option>
+      <option value="10">10</option>
+      <option value="12">12</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="showNames">Show names:</label>
+    <input type="checkbox" name="showNames" [(ngModel)]="showNames">
+  </div>
+  <div class="form-group">
+      <label for="showTooltip">Show tooltip:</label>
+      <input type="checkbox" name="showTooltip" [(ngModel)]="showTooltip">
+    </div>
+  <div class="form-group">
+    <label>Color by:</label>
+    <input type="radio" name="colorByDay" [(ngModel)]="colorByDay" [value]="true"> Day
+    <input type="radio" name="colorByDay" [(ngModel)]="colorByDay" [value]="false"> Child
+  </div>
+  <button class="btn btn-default" type="submit">
+      <span class="glyphicon glyphicon-refresh"></span>&nbsp;Redraw
+    </button>
+</form>
+<br>
+<div *ngIf="timelineChartData.dataTable">
+    <google-chart #GoogleTimelineChart [data]="timelineChartData"></google-chart>
+</div>
