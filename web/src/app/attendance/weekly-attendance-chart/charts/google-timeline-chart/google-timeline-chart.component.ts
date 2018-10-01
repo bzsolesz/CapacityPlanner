@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input, OnInit, OnDestroy } from "@angular/core";
-import { WeeklyAttendanceData } from "../weekly-attendance-data";
-import { WeekDay } from "../../../shared/date";
-import { DailyAttendance } from "../../../child/domain";
+import { WeeklyAttendanceData } from "../../weekly-attendance-data";
+import { WeekDay } from "../../../../shared/date";
+import { DailyAttendance } from "../../../../child/domain";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
