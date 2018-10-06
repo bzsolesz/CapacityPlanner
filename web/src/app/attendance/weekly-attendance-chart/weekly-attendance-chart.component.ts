@@ -9,7 +9,7 @@ import { Observable } from "rxjs/Observable";
 export class WeeklyAttendanceChartComponent implements OnInit {
   public constructor(private childService: ChildService) {}
   public $weeklyAttendance: Observable<WeeklyAttendanceData>;
-  public chartType: string = "timeline";
+  public chartType: string = "candlestick";
 
   public ngOnInit(): void {
     this.initWeeklyAttendanceData();

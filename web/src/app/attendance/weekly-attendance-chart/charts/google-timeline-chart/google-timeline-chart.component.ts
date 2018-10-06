@@ -37,7 +37,7 @@ export class GoogleTimelineChartComponent implements OnInit, OnDestroy {
       tooltip: {
         trigger: GoogleTimelineChartComponent.toTooltipTrigger(this.showTooltip)
       },
-      height: 500
+      height: 550
     }
   };
 
@@ -55,7 +55,7 @@ export class GoogleTimelineChartComponent implements OnInit, OnDestroy {
     dataTable.push(GoogleTimelineChartComponent.TIMELINE_HEAD);
 
     Object.keys(WeekDay).forEach((day: WeekDay) => {
-      weeklyAttendance.getBy(day).forEach((dailyAttendance: DailyAttendance, childName: string) => {
+      weeklyAttendance.getAttendanceByDay(WeekDay[day]).forEach((dailyAttendance: DailyAttendance, childName: string) => {
         dataTable.push([
           day,
           childName,
