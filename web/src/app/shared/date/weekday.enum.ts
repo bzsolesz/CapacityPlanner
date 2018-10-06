@@ -1,9 +1,9 @@
 export enum WeekDay {
-  MONDAY = "monday",
-  TUESDAY = "tuesday",
-  WEDNESDAY = "wednesday",
-  THURSDAY = "thursday",
-  FRIDAY = "friday"
+  MONDAY = "MONDAY",
+  TUESDAY = "TUESDAY",
+  WEDNESDAY = "WEDNESDAY",
+  THURSDAY = "THURSDAY",
+  FRIDAY = "FRIDAY"
 }
 
 export const MONDAY: WeekDay = WeekDay.MONDAY;

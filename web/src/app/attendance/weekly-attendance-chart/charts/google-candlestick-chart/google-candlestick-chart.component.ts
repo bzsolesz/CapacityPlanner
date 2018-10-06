@@ -79,10 +79,10 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
     dataTable.push(this.initHead(weeklyAttendance));
 
     Object.keys(WeekDay).forEach((day: WeekDay) => {
-      const dailyAttendanceMap: Map<string, DailyAttendance> = weeklyAttendance.getAttendanceByDay(WeekDay[day]);
+      const dailyAttendanceMap: Map<string, DailyAttendance> = weeklyAttendance.getAttendanceByDay(day);
 
       // tslint:disable-next-line:no-any
-      let dataRow: any[] = [WeekDay[day]];
+      let dataRow: any[] = [day];
       children.forEach((child: string) => {
         if (dailyAttendanceMap.has(child)) {
           const attendance: DailyAttendance = dailyAttendanceMap.get(child);
