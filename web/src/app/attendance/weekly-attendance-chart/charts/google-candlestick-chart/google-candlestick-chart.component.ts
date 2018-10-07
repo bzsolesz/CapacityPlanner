@@ -14,7 +14,7 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
   @Input()
   public weeklyAttendance: Observable<WeeklyAttendanceData>;
 
-  public groupWidth: string = "50%";
+  public size: string = "50%";
   public barNotLine: boolean = false;
   public showTooltip: boolean = false;
 
@@ -26,7 +26,7 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
         trigger: GoogleCandlestickChartComponent.toTooltipTrigger(this.showTooltip)
       },
       bar: {
-        groupWidth: this.groupWidth
+        groupWidth: this.size
       },
       vAxis: {
         ticks: [
@@ -139,7 +139,7 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
   public redraw(): void {
     this.chart.wrapper.setDataTable(this.barNotLine ? this.barDataTable : this.lineDataTable);
     this.chart.options.tooltip.trigger = GoogleCandlestickChartComponent.toTooltipTrigger(this.showTooltip);
-    this.chart.options.bar.groupWidth = this.groupWidth;
+    this.chart.options.bar.groupWidth = this.size;
     this.chart.redraw();
   }
 }
