@@ -1,8 +1,5 @@
 import { browser } from "protractor";
-
-import { ChildListPage } from "../../page_objects/child/child-list.po";
-import { ChildDetailPage } from "../../page_objects/child/child-detail.po";
-import { ConfirmationDialogPage } from "../../page_objects/shared/confirmation-dialog.po";
+import { ChildDetailPage, ChildListPage, ConfirmationDialogPage } from "../../page_objects";
 
 describe("By the Child feature the User", () => {
 

@@ -10,6 +10,10 @@ export class ChildListPage {
     browser.get("/child/all");
   }
 
+  public thenPageIsDisplayed(): void {
+    expect(this.mainDisplay.isDisplayed()).toBeTruthy();
+  }
+
   public clickOnChildListItemLink(itemIndex: number): void {
     this.listItems.get(itemIndex).click();
   }

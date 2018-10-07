@@ -5,9 +5,12 @@ import { ChildListComponent } from "./child-list/child-list.component";
 import { ChildDetailPageAction } from "./child-detail/child-detail-page-action";
 
 const childRoutes: Routes = [
-  { path: "child/all", component: ChildListComponent },
-  { path: "child/add", component: ChildDetailComponent, data: {pageAction: ChildDetailPageAction.ADD}},
-  { path: "child/:id", component: ChildDetailComponent, data: {pageAction: ChildDetailPageAction.VIEW}}
+  { path: "child", children: [
+    { path: "all", component: ChildListComponent },
+    { path: "add", component: ChildDetailComponent, data: {pageAction: ChildDetailPageAction.ADD}},
+    { path: ":id", component: ChildDetailComponent, data: {pageAction: ChildDetailPageAction.VIEW}},
+    { path: "", redirectTo: "all", pathMatch: "full" }
+  ]}
 ];
 
 @NgModule({

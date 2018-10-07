@@ -1,0 +1,23 @@
+<div class="panel-body">
+  <div class="panel panel-default">
+		<div class="panel-heading">
+      <h3 class="panel-title">Weekly Attendance</h3>
+    </div>
+		<div class="panel-body">
+      <div class="form-inline">
+        <div class="form-group">
+          Chart type:
+          <select class="form-control" [(ngModel)]="chartType">
+            <option value="timeline">Timeline</option>
+            <option value="candlestick">Candlestick</option>
+          </select>
+        </div>
+      </div>
+      <br>
+      <div [ngSwitch]="chartType">
+          <app-google-timeline-chart *ngSwitchCase="'timeline'" [weeklyAttendance]="$weeklyAttendance"></app-google-timeline-chart>
+          <app-google-candlestick-chart *ngSwitchCase="'candlestick'" [weeklyAttendance]="$weeklyAttendance"></app-google-candlestick-chart>
+      </div>
+    </div>
+  </div>
+</div>

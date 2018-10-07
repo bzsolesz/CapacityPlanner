@@ -19,11 +19,19 @@
 	<ul>
 		<li>confirm user the successful deletion</li>
 	</ul>
+	<h4>Display weekly attendance feature</h4>
+	<ul>
+		<li>Web unit and e2e tests</li>
+	</ul>
 	<h4>Technical debt / Technical improvement</h4>
 	<ul>
 		<li>use Lombok to manage boiler plate code for POJOs</li>
 		<li>reorganize routes in web module to have them defined only once</li>
 		<li>remove package default Child constructor and mandatory fields setter and replace them with JsonCreator and JsonProperty</li>
+		<li>rename e2e/page_objects to e2e/pages</li>
+		<li>rename e2e/mock_backend to e2e/backend-mocks</li>
+		<li>refactor *.po.ts to .page.ts</li>
+		<li>introduce browser.page.ts for all browser.* calls</li>
 	</ul>
 	<h4>Audit / Logging</h4>
 	<ul>
