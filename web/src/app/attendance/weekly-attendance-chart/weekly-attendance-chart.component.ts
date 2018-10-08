@@ -4,7 +4,8 @@ import { WeeklyAttendanceData } from "./weekly-attendance-data";
 import { Observable } from "rxjs/Observable";
 
 @Component({
-  templateUrl: "./weekly-attendance-chart.component.html"
+  templateUrl: "./weekly-attendance-chart.component.html",
+  styleUrls: ["./weekly-attendance-chart.component.css"]
 })
 export class WeeklyAttendanceChartComponent implements OnInit {
   public constructor(private childService: ChildService) {}
@@ -13,6 +14,10 @@ export class WeeklyAttendanceChartComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initWeeklyAttendanceData();
+  }
+
+  public print(): void {
+    window.print();
   }
 
   private initWeeklyAttendanceData(): void {
