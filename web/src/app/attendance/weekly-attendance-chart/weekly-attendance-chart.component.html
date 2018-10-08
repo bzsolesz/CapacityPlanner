@@ -4,7 +4,7 @@
       <h3 class="panel-title">Weekly Attendance</h3>
     </div>
 		<div class="panel-body">
-      <div class="form-inline">
+      <div class="form-inline hidden-print">
         <div class="form-group">
           Chart type:
           <select class="form-control" [(ngModel)]="chartType">
@@ -12,11 +12,14 @@
             <option value="candlestick">Candlestick</option>
           </select>
         </div>
+        <button class="btn btn-primary" type="button" id="printButton" (click)="print()">
+          <span class="glyphicon glyphicon-print"></span>&nbsp;Print
+        </button>
       </div>
-      <br>
+      <br class="hidden-print">
       <div [ngSwitch]="chartType">
-          <app-google-timeline-chart *ngSwitchCase="'timeline'" [weeklyAttendance]="$weeklyAttendance"></app-google-timeline-chart>
-          <app-google-candlestick-chart *ngSwitchCase="'candlestick'" [weeklyAttendance]="$weeklyAttendance"></app-google-candlestick-chart>
+        <app-google-timeline-chart *ngSwitchCase="'timeline'" [weeklyAttendance]="$weeklyAttendance"></app-google-timeline-chart>
+        <app-google-candlestick-chart *ngSwitchCase="'candlestick'" [weeklyAttendance]="$weeklyAttendance"></app-google-candlestick-chart>
       </div>
     </div>
   </div>
