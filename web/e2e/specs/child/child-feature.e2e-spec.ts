@@ -33,11 +33,13 @@ describe("By the Child feature the User", () => {
     expect(childDetailPage.firstNameInput.getAttribute("value")).toBe("Peter");
     expect(childDetailPage.surnameInput.getAttribute("value")).toBe("Jones");
     expect(childDetailPage.dateOfBirthInput.getAttribute("value")).toBe("06/04/2018");
-    expect(childDetailPage.mondayAttendanceFrom.getAttribute("ng-reflect-model")).toContain("08:30");
-    expect(childDetailPage.mondayAttendanceTo.getAttribute("ng-reflect-model")).toContain("18:30");
+    expect(childDetailPage.mondayAttendanceFromSelect.getAttribute("ng-reflect-model")).toContain("08:30");
+    expect(childDetailPage.mondayAttendanceToSelect.getAttribute("ng-reflect-model")).toContain("18:30");
   });
 
   it("should be able to update a Child", () => {
+    ngApimock.echoRequest("updateChild_9", true);
+
     childDetailPage.navigateToPage(9).then(() => {
       ngApimock.selectScenario("getChild_9", "updated");
       ngApimock.selectScenario("getChild_All", "updatedChild_9");
@@ -49,6 +51,8 @@ describe("By the Child feature the User", () => {
     childDetailPage.firstNameInput.sendKeys(" Updated");
     childDetailPage.dateOfBirthInput.click();
     childDetailPage.datePickerEighthDayOfMonth.click();
+    childDetailPage.mondayAttendanceFrom0930.click();
+    childDetailPage.mondayAttendanceTo1730.click();
 
     childDetailPage.saveButton.click();
 
@@ -69,6 +73,8 @@ describe("By the Child feature the User", () => {
   });
 
   it("should be able to add a Child", () => {
+    ngApimock.echoRequest("addNewChild", true);
+
     childListPage.navigateToPage();
 
     childListPage.addChildButton.click().then(() => {
@@ -83,6 +89,8 @@ describe("By the Child feature the User", () => {
     childDetailPage.surnameInput.sendKeys("Child");
     childDetailPage.dateOfBirthInput.click();
     childDetailPage.datePickerEighthDayOfMonth.click();
+    childDetailPage.mondayAttendanceFrom0930.click();
+    childDetailPage.mondayAttendanceTo1730.click();
 
     childDetailPage.saveButton.click();
 
@@ -95,7 +103,9 @@ describe("By the Child feature the User", () => {
     expect(childListPage.listItems.get(2).getText()).toContain("New Child (08/03/1999)");
   });
 
-  it("should be able to Delete a Child", () => {
+  it("should be able to delete a Child", () => {
+    ngApimock.echoRequest("deleteChild_9", true);
+
     childListPage.navigateToPage();
 
     expect(childListPage.listItems.count()).toBe(2);
