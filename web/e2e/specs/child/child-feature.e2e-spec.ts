@@ -33,8 +33,8 @@ describe("By the Child feature the User", () => {
     expect(childDetailPage.firstNameInput.getAttribute("value")).toBe("Peter");
     expect(childDetailPage.surnameInput.getAttribute("value")).toBe("Jones");
     expect(childDetailPage.dateOfBirthInput.getAttribute("value")).toBe("06/04/2018");
-    expect(childDetailPage.mondayAttendance.getText()).toContain("Monday");
-    expect(childDetailPage.mondayAttendance.getText()).toContain("08:30 - 18:30");
+    expect(childDetailPage.mondayAttendanceFrom.getAttribute("ng-reflect-model")).toContain("08:30");
+    expect(childDetailPage.mondayAttendanceTo.getAttribute("ng-reflect-model")).toContain("18:30");
   });
 
   it("should be able to update a Child", () => {

@@ -8,14 +8,12 @@ import { ConfirmationDialogModule } from "../shared/confirmation-dialog";
 import { ChildDetailComponent } from "./child-detail/child-detail.component";
 import { ChildListComponent } from "./child-list/child-list.component";
 import { ChildService } from "./domain";
-import { WeeklyAttendanceComponent } from "./weekly-attendance/weekly-attendance.component";
 import { DailyAttendanceComponent } from "./daily-attendance/daily-attendance.component";
 
 @NgModule({
   declarations: [
     ChildDetailComponent,
     ChildListComponent,
-    WeeklyAttendanceComponent,
     DailyAttendanceComponent
   ],
   imports: [

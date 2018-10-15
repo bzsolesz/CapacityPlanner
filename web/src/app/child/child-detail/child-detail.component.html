@@ -26,8 +26,40 @@
 								<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 							</div>
 						</div>
-					</div>
-					<app-weekly-attendance [attendance]="child.attendance"></app-weekly-attendance>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-2">Attendance</label>
+          </div>
+          <div class="form-group">
+            <div class="col-md-2 text-right control-label">Monday</div>
+            <div class="col-md-10">
+              <app-daily-attendance class="mondayAttendance" [(ngModel)]="child.attendance.monday" name="mondayAttendance"></app-daily-attendance>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-2 text-right control-label">Tuesday</div>
+            <div class="col-md-10">
+              <app-daily-attendance class="tuesdayAttendance" [(ngModel)]="child.attendance.tuesday" name="tuesdayAttendance"></app-daily-attendance>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-2 text-right control-label">Wednesday</div>
+            <div class="col-md-10">
+              <app-daily-attendance class="wednesdayAttendance" [(ngModel)]="child.attendance.wednesday" name="wednesdayAttendance"></app-daily-attendance>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-2 text-right control-label">Thursday</div>
+            <div class="col-md-10">
+              <app-daily-attendance class="thursdayAttendance" [(ngModel)]="child.attendance.thursday" name="thursdayAttendance"></app-daily-attendance>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-2 text-right control-label">Friday</div>
+            <div class="col-md-10">
+              <app-daily-attendance class="fridayAttendance" [(ngModel)]="child.attendance.friday" name="fridayAttendance"></app-daily-attendance>
+            </div>
+          </div>
 					<div class="form-group">
 						<div class="col-md-2">
 							<button (click)="goToChildrenPage()" id="goToChildrenPageButton" class="btn btn-default">
@@ -41,11 +73,11 @@
 							<button class="btn btn-default" type="button" id="deleteButton" *ngIf="isItViewChildPage" (click)="showConfirmationDialog()">
 								<span class="glyphicon glyphicon-floppy-remove"></span>&nbsp;Delete
 							</button>
-						</div>			
+						</div>
 					</div>
 				</form>
 			</div>
 		</div>
-	</div>		
+	</div>
 </div>
 <p *ngIf="queryErrorMessage" id="errorMessageDisplay">{{queryErrorMessage}}</p>
