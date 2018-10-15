@@ -23,6 +23,12 @@
 	<ul>
 		<li>Web unit and e2e tests</li>
 	</ul>
+	<h4>Edit attendance</h4>
+	<ul>
+		<li>backend work for update child attendance</li>
+		<li>backend work for add child with attendance</li>
+		<li>frontend validation for daily attendance (if one if undefined than both have to be, 'to' cannot less than or equal to 'from')</li>
+	</ul>
 	<h4>Technical debt / Technical improvement</h4>
 	<ul>
 		<li>use Lombok to manage boiler plate code for POJOs</li>
@@ -46,7 +52,15 @@
 		<li>capture and check somehow "void" requests sent by web to back-end during e2e testing</li>
 		<li>introduce CommonTestSteps + given/when/then in ui tests</li>
 		<li>introduce default objects for web mocks</li>
-		<li>Page (objects) in web unit tests</li>
+		<li>page (objects) in web unit tests</li>
+		<li>real e2e tests from database (rebuilt and reloaded), through tge backend (rebuild and redeployed) to web (rebuild and redeployed)</li>
+	</ul>
+	<h4>New features</h4>
+	<ul>
+	    <li>start date for child</li>
+	    <li>vacation for child to update their attendance for short periods</li>
+	    <li>below/under one year on weekly attendance chart</li>
+	    <li>google calendar integration for child attendance</li>
 	</ul>
 </body>
 </html>
