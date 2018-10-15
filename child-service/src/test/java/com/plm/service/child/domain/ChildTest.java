@@ -35,7 +35,7 @@ public class ChildTest {
     public void setUp() {
         initMocks(this);
 
-        testedChild = new Child(CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH);
+        testedChild = new Child(CHILD_ID, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH, attendanceMock);
 
         when(childEntityMock.getId()).thenReturn(CHILD_ID);
         when(childEntityMock.getFirstName()).thenReturn(TEST_FIRST_NAME);
@@ -61,15 +61,6 @@ public class ChildTest {
     }
 
     @Test
-    public void couldBeCreatedFromChildEntityWithoutAttendance() {
-        when(childEntityMock.getAttendance()).thenReturn(null);
-
-        testedChild = new Child(childEntityMock);
-
-        assertNull(testedChild.getAttendance());
-    }
-
-    @Test
     public void couldBeCreatedWithEmptyConstructorAndSetters() {
         testedChild = new Child();
         testedChild.setId(CHILD_ID);
@@ -84,8 +75,6 @@ public class ChildTest {
 
     @Test
     public void couldBeTransformedIntoAChildEntity() {
-        testedChild.setAttendance(attendanceMock);
-
         ChildEntity childEntity = testedChild.asEntity();
 
         assertEquals(CHILD_ID, childEntity.getId());
@@ -93,13 +82,6 @@ public class ChildTest {
         assertEquals(TEST_SURNAME, childEntity.getSurname());
         assertEquals(TEST_DATE_OF_BIRTH, childEntity.getDateOfBirth());
         assertEquals(attendanceEntityMock, childEntity.getAttendance());
-    }
-
-    @Test
-    public void couldBeTransformedIntoAChildEntityWithoutAttendance() {
-        ChildEntity childEntity = testedChild.asEntity();
-
-        assertNull(childEntity.getAttendance());
     }
 
     @Test
@@ -114,7 +96,7 @@ public class ChildTest {
 
     @Test
     public void shouldBeEqualWithAnotherChildInstanceWithTheSameId() {
-        assertTrue(testedChild.equals(new Child(CHILD_ID, null, null, null)));
+        assertTrue(testedChild.equals(new Child(CHILD_ID, null, null, null, null)));
     }
 
     @Test
@@ -129,7 +111,8 @@ public class ChildTest {
 
     @Test
     public void shouldNotBeEqualWithAChildWithDifferentId() {
-        assertFalse(testedChild.equals(new Child(CHILD_ID + 1, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH)));
+        assertFalse(testedChild.equals(
+                new Child(CHILD_ID + 1, TEST_FIRST_NAME, TEST_SURNAME, TEST_DATE_OF_BIRTH, attendanceMock)));
     }
     private void expectPopulatedChild() {
         assertEquals(CHILD_ID, testedChild.getId());

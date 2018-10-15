@@ -204,12 +204,10 @@ public class ChildControllerTest {
     }
 
     private Child initTestChild(int id) {
-        Child child = new Child(id, "firstName" + id, "surname" + id, LocalDate.now());
-
         DailyAttendance mondayAttendance = new DailyAttendance(LocalTime.of(8, 30), LocalTime.of(18, 30 ));
-        child.setAttendance(new WeeklyAttendance.Builder(id).monday(mondayAttendance).build());
+        WeeklyAttendance weeklyAttendance = new WeeklyAttendance.Builder(id).monday(mondayAttendance).build();
 
-        return child;
+        return new Child(id, "firstName" + id, "surname" + id, LocalDate.now(), weeklyAttendance);
     }
 
     private String childAsJson(Child child) throws JsonProcessingException {
