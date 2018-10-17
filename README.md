@@ -25,8 +25,6 @@
 	</ul>
 	<h4>Edit attendance</h4>
 	<ul>
-		<li>backend work for update child attendance</li>
-		<li>backend work for add child with attendance</li>
 		<li>frontend validation for daily attendance (if one if undefined than both have to be, 'to' cannot less than or equal to 'from')</li>
 	</ul>
 	<h4>Technical debt / Technical improvement</h4>
@@ -62,5 +60,10 @@
 	    <li>below/under one year on weekly attendance chart</li>
 	    <li>google calendar integration for child attendance</li>
 	</ul>
+	<h4>Defects</h4>
+	<ul>
+		<li>child name in candlestick chart is not picked up if the child does't attend on the busiest day</li>
+		<li>running the e2e test produces some errors in the html report for add children feature</li>
+	</ul>	
 </body>
 </html>
