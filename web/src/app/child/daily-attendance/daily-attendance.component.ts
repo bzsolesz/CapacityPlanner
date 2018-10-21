@@ -73,6 +73,6 @@ export class DailyAttendanceComponent implements ControlValueAccessor {
   }
 
   private toAttendance(from: string, to: string): DailyAttendance {
-    return from && to ? {from: from, to: to} : undefined;
+    return !from && !to ? undefined : {from: from, to: to};
   }
 }

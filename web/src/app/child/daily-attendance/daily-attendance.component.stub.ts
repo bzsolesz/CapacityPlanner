@@ -16,11 +16,19 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 // tslint:disable-next-line:component-class-suffix
 export class DailyAttendanceComponentStub implements ControlValueAccessor {
   public dailyAttendance: DailyAttendance;
+  private onChange: (dailyAttendance: DailyAttendance) => void;
 
   public writeValue(dailyAttendance: DailyAttendance): void {
     this.dailyAttendance = dailyAttendance;
   }
 
-  public registerOnChange(onChangeFunction: (dailyAttendance: DailyAttendance) => void): void { /**/ }
+  public registerOnChange(onChangeFunction: (dailyAttendance: DailyAttendance) => void): void {
+    this.onChange = onChangeFunction;
+  }
+
+  public emitChange(dailyAttendance: DailyAttendance): void {
+    this.onChange(dailyAttendance);
+  }
+
   public registerOnTouched(onTouchedFunction: () => void): void { /**/ }
 }

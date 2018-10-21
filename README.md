@@ -25,7 +25,8 @@
 	</ul>
 	<h4>Edit attendance</h4>
 	<ul>
-		<li>frontend validation for daily attendance (if one if undefined than both have to be, 'to' cannot less than or equal to 'from')</li>
+		<li>delete button for daily attendance</li>
+		<li>copy down button for daily attendance</li>
 	</ul>
 	<h4>Technical debt / Technical improvement</h4>
 	<ul>
@@ -36,6 +37,7 @@
 		<li>rename e2e/mock_backend to e2e/backend-mocks</li>
 		<li>refactor *.po.ts to .page.ts</li>
 		<li>introduce browser.page.ts for all browser.* calls</li>
+		<li>define DailyAttendance from/to as 'time' type instead of string</li>
 	</ul>
 	<h4>Audit / Logging</h4>
 	<ul>

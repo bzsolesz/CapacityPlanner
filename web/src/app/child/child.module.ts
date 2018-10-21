@@ -9,12 +9,14 @@ import { ChildDetailComponent } from "./child-detail/child-detail.component";
 import { ChildListComponent } from "./child-list/child-list.component";
 import { ChildService } from "./domain";
 import { DailyAttendanceComponent } from "./daily-attendance/daily-attendance.component";
+import { TimeRangeValidatorDirective } from "./daily-attendance/time-range.validator.directive";
 
 @NgModule({
   declarations: [
     ChildDetailComponent,
     ChildListComponent,
-    DailyAttendanceComponent
+    DailyAttendanceComponent,
+    TimeRangeValidatorDirective,
   ],
   imports: [
     CommonModule,

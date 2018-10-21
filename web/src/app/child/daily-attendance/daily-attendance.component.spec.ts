@@ -60,18 +60,11 @@ describe("Daily Attendance Component", () => {
     steps.thenFromAttendanceSelectionIsEmmited(defaultDailyAttendance().from, "17:30");
   }));
 
-  it("should emit undefined attendance to its host form if no 'from' is selected", fakeAsync(() => {
+  it("should emit undefined attendance to its host form if no 'from' and 'to' is selected", fakeAsync(() => {
     steps.givenDailyAttendance();
     steps.givenAHostWaitingForNewAttendanceSelection();
     steps.whenDetectChangesAndTick();
     steps.whenDeselectAttendance(FROM);
-    steps.thenAttendanceIsUndefined();
-  }));
-
-  it("should emit undefined attendance to its host form if no 'to' is selected", fakeAsync(() => {
-    steps.givenDailyAttendance();
-    steps.givenAHostWaitingForNewAttendanceSelection();
-    steps.whenDetectChangesAndTick();
     steps.whenDeselectAttendance(TO);
     steps.thenAttendanceIsUndefined();
   }));
