@@ -4,7 +4,7 @@ import { DebugElement } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
 import { Router, ActivatedRoute } from "@angular/router";
-import { FormsModule, Validator } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import * as dateUtil from "../../shared/date";
 import { defaultDatePickerConfig, DatePickerDirectiveStub } from "../../ngx-bootstrap";
 import { ChildDetailComponent } from "./child-detail.component";

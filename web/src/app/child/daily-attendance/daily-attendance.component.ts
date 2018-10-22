@@ -5,6 +5,7 @@ import { DailyAttendance } from "../domain/daily-attendance";
 @Component({
   selector: "app-daily-attendance",
   templateUrl: "./daily-attendance.component.html",
+  styleUrls: ["daily-attendance.component.css"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -62,6 +63,12 @@ export class DailyAttendanceComponent implements ControlValueAccessor {
 
   public registerOnTouched(onTouchedFunction: () => void): void {
     this.onTouched = onTouchedFunction;
+  }
+
+  public delete(): void {
+    this._from = this.toModel(this.NOT_SET_CHAR);
+    this._to = this.toModel(this.NOT_SET_CHAR);
+    this.onChange(this.toAttendance(this._from, this._to));
   }
 
   private toView(timeModel: string): string {

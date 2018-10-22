@@ -8,4 +8,7 @@
     <option value="{{NOT_SET_CHAR}}"></option>
     <option *ngFor="let timeOption of TIMES" value="{{timeOption}}">{{timeOption}}</option>
   </select>
+  <button class="btn btn-default btn-xs deleteButton" type="button" (click)="delete()">
+    <span class="glyphicon glyphicon-remove"></span>
+  </button>
 </div>

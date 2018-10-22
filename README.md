@@ -25,7 +25,6 @@
 	</ul>
 	<h4>Edit attendance</h4>
 	<ul>
-		<li>delete button for daily attendance</li>
 		<li>copy down button for daily attendance</li>
 	</ul>
 	<h4>Technical debt / Technical improvement</h4>

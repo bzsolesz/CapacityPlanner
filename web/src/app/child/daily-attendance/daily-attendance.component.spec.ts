@@ -84,6 +84,16 @@ describe("Daily Attendance Component", () => {
     steps.whenSelectLosesFocus(TO);
     steps.thenComponentIsTouched();
   });
+
+  it("should delete selection and emit change the host", fakeAsync(() => {
+    steps.givenDailyAttendance();
+    steps.givenAHostWaitingForNewAttendanceSelection();
+    steps.whenDeleteButtonIsClicked();
+    steps.whenDetectChangesAndTick();
+    steps.thenAttendanceIsNotSelected(FROM);
+    steps.thenAttendanceIsNotSelected(TO);
+    steps.thenAttendanceIsUndefined();
+  }));
 });
 
 class Steps extends CommonTestSteps<DailyAttendanceComponent> {
@@ -117,6 +127,10 @@ class Steps extends CommonTestSteps<DailyAttendanceComponent> {
   public whenSelectLosesFocus(selectType: SelectType): void {
     const optionsCss: string = selectType === FROM ? Page.FROM_SELECT : Page.TO_SELECT;
     this.debugElementByCss(optionsCss).triggerEventHandler("blur", {});
+  }
+
+  public whenDeleteButtonIsClicked(): void {
+    this.nativeElementByCss(Page.DELETE_BUTTON).click();
   }
 
   public thenFromAttendanceSelectionIsEmmited(from: string, to: string): void {
@@ -173,6 +187,7 @@ class Page {
   public static readonly TO_SELECT: string = ".dailyAttendanceToSelect";
   public static readonly FROM_SELECT_OPTIONS: string = ".dailyAttendanceFromSelect option";
   public static readonly TO_SELECT_OPTIONS: string = ".dailyAttendanceToSelect option";
+  public static readonly DELETE_BUTTON: string = ".deleteButton";
 }
 
 enum SelectType {
