@@ -24,7 +24,10 @@
         "id" : "9",
         "firstName" : "Peter Updated",
         "surname" : "Jones",
-        "dateOfBirth" : "01/04/2018"
+        "dateOfBirth" : "01/04/2018",
+        "attendance": {
+          "monday": {"from": "09:30", "to": "17:30"}
+        }
       }
     }
   }

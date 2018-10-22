@@ -64,7 +64,6 @@
 	<h4>Defects</h4>
 	<ul>
 		<li>child name in candlestick chart is not picked up if the child does't attend on the busiest day</li>
-		<li>running the e2e test produces some errors in the html report for add children feature</li>
 	</ul>	
 </body>
 </html>

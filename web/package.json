@@ -11,7 +11,7 @@
     "chrome-driver": "chromedriver",
     "mock-backend": "node e2e/mock_backend/mock_backend.js",
     "e2e": "ng e2e --webdriver-update false --proxy-config e2e/proxy.config.json --env=e2e",
-    "e2e_debug": "ng serve --proxy-config e2e/proxy.config.json --env=e2e"
+    "e2e-debug": "ng serve --proxy-config e2e/proxy.config.json --env=e2e"
   },
   "private": true,
   "dependencies": {

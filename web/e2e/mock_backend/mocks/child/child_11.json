@@ -11,8 +11,11 @@
         "id" : "11",
         "firstName" : "New",
         "surname" : "Child",
-        "dateOfBirth" : "08/03/1999"
-      }    
+        "dateOfBirth" : "08/03/1999",
+        "attendance": {
+          "monday": {"from": "09:30", "to": "17:30"}
+        }
+      }
     }
   }
 }
