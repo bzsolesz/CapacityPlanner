@@ -56,9 +56,11 @@
 	</ul>
 	<h4>New features</h4>
 	<ul>
+		<li>daily aggregated child number chart</li>
 	    <li>start date for child</li>
-	    <li>vacation for child to update their attendance for short periods</li>
-	    <li>below/under one year on weekly attendance chart</li>
+	    <li>vacation for child</li>
+		<li>time rolling weekly attendance chart</li>
+	    <li>below/under one year on weekly attendance charts</li>
 	    <li>google calendar integration for child attendance</li>
 	</ul>
 	<h4>Defects</h4>
