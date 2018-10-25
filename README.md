@@ -63,7 +63,6 @@
 	</ul>
 	<h4>Defects</h4>
 	<ul>
-		<li>child name in candlestick chart is not picked up if the child does't attend on the busiest day</li>
 	</ul>	
 </body>
 </html>
