@@ -15,10 +15,10 @@ import { DailyAttendance } from "../domain/daily-attendance";
   ]
 })
 export class DailyAttendanceComponent implements ControlValueAccessor {
-  public readonly TIMES: string[] = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+  public static readonly TIMES: string[] = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
     "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00",
     "16:30", "17:00", "17:30", "18:00", "18:30"];
-  public readonly NOT_SET_CHAR: string = "-";
+  public static readonly NOT_SET_VALUE: string = "-";
 
   public _from: string;
   public _to: string;
@@ -41,6 +41,14 @@ export class DailyAttendanceComponent implements ControlValueAccessor {
 
   get to(): string {
     return this.toView(this._to);
+  }
+
+  get times(): string[] {
+    return DailyAttendanceComponent.TIMES;
+  }
+
+  get notSetValue(): string {
+    return DailyAttendanceComponent.NOT_SET_VALUE;
   }
 
   public writeValue(dailyAttendance: DailyAttendance): void {
@@ -66,17 +74,17 @@ export class DailyAttendanceComponent implements ControlValueAccessor {
   }
 
   public delete(): void {
-    this._from = this.toModel(this.NOT_SET_CHAR);
-    this._to = this.toModel(this.NOT_SET_CHAR);
+    this._from = this.toModel(this.notSetValue);
+    this._to = this.toModel(this.notSetValue);
     this.onChange(this.toAttendance(this._from, this._to));
   }
 
   private toView(timeModel: string): string {
-    return timeModel && this.TIMES.includes(timeModel) ? timeModel : this.NOT_SET_CHAR;
+    return timeModel && this.times.includes(timeModel) ? timeModel : this.notSetValue;
   }
 
   private toModel(timeString: string): string {
-    return timeString && this.TIMES.includes(timeString) ? timeString : undefined;
+    return timeString && this.times.includes(timeString) ? timeString : undefined;
   }
 
   private toAttendance(from: string, to: string): DailyAttendance {

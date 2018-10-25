@@ -96,7 +96,26 @@ describe("Daily Attendance Component", () => {
   }));
 });
 
+class Page {
+  public static readonly FROM_SELECT: string = ".dailyAttendanceFromSelect";
+  public static readonly TO_SELECT: string = ".dailyAttendanceToSelect";
+  public static readonly FROM_SELECT_OPTIONS: string = ".dailyAttendanceFromSelect option";
+  public static readonly TO_SELECT_OPTIONS: string = ".dailyAttendanceToSelect option";
+  public static readonly DELETE_BUTTON: string = ".deleteButton";
+}
+
 class Steps extends CommonTestSteps<DailyAttendanceComponent> {
+  private static readonly FROM_OPTIONS_SETTINGS: OptionsSettings = {
+    css: Page.FROM_SELECT_OPTIONS,
+    notSetIndex: 0,
+    setIndexOffset: 1
+  };
+  private static readonly TO_OPTIONS_SETTINGS: OptionsSettings = {
+    css: Page.TO_SELECT_OPTIONS,
+    notSetIndex: DailyAttendanceComponent.TIMES.length,
+    setIndexOffset: 0
+  };
+
   private host: HostStub;
   public givenDailyAttendance(): void {
     this.component.writeValue(defaultDailyAttendance());
@@ -121,7 +140,7 @@ class Steps extends CommonTestSteps<DailyAttendanceComponent> {
   }
 
   public whenDeselectAttendance(selectType: SelectType): void {
-    this.whenNewTimeIsSelected(selectType, this.component.NOT_SET_CHAR);
+    this.whenNewTimeIsSelected(selectType, DailyAttendanceComponent.NOT_SET_VALUE);
   }
 
   public whenSelectLosesFocus(selectType: SelectType): void {
@@ -146,31 +165,38 @@ class Steps extends CommonTestSteps<DailyAttendanceComponent> {
   }
 
   public thenAttendanceIsDisplayed(selectType: SelectType, expectedSelected: string): void {
-    const optionsCss: string = selectType === FROM ? Page.FROM_SELECT_OPTIONS : Page.TO_SELECT_OPTIONS;
-    const index: number = this.component.TIMES.indexOf(expectedSelected) + 1;
-    const option: DebugElement = this.debugElementsByCss(optionsCss)[index];
+    const optionsSettings: OptionsSettings = this.getOptionsSettings(selectType);
+    const index: number = DailyAttendanceComponent.TIMES.indexOf(expectedSelected) + optionsSettings.setIndexOffset;
+    const option: DebugElement = this.debugElementsByCss(optionsSettings.css)[index];
     expect(option.nativeElement.selected).toBeTruthy();
     expect(option.nativeElement.textContent).toEqual(expectedSelected);
   }
 
   public thenAttendanceIsNotSelected(selectType: SelectType): void {
-    const optionsCss: string = selectType === FROM ? Page.FROM_SELECT_OPTIONS : Page.TO_SELECT_OPTIONS;
-    const option: DebugElement = this.debugElementsByCss(optionsCss)[0];
+    const optionsSettings: OptionsSettings = this.getOptionsSettings(selectType);
+    const option: DebugElement = this.debugElementsByCss(optionsSettings.css)[optionsSettings.notSetIndex];
     expect(option.nativeElement.selected).toBeTruthy();
-    expect(option.nativeElement.value).toEqual(this.component.NOT_SET_CHAR);
+    expect(option.nativeElement.value).toEqual(DailyAttendanceComponent.NOT_SET_VALUE);
     expect(option.nativeElement.textContent).toEqual("");
   }
 
   public thenTimeSelectIsWithPredefinedTimes(selectType: SelectType): void {
-    const optionsCss: string = selectType === FROM ? Page.FROM_SELECT_OPTIONS : Page.TO_SELECT_OPTIONS;
-    const options: DebugElement[] = this.debugElementsByCss(optionsCss);
-    expect(options.length).toEqual(this.component.TIMES.length + 1);
-    expect(options[0].nativeElement.value).toEqual(this.component.NOT_SET_CHAR);
-    expect(options[0].nativeElement.textContent).toEqual("");
-    this.component.TIMES.forEach((time: string, index: number) => {
-      expect(options[index + 1].nativeElement.value).toEqual(time);
-      expect(options[index + 1].nativeElement.textContent).toEqual(time);
+    const optionsSettings: OptionsSettings = this.getOptionsSettings(selectType);
+    const options: DebugElement[] = this.debugElementsByCss(optionsSettings.css);
+    const notSetOption: DebugElement = options[optionsSettings.notSetIndex];
+
+    expect(options.length).toEqual(DailyAttendanceComponent.TIMES.length + 1);
+    expect(notSetOption.nativeElement.value).toEqual(DailyAttendanceComponent.NOT_SET_VALUE);
+    expect(notSetOption.nativeElement.textContent).toEqual("");
+    DailyAttendanceComponent.TIMES.forEach((time: string, index: number) => {
+      const option: DebugElement = options[index + optionsSettings.setIndexOffset];
+      expect(option.nativeElement.value).toEqual(time);
+      expect(option.nativeElement.textContent).toEqual(time);
     });
+  }
+
+  private getOptionsSettings(selectType: SelectType): OptionsSettings {
+    return selectType === FROM ? Steps.FROM_OPTIONS_SETTINGS : Steps.TO_OPTIONS_SETTINGS;
   }
 
   private whenNewTimeIsSelected(selectType: SelectType, selected: string): void {
@@ -182,12 +208,10 @@ class Steps extends CommonTestSteps<DailyAttendanceComponent> {
   }
 }
 
-class Page {
-  public static readonly FROM_SELECT: string = ".dailyAttendanceFromSelect";
-  public static readonly TO_SELECT: string = ".dailyAttendanceToSelect";
-  public static readonly FROM_SELECT_OPTIONS: string = ".dailyAttendanceFromSelect option";
-  public static readonly TO_SELECT_OPTIONS: string = ".dailyAttendanceToSelect option";
-  public static readonly DELETE_BUTTON: string = ".deleteButton";
+interface OptionsSettings {
+  css: string;
+  notSetIndex: number;
+  setIndexOffset: number;
 }
 
 enum SelectType {

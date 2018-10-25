@@ -1,4 +1,4 @@
-import { WeekDay, MONDAY } from "../../shared/date";
+import { WeekDay } from "../../shared/date";
 import { DailyAttendance, Child } from "../../child/domain";
 
 export class WeeklyAttendanceData {

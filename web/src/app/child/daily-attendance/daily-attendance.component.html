@@ -1,12 +1,12 @@
 <div class="form-inline">
   <select class="form-control dailyAttendanceFromSelect" [(ngModel)]="from" (blur)="blur()">
-    <option value="{{NOT_SET_CHAR}}"></option>
-    <option *ngFor="let timeOption of TIMES" value="{{timeOption}}">{{timeOption}}</option>
+    <option value="{{notSetValue}}"></option>
+    <option *ngFor="let timeOption of times" value="{{timeOption}}">{{timeOption}}</option>
   </select>
   &nbsp;-&nbsp;
   <select class="form-control dailyAttendanceToSelect" [(ngModel)]="to" (blur)="blur()">
-    <option value="{{NOT_SET_CHAR}}"></option>
-    <option *ngFor="let timeOption of TIMES" value="{{timeOption}}">{{timeOption}}</option>
+    <option *ngFor="let timeOption of times" value="{{timeOption}}">{{timeOption}}</option>
+    <option value="{{notSetValue}}"></option>
   </select>
   <button class="btn btn-default btn-xs deleteButton" type="button" (click)="delete()">
     <span class="glyphicon glyphicon-remove"></span>
