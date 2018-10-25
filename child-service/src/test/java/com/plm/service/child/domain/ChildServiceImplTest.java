@@ -2,6 +2,7 @@ package com.plm.service.child.domain;
 
 import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.dao.ChildEntityRepository;
+import com.plm.service.child.dao.WeeklyAttendanceEntity;
 import com.plm.service.common.domain.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -40,6 +42,8 @@ public class ChildServiceImplTest {
     private ChildEntity childEntityMock2;
     @Mock
     private ChildEntity childEntityMock3;
+    @Mock
+    private WeeklyAttendance weeklyAttendanceMock;
 
     @Before
     public void setup() {
@@ -108,7 +112,7 @@ public class ChildServiceImplTest {
             return childEntityMock1;
         }).when(childEntityRepositoryMock).save(any(ChildEntity.class));
 
-        Child testChild = new Child(TEST_CHILD_ID1, null, null, LocalDate.now());
+        Child testChild = new Child(TEST_CHILD_ID1, null, null, LocalDate.now(), weeklyAttendanceMock);
 
         testedService.updateChild(testChild);
 
@@ -121,6 +125,7 @@ public class ChildServiceImplTest {
         testChild.setSurname(TEST_SURNAME);
         testChild.setFirstName(TEST_FIRST_NAME);
         testChild.setDateOfBirth(LocalDate.now());
+        testChild.setAttendance(weeklyAttendanceMock);
 
         doAnswer(invocationOnMock -> {
             ChildEntity childEntityToAdd = invocationOnMock.getArgumentAt(0, ChildEntity.class);
@@ -147,8 +152,11 @@ public class ChildServiceImplTest {
     }
 
     private void initChildEntityMock(ChildEntity childEntityMock, int id) {
+        WeeklyAttendanceEntity weeklyAttendanceEntityMock = mock(WeeklyAttendanceEntity.class);
+        when(weeklyAttendanceEntityMock.getId()).thenReturn(id);
 
         when(childEntityMock.getId()).thenReturn(id);
         when(childEntityMock.getDateOfBirth()).thenReturn(LocalDate.now());
+        when(childEntityMock.getAttendance()).thenReturn(weeklyAttendanceEntityMock);
     }
 }

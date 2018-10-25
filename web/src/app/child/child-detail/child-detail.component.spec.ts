@@ -9,10 +9,11 @@ import * as dateUtil from "../../shared/date";
 import { defaultDatePickerConfig, DatePickerDirectiveStub } from "../../ngx-bootstrap";
 import { ChildDetailComponent } from "./child-detail.component";
 import { ChildDetailPageAction } from "./child-detail-page-action";
-import { ChildService, Child, AddedChild } from "../domain";
+import { ChildService, Child, AddedChild, defaultWeeklyAttendance, defaultDailyAttendance } from "../domain";
 import { ActivatedRouteStub } from "../../test-utils";
 import { ConfirmationDialogService, ConfirmationDialogServiceStub } from "../../shared/confirmation-dialog";
-import { WeeklyAttendanceComponentStub } from "../weekly-attendance/weekly-attendance.component.stub";
+import { DailyAttendanceComponentStub } from "../daily-attendance/daily-attendance.component.stub";
+import { TimeRangeValidatorDirectiveStub } from "../daily-attendance/time-range.validator.directive.stub";
 
 describe("Child-Detail Component", () => {
   let fixture: ComponentFixture<ChildDetailComponent>;
@@ -26,7 +27,12 @@ describe("Child-Detail Component", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChildDetailComponent, DatePickerDirectiveStub, WeeklyAttendanceComponentStub ],
+      declarations: [
+        ChildDetailComponent,
+        DatePickerDirectiveStub,
+        DailyAttendanceComponentStub,
+        TimeRangeValidatorDirectiveStub
+      ],
       imports: [ FormsModule ],
       providers: [
         { provide: Router, useClass: RouterSpy },
@@ -58,13 +64,19 @@ describe("Child-Detail Component", () => {
     fixture.detectChanges();
     tick();
     childDetailPage.initPage();
+    fixture.detectChanges();
+    tick();
 
     expect(childDetailPage.childDetailDisplayFirstName.nativeElement.value).toBe(testChild.firstName);
     expect(childDetailPage.childDetailDisplaySurname.nativeElement.value).toBe(testChild.surname);
     expect(childDetailPage.childDetailDisplayDateOfBirth.nativeElement.value).toEqual(
       dateUtil.fromEnGbBStringToDate(testChild.dateOfBirth).toString());
     expect(childDetailPage.errorMessageDisplay).toBeNull();
-    expect(childDetailPage.weeklyAttendanceDisplay.nativeElement.textContent).toEqual("08:30-18:30");
+    expect(childDetailPage.mondayAttendance.nativeElement.textContent).toEqual("08:30-18:30");
+    expect(childDetailPage.tuesdayAttendance.nativeElement.textContent).toEqual("09:00-18:30");
+    expect(childDetailPage.wednesdayAttendance.nativeElement.textContent).toEqual("09:30-18:30");
+    expect(childDetailPage.thursdayAttendance.nativeElement.textContent).toEqual("08:30-18:00");
+    expect(childDetailPage.fridayAttendance.nativeElement.textContent).toEqual("08:30-17:30");
   }));
 
   it("should display the error message when query for child by id failed", () => {
@@ -98,6 +110,19 @@ describe("Child-Detail Component", () => {
     expectFormGroupToHasErrorForEmptyInput(
       childDetailPage.childDetailDisplayDateOfBirthFormGroup, childDetailPage.childDetailDisplayDateOfBirth);
   }));
+
+  [
+    "monday", "tuesday", "wednesday", "thursday", "friday"
+  ].forEach((day: string) =>
+    it(`should highlight error if ${day} attendance is not valid`, fakeAsync(() => {
+      initPageWithTestChild();
+
+      const attendanceFromGroup: DebugElement = childDetailPage[`${day}AttendanceFormGroup`];
+      const attendanceTag: DebugElement = childDetailPage[`${day}Attendance`];
+      const validatorStub: TimeRangeValidatorDirectiveStub = attendanceTag.injector.get(TimeRangeValidatorDirectiveStub);
+
+      expectAttendanceFromGroupToHasErrorForFailingValidation(attendanceFromGroup, attendanceTag, validatorStub);
+    })));
 
   it("should set default config for the date of birth datepicker", fakeAsync(() => {
     initPageWithTestChild();
@@ -210,8 +235,12 @@ describe("Child-Detail Component", () => {
 
     childDetailPage.saveButton.nativeElement.click();
 
-    expect(childServiceSpy.addChild).toHaveBeenCalledWith(
-      {id: undefined, firstName: updatedFirstName, surname: updatedSurname, dateOfBirth: updatedDateOfBirth}
+    expect(childServiceSpy.addChild).toHaveBeenCalledWith({
+      id: undefined,
+      firstName: updatedFirstName,
+      surname: updatedSurname,
+      dateOfBirth: updatedDateOfBirth,
+      attendance: {id: undefined}}
     );
     expect(routerSpy.navigate).toHaveBeenCalledWith(["/child", addedChild.id]);
   }));
@@ -307,7 +336,7 @@ describe("Child-Detail Component", () => {
       firstName: "FIRST_NAME",
       surname: "SURNAME",
       dateOfBirth: "10/12/2017",
-      attendance: {id: 888, monday: {from: "08:30", to: "18:30"}}
+      attendance: defaultWeeklyAttendance()
     };
   }
 
@@ -327,7 +356,7 @@ describe("Child-Detail Component", () => {
     expect(input.nativeElement.value).toEqual("");
     expect(formGroup.classes["has-error"]).toBeFalsy();
 
-    changeInputValue(input, "Some valaue");
+    changeInputValue(input, "Some value");
 
     expect(formGroup.classes["has-error"]).toBeFalsy();
   }
@@ -353,6 +382,21 @@ describe("Child-Detail Component", () => {
     });
     changeInputValue(childDetailPage.childDetailDisplayDateOfBirth, dateUtil.fromEnGbBStringToDate(value).toString());
   }
+
+  function expectAttendanceFromGroupToHasErrorForFailingValidation(
+      attendanceFromGroup: DebugElement,
+      attendanceTag: DebugElement,
+      validator: TimeRangeValidatorDirectiveStub): void {
+
+    expect(attendanceFromGroup.classes["has-error"]).toBeFalsy();
+
+    validator.validationErrors = {errors: {}};
+    attendanceTag.componentInstance.emitChange(defaultDailyAttendance());
+
+    fixture.detectChanges();
+
+    expect(attendanceFromGroup.classes["has-error"]).toBeTruthy();
+  }
 });
 
 class ChildDetailPage {
@@ -371,7 +415,16 @@ class ChildDetailPage {
   public goToChildrenPageButton: DebugElement;
   public saveButton: DebugElement;
   public deleteButton: DebugElement;
-  public weeklyAttendanceDisplay: DebugElement;
+  public mondayAttendance: DebugElement;
+  public tuesdayAttendance: DebugElement;
+  public wednesdayAttendance: DebugElement;
+  public thursdayAttendance: DebugElement;
+  public fridayAttendance: DebugElement;
+  public mondayAttendanceFormGroup: DebugElement;
+  public tuesdayAttendanceFormGroup: DebugElement;
+  public wednesdayAttendanceFormGroup: DebugElement;
+  public thursdayAttendanceFormGroup: DebugElement;
+  public fridayAttendanceFormGroup: DebugElement;
 
   public initPage(): void {
     this.errorMessageDisplay = this.fixture.debugElement.query(By.css("#errorMessageDisplay"));
@@ -386,10 +439,19 @@ class ChildDetailPage {
       this.childDetailDisplayFirstNameFormGroup = this.childDetailDisplay.query(By.css("#firstNameFormGroup"));
       this.childDetailDisplaySurnameFormGroup = this.childDetailDisplay.query(By.css("#surnameFormGroup"));
       this.childDetailDisplayDateOfBirthFormGroup = this.childDetailDisplay.query(By.css("#dateOfBirthFormGroup"));
-      this.weeklyAttendanceDisplay = this.childDetailDisplay.query(By.css("app-weekly-attendance"));
       this.childDetailForm = this.childDetailDisplay.query(By.css("form"));
       this.saveButton = this.childDetailDisplay.query(By.css("#saveButton"));
       this.deleteButton = this.childDetailDisplay.query(By.css("#deleteButton"));
+      this.mondayAttendance = this.childDetailDisplay.query(By.css(".mondayAttendance"));
+      this.tuesdayAttendance = this.childDetailDisplay.query(By.css(".tuesdayAttendance"));
+      this.wednesdayAttendance = this.childDetailDisplay.query(By.css(".wednesdayAttendance"));
+      this.thursdayAttendance = this.childDetailDisplay.query(By.css(".thursdayAttendance"));
+      this.fridayAttendance = this.childDetailDisplay.query(By.css(".fridayAttendance"));
+      this.mondayAttendanceFormGroup = this.childDetailDisplay.query(By.css("#mondayAttendanceFormGroup"));
+      this.tuesdayAttendanceFormGroup = this.childDetailDisplay.query(By.css("#tuesdayAttendanceFormGroup"));
+      this.wednesdayAttendanceFormGroup = this.childDetailDisplay.query(By.css("#wednesdayAttendanceFormGroup"));
+      this.thursdayAttendanceFormGroup = this.childDetailDisplay.query(By.css("#thursdayAttendanceFormGroup"));
+      this.fridayAttendanceFormGroup = this.childDetailDisplay.query(By.css("#fridayAttendanceFormGroup"));
     }
   }
 }

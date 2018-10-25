@@ -1,4 +1,14 @@
-<div *ngIf="attendance" class="col-md-12 dailyAttendance">
-    <div class="col-md-1 text-right dailyAttendanceDay">{{day}}:</div>
-    <div class="col-md-11 dailyAttendanceTime">{{attendance.from}} - {{attendance.to}}</div>
+<div class="form-inline">
+  <select class="form-control dailyAttendanceFromSelect" [(ngModel)]="from" (blur)="blur()">
+    <option value="{{notSetValue}}"></option>
+    <option *ngFor="let timeOption of times" value="{{timeOption}}">{{timeOption}}</option>
+  </select>
+  &nbsp;-&nbsp;
+  <select class="form-control dailyAttendanceToSelect" [(ngModel)]="to" (blur)="blur()">
+    <option *ngFor="let timeOption of times" value="{{timeOption}}">{{timeOption}}</option>
+    <option value="{{notSetValue}}"></option>
+  </select>
+  <button class="btn btn-default btn-xs deleteButton" type="button" (click)="delete()">
+    <span class="glyphicon glyphicon-remove"></span>
+  </button>
 </div>

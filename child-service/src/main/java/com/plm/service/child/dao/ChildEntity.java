@@ -25,7 +25,7 @@ public class ChildEntity {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "attendance_id")
+    @JoinColumn(name = "attendance_id", nullable = false)
     private WeeklyAttendanceEntity attendance;
 
     public ChildEntity() {

@@ -95,7 +95,7 @@ export class ChildDetailComponent implements OnInit {
   }
 
   private initAddChildPage(): void {
-    this.child = {id: undefined, firstName: "", surname: "", dateOfBirth: ""};
+    this.child = {id: undefined, firstName: "", surname: "", dateOfBirth: "", attendance: {id: undefined}};
   }
 
   private errorHandler(error: Error): void {

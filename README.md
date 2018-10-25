@@ -23,6 +23,10 @@
 	<ul>
 		<li>Web unit and e2e tests</li>
 	</ul>
+	<h4>Edit attendance</h4>
+	<ul>
+		<li>copy down button for daily attendance</li>
+	</ul>
 	<h4>Technical debt / Technical improvement</h4>
 	<ul>
 		<li>use Lombok to manage boiler plate code for POJOs</li>
@@ -32,6 +36,7 @@
 		<li>rename e2e/mock_backend to e2e/backend-mocks</li>
 		<li>refactor *.po.ts to .page.ts</li>
 		<li>introduce browser.page.ts for all browser.* calls</li>
+		<li>define DailyAttendance from/to as 'time' type instead of string</li>
 	</ul>
 	<h4>Audit / Logging</h4>
 	<ul>
@@ -46,7 +51,20 @@
 		<li>capture and check somehow "void" requests sent by web to back-end during e2e testing</li>
 		<li>introduce CommonTestSteps + given/when/then in ui tests</li>
 		<li>introduce default objects for web mocks</li>
-		<li>Page (objects) in web unit tests</li>
+		<li>page (objects) in web unit tests</li>
+		<li>real e2e tests from database (rebuilt and reloaded), through tge backend (rebuild and redeployed) to web (rebuild and redeployed)</li>
 	</ul>
+	<h4>New features</h4>
+	<ul>
+		<li>daily aggregated child number chart</li>
+	    <li>start date for child</li>
+	    <li>vacation for child</li>
+		<li>time rolling weekly attendance chart</li>
+	    <li>below/under one year on weekly attendance charts</li>
+	    <li>google calendar integration for child attendance</li>
+	</ul>
+	<h4>Defects</h4>
+	<ul>
+	</ul>	
 </body>
 </html>

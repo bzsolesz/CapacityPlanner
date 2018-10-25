@@ -16,11 +16,12 @@ public class Child {
     private LocalDate dateOfBirth;
     private WeeklyAttendance attendance;
 
-    public Child(int id, String firstName, String surname, LocalDate dateOfBirth) {
+    public Child(int id, String firstName, String surname, LocalDate dateOfBirth, WeeklyAttendance attendance) {
         this.id = id;
         this.firstName = firstName;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
+        this.attendance = attendance;
     }
 
     Child() {
@@ -31,10 +32,7 @@ public class Child {
         this.firstName = entity.getFirstName();
         this.surname = entity.getSurname();
         this.dateOfBirth = entity.getDateOfBirth();
-
-        if (entity.getAttendance() != null) {
-            this.attendance = new WeeklyAttendance(entity.getAttendance());
-        }
+        this.attendance = new WeeklyAttendance(entity.getAttendance());
     }
 
     ChildEntity asEntity() {
@@ -44,10 +42,7 @@ public class Child {
         entity.setFirstName(this.firstName);
         entity.setSurname(this.surname);
         entity.setDateOfBirth(this.dateOfBirth);
-
-        if (this.attendance != null) {
-            entity.setAttendance(this.attendance.asEntity());
-        }
+        entity.setAttendance(this.attendance.asEntity());
 
         return entity;
     }

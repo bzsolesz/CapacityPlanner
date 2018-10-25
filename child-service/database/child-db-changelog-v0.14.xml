@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Grant update on Weekly Attendance table for Child Service user" author="bzsolesz">
+        <preConditions>
+            <dbms type="mysql"/>
+            <tableExists tableName="weekly_attendance"/>
+        </preConditions>
+        <sql>GRANT UPDATE ON weekly_attendance TO child_service@localhost</sql>
+        <comment>Grant update on Weekly Attendance table for Child Service user</comment>
+    </changeSet>
+
+    <changeSet id="Attendance id is not nullable anymore in Child table" author="bzsolesz">
+        <preConditions>
+            <tableExists tableName="child"/>
+        </preConditions>
+        <addNotNullConstraint tableName="child" columnName="attendance_id" columnDataType="java.sql.Types.INTEGER"/>
+    </changeSet>
+
+    <changeSet id="Grant insert on Weekly Attendance table for Child Service user" author="bzsolesz">
+        <preConditions>
+            <dbms type="mysql"/>
+            <tableExists tableName="weekly_attendance"/>
+        </preConditions>
+        <sql>GRANT INSERT ON weekly_attendance TO child_service@localhost</sql>
+        <comment>Grant insert on Weekly Attendance table for Child Service user</comment>
+    </changeSet>
+
+    <changeSet id="Grant delete on Weekly Attendance table for Child Service user" author="bzsolesz">
+        <preConditions>
+            <dbms type="mysql"/>
+            <tableExists tableName="weekly_attendance"/>
+        </preConditions>
+        <sql>GRANT DELETE ON weekly_attendance TO child_service@localhost</sql>
+        <comment>Grant delete on Weekly Attendance table for Child Service user</comment>
+    </changeSet>
+
+</databaseChangeLog>

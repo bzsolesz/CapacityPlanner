@@ -1,4 +1,4 @@
-import { WeekDay, MONDAY } from "../../shared/date";
+import { WeekDay } from "../../shared/date";
 import { DailyAttendance, Child } from "../../child/domain";
 
 export class WeeklyAttendanceData {
@@ -26,18 +26,18 @@ export class WeeklyAttendanceData {
     return this.attendanceMap.get(day);
   }
 
-  public getBusiestDay(): WeekDay {
-    let busiestDay: WeekDay = MONDAY;
-
-    Object.keys(WeekDay).forEach((day: WeekDay) => {
-      if (this.attendanceMap.get(day).size > this.attendanceMap.get(busiestDay).size) {
-        busiestDay = day;
-      }
-    });
-    return busiestDay;
-  }
-
   public getAttendingChildrenByDay(day: WeekDay): string[] {
     return Array.from(this.attendanceMap.get(day).keys());
+  }
+
+  public getChildren(): string[] {
+    const children: string[] = [];
+    Array.from(this.attendanceMap.values())
+      .forEach((dailyAttendance: Map<string, DailyAttendance>) =>
+        Array.from(dailyAttendance.keys())
+          .filter((child: string) => !children.includes(child))
+          .forEach((child: string) => children.push(child))
+      );
+    return children;
   }
 }

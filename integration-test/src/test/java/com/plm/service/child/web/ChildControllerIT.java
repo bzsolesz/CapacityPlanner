@@ -2,12 +2,16 @@ package com.plm.service.child.web;
 
 import com.plm.service.child.AbstractITBase;
 import com.plm.service.child.dao.ChildEntity;
+import com.plm.service.child.dao.WeeklyAttendanceEntity;
 import com.plm.service.child.domain.Child;
+import com.plm.service.child.domain.DailyAttendance;
+import com.plm.service.child.domain.WeeklyAttendance;
 import org.junit.Test;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -62,8 +66,18 @@ public class ChildControllerIT extends AbstractITBase {
     public void shouldUpdateChild() throws Exception {
         ChildEntity childEntity = persistTestChildEntity();
 
-        Child updatedChild =
-                new Child(childEntity.getId(), "UPDATED_FIRST_NAME", "UPDATED_SURNAME", childEntity.getDateOfBirth());
+        WeeklyAttendanceEntity attendanceEntity = childEntity.getAttendance();
+
+        DailyAttendance mondayAttendance = new DailyAttendance(attendanceEntity.getMondayFrom(), attendanceEntity.getMondayTo());
+        DailyAttendance tuesdayAttendance = new DailyAttendance(LocalTime.of(9, 30), LocalTime.of(17, 30));
+
+        WeeklyAttendance weeklyAttendance = new WeeklyAttendance.Builder(attendanceEntity.getId())
+                .monday(mondayAttendance)
+                .tuesday(tuesdayAttendance)
+                .build();
+
+        Child updatedChild = new Child(childEntity.getId(), "UPDATED_FIRST_NAME", "UPDATED_SURNAME",
+                childEntity.getDateOfBirth(), weeklyAttendance);
 
         String updatedChildJson = childAsJson(updatedChild);
 
@@ -79,6 +93,10 @@ public class ChildControllerIT extends AbstractITBase {
 
         assertEquals(updatedChild.getFirstName(), updatedChildEntity.getFirstName());
         assertEquals(updatedChild.getSurname(), updatedChildEntity.getSurname());
+        assertEquals(mondayAttendance.getFrom(), updatedChildEntity.getAttendance().getMondayFrom());
+        assertEquals(mondayAttendance.getTo(), updatedChildEntity.getAttendance().getMondayTo());
+        assertEquals(tuesdayAttendance.getFrom(), updatedChildEntity.getAttendance().getTuesdayFrom());
+        assertEquals(tuesdayAttendance.getTo(), updatedChildEntity.getAttendance().getTuesdayTo());
     }
 
     @Test
@@ -86,7 +104,7 @@ public class ChildControllerIT extends AbstractITBase {
     public void shouldReturnHttp400ForChildIdMismatchDuringUpdate() throws Exception {
         ChildEntity childEntity = persistTestChildEntity();
 
-        Child child = new Child(childEntity.getId(), null, null, childEntity.getDateOfBirth());
+        Child child = new Child(childEntity.getId(), null, null, childEntity.getDateOfBirth(), null);
 
         ResultActions response = mockMvc.perform(
                 put("/child/{id}", childEntity.getId() + 1)
@@ -102,7 +120,12 @@ public class ChildControllerIT extends AbstractITBase {
     public void shouldAddTheNewChildAndReturnItsId() throws Exception {
         String added_first_name = "ADDED_FIRST_NAME";
         String added_surname = "ADDED_SURNAME";
-        Child child = new Child(0, added_first_name, added_surname, LocalDate.now());
+        DailyAttendance mondayAttendance = new DailyAttendance(LocalTime.of(9, 30), LocalTime.of(17, 30));
+        WeeklyAttendance weeklyAttendance = new WeeklyAttendance.Builder(0)
+                .monday(mondayAttendance)
+                .build();
+
+        Child child = new Child(0, added_first_name, added_surname, LocalDate.now(), weeklyAttendance);
 
         ResultActions response = mockMvc.perform(
                 post("/child")
@@ -118,17 +141,21 @@ public class ChildControllerIT extends AbstractITBase {
 
         assertEquals(added_first_name, persistedChildEntity.getFirstName());
         assertEquals(added_surname, persistedChildEntity.getSurname());
+        assertEquals(mondayAttendance.getFrom(), persistedChildEntity.getAttendance().getMondayFrom());
+        assertEquals(mondayAttendance.getTo(), persistedChildEntity.getAttendance().getMondayTo());
     }
 
     @Test
     @Transactional
     public void shouldDeleteTheChild() throws Exception {
         ChildEntity childEntity = persistTestChildEntity();
+        WeeklyAttendanceEntity attendanceEntity = childEntity.getAttendance();
 
         ResultActions response = mockMvc.perform(delete("/child/{id}", childEntity.getId()));
 
         response.andExpect(status().isNoContent());
 
         assertNull(testEntityManager.find(ChildEntity.class, childEntity.getId()));
+        assertNull(testEntityManager.find(WeeklyAttendanceEntity.class, attendanceEntity.getId()));
     }
 }

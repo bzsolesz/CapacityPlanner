@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.plm.service.child.AbstractITBase;
 import com.plm.service.child.dao.ChildEntity;
 import com.plm.service.child.domain.Child;
+import com.plm.service.child.domain.WeeklyAttendance;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +16,6 @@ import java.time.LocalDate;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -32,11 +32,12 @@ public class CorsFilterIT extends AbstractITBase {
     private static final int KNOWN_PORT_2 = 89000;
 
     private ChildEntity testChildEntity;
+    private WeeklyAttendance weeklyAttendance;
 
     @Before
-    public void setUp() throws Exception {
-
+    public void setUp() {
         testChildEntity = persistTestChildEntity();
+        weeklyAttendance = new WeeklyAttendance.Builder(testChildEntity.getAttendance().getId()).build();
     }
 
     @Test
@@ -110,7 +111,7 @@ public class CorsFilterIT extends AbstractITBase {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
 
-        Child testChild = new Child(testChildEntity.getId(), "", "", testChildEntity.getDateOfBirth());
+        Child testChild = new Child(testChildEntity.getId(), "", "", testChildEntity.getDateOfBirth(), weeklyAttendance);
 
         String testChildJson = jsonMapper.writeValueAsString(testChild);
 
@@ -131,7 +132,7 @@ public class CorsFilterIT extends AbstractITBase {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.registerModule(new JavaTimeModule());
 
-        Child testChild = new Child(-1, "FIRST_NAME", "SURNAME", LocalDate.now());
+        Child testChild = new Child(-1, "FIRST_NAME", "SURNAME", LocalDate.now(), weeklyAttendance);
 
         String testChildJson = jsonMapper.writeValueAsString(testChild);
 

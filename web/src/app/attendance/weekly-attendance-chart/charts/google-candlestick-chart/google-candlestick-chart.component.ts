@@ -65,16 +65,11 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
 
   private dataSubscription: Subscription;
 
-  private static getChildren(weeklyAttendance: WeeklyAttendanceData): string[] {
-    const busiestDay: WeekDay = weeklyAttendance.getBusiestDay();
-    return weeklyAttendance.getAttendingChildrenByDay(busiestDay);
-  }
-
   // tslint:disable-next-line:no-any
   private static toCandlestickChartData(weeklyAttendance: WeeklyAttendanceData, barNotLine: boolean): Array<any> {
     // tslint:disable-next-line:no-any
     const dataTable: Array<any> = [];
-    const children: string[] = this.getChildren(weeklyAttendance);
+    const children: string[] = weeklyAttendance.getChildren();
 
     dataTable.push(this.initHead(weeklyAttendance));
 
@@ -97,7 +92,7 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
   }
 
   private static initHead(weeklyAttendance: WeeklyAttendanceData): string[] {
-    const children: string[] = this.getChildren(weeklyAttendance);
+    const children: string[] = weeklyAttendance.getChildren();
     let head: string[] = ["Day"];
 
     children.forEach((child: string) => {
