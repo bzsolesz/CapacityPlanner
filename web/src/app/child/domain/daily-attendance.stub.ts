@@ -1,9 +1,10 @@
 import { DailyAttendance } from ".";
+import { AttendanceTime } from "../../shared/date";
 
 export function defaultDailyAttendance(overrides?: Partial<DailyAttendance>): DailyAttendance {
   const defaultObject: DailyAttendance = {
-    from: "08:30",
-    to: "18:30"
+    from: AttendanceTime._0830,
+    to: AttendanceTime._1830
   };
   return { ...defaultObject, ...overrides };
 }

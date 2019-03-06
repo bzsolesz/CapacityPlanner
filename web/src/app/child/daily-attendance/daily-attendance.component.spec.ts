@@ -4,6 +4,7 @@ import { DebugElement } from "@angular/core";
 import { DailyAttendanceComponent } from "./daily-attendance.component";
 import { CommonTestSteps } from "../../test-utils";
 import { FormsModule } from "@angular/forms";
+import { AttendanceTime } from "../../shared/date";
 
 describe("Daily Attendance Component", () => {
   let steps: Steps;
@@ -112,7 +113,7 @@ class Steps extends CommonTestSteps<DailyAttendanceComponent> {
   };
   private static readonly TO_OPTIONS_SETTINGS: OptionsSettings = {
     css: Page.TO_SELECT_OPTIONS,
-    notSetIndex: DailyAttendanceComponent.TIMES.length,
+    notSetIndex: Object.keys(AttendanceTime).length,
     setIndexOffset: 0
   };
 
@@ -166,7 +167,7 @@ class Steps extends CommonTestSteps<DailyAttendanceComponent> {
 
   public thenAttendanceIsDisplayed(selectType: SelectType, expectedSelected: string): void {
     const optionsSettings: OptionsSettings = this.getOptionsSettings(selectType);
-    const index: number = DailyAttendanceComponent.TIMES.indexOf(expectedSelected) + optionsSettings.setIndexOffset;
+    const index: number = Object.values(AttendanceTime).indexOf(expectedSelected) + optionsSettings.setIndexOffset;
     const option: DebugElement = this.debugElementsByCss(optionsSettings.css)[index];
     expect(option.nativeElement.selected).toBeTruthy();
     expect(option.nativeElement.textContent).toEqual(expectedSelected);
@@ -185,10 +186,10 @@ class Steps extends CommonTestSteps<DailyAttendanceComponent> {
     const options: DebugElement[] = this.debugElementsByCss(optionsSettings.css);
     const notSetOption: DebugElement = options[optionsSettings.notSetIndex];
 
-    expect(options.length).toEqual(DailyAttendanceComponent.TIMES.length + 1);
+    expect(options.length).toEqual(Object.keys(AttendanceTime).length + 1);
     expect(notSetOption.nativeElement.value).toEqual(DailyAttendanceComponent.NOT_SET_VALUE);
     expect(notSetOption.nativeElement.textContent).toEqual("");
-    DailyAttendanceComponent.TIMES.forEach((time: string, index: number) => {
+    Object.values(AttendanceTime).forEach((time: string, index: number) => {
       const option: DebugElement = options[index + optionsSettings.setIndexOffset];
       expect(option.nativeElement.value).toEqual(time);
       expect(option.nativeElement.textContent).toEqual(time);

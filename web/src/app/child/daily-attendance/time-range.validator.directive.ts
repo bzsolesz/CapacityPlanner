@@ -18,11 +18,11 @@ export class TimeRangeValidatorDirective implements Validator {
   public validate(control: AbstractControl): ValidationErrors {
     const attendance: DailyAttendance = control.value;
     const isInvalid: boolean =
-      attendance && (!attendance.from || !attendance.to || (this.toNumber(attendance.from) >= this.toNumber(attendance.to)));
+      attendance && (!attendance.from || !attendance.to || (this.timeToNumber(attendance.from) >= this.timeToNumber(attendance.to)));
     return isInvalid ? this.toValidationErrors() : null;
   }
 
-  private toNumber(timeString: string): number {
+  private timeToNumber(timeString: string): number {
     const hourAndMinute: string[] = timeString.split(":");
     return Number(hourAndMinute[0]) + (Number(hourAndMinute[1]) / 60);
   }
