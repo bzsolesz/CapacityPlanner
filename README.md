@@ -56,7 +56,6 @@
 	</ul>
 	<h4>New features</h4>
 	<ul>
-		<li>daily aggregated child number chart</li>
 	    <li>start date for child</li>
 	    <li>vacation for child</li>
 		<li>time rolling weekly attendance chart</li>
