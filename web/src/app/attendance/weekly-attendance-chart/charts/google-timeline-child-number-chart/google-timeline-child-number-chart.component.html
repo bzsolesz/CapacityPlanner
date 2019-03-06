@@ -1,0 +1,38 @@
+<form class="form-inline hidden-print" (ngSubmit)="redraw()">
+  <div class="form-group">
+    Size:
+    <select class="form-control" name="size" [(ngModel)]="size">
+      <option value="10">Small</option>
+      <option value="12">Medium</option>
+      <option value="14">Large</option>
+      <option value="16">Extra Large</option>
+    </select>
+  </div>
+  <div class="form-group">
+    Palette:
+    <select class="form-control" name="palette" [(ngModel)]="palette">
+      <option value="COLORS_COLD_HOT">Cold & Hot</option>
+      <option value="COLORS_GREEN_SHADES">Green Shades</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <span *ngFor="let colorIndex of [0,1,2,3,4,5,6,7,8]" [style.background-color]="paletteColor(colorIndex)">
+      <span [style.color]="paletteTextColor(colorIndex)">&nbsp;{{colorIndex + 1}}&nbsp;</span>
+    </span>
+  </div>
+  <div class="form-group">
+    Number:
+    <input type="checkbox" name="showNumbers" [(ngModel)]="showNumbers">
+  </div>
+  <div class="form-group">
+    Tooltip:
+    <input type="checkbox" name="showTooltip" [(ngModel)]="showTooltip">
+  </div>
+  <button class="btn btn-default" type="submit">
+    <span class="glyphicon glyphicon-refresh"></span>&nbsp;Redraw
+  </button>
+</form>
+<br class="hidden-print">
+<div *ngIf="timelineChildNumberChartData.dataTable">
+  <google-chart #GoogleTimelineChildNumberChart [data]="timelineChildNumberChartData"></google-chart>
+</div>

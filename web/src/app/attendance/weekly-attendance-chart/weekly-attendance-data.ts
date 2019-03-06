@@ -1,5 +1,6 @@
 import { WeekDay } from "../../shared/date";
 import { DailyAttendance, Child } from "../../child/domain";
+import { AttendanceTime } from "../../shared/date";
 
 export class WeeklyAttendanceData {
   private attendanceMap: Map<WeekDay, Map<string, DailyAttendance>>;
@@ -9,6 +10,16 @@ export class WeeklyAttendanceData {
     Object.keys(WeekDay).forEach((day: WeekDay) => {
       this.initDailyAttendanceMap(day, children);
     });
+  }
+
+  public static timeToDate(timeString: string): Date {
+    const hourAndMinute: string[] = timeString.split(":");
+    return new Date(0, 0, 0, Number(hourAndMinute[0]), Number(hourAndMinute[1]), 0);
+  }
+
+  public static timeToNumber(timeString: string): number {
+    const hourAndMinute: string[] = timeString.split(":");
+    return Number(hourAndMinute[0]) + (Number(hourAndMinute[1]) / 60);
   }
 
   private initDailyAttendanceMap(day: WeekDay, children: Child[]): void {
@@ -30,7 +41,22 @@ export class WeeklyAttendanceData {
     return Array.from(this.attendanceMap.get(day).keys());
   }
 
-  public getChildren(): string[] {
+  public getAttendingChildrenByDayPeriod(day: WeekDay, from: AttendanceTime, to: AttendanceTime): string[] {
+    const children: string[] = [];
+    this.getAttendingChildrenByDay(day)
+      .filter((child: string) => {
+        const periodFrom: Date = WeeklyAttendanceData.timeToDate(from);
+        const periodTo: Date = WeeklyAttendanceData.timeToDate(to);
+        const attendance: DailyAttendance = this.attendanceMap.get(day).get(child);
+        const childFrom: Date = WeeklyAttendanceData.timeToDate(attendance.from);
+        const childTo: Date = WeeklyAttendanceData.timeToDate(attendance.to);
+        return childFrom <= periodFrom && childTo >= periodTo;
+      })
+      .forEach((child: string) => children.push(child));
+    return children;
+  }
+
+  public getAllhildren(): string[] {
     const children: string[] = [];
     Array.from(this.attendanceMap.values())
       .forEach((dailyAttendance: Map<string, DailyAttendance>) =>

@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { WeeklyAttendanceData } from "../../weekly-attendance-data";
-import { WeekDay } from "../../../../shared/date";
+import { WeekDay, AttendanceTime } from "../../../../shared/date";
 import { DailyAttendance } from "../../../../child/domain";
 
 @Component({
@@ -29,20 +29,7 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
         groupWidth: this.size
       },
       vAxis: {
-        ticks: [
-          {v: 8, f: "08:00"},
-          {v: 8.5, f: "08:30"},
-          {v: 9, f: "09:00"},
-          {v: 10, f: "10:00"},
-          {v: 11, f: "11:00"},
-          {v: 12, f: "12:00"},
-          {v: 13, f: "13:00"},
-          {v: 14, f: "14:00"},
-          {v: 15, f: "15:00"},
-          {v: 16, f: "16:00"},
-          {v: 17, f: "17:00"},
-          {v: 18, f: "18:00"},
-          {v: 18.5, f: "18:30"}]
+        ticks: GoogleCandlestickChartComponent.getTicks()
       },
       chartArea: {
         left: 50,
@@ -69,7 +56,7 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
   private static toCandlestickChartData(weeklyAttendance: WeeklyAttendanceData, barNotLine: boolean): Array<any> {
     // tslint:disable-next-line:no-any
     const dataTable: Array<any> = [];
-    const children: string[] = weeklyAttendance.getChildren();
+    const children: string[] = weeklyAttendance.getAllhildren();
 
     dataTable.push(this.initHead(weeklyAttendance));
 
@@ -92,7 +79,7 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
   }
 
   private static initHead(weeklyAttendance: WeeklyAttendanceData): string[] {
-    const children: string[] = weeklyAttendance.getChildren();
+    const children: string[] = weeklyAttendance.getAllhildren();
     let head: string[] = ["Day"];
 
     children.forEach((child: string) => {
@@ -103,20 +90,20 @@ export class GoogleCandlestickChartComponent implements OnInit, OnDestroy {
 
   private static toDataRow(from: string, to: string, barNotLine: boolean): number[] {
     return [
-      this.toNumber(from),
-      this.toNumber(from),
-      this.toNumber(barNotLine ? to : from),
-      this.toNumber(to)
+      WeeklyAttendanceData.timeToNumber(from),
+      WeeklyAttendanceData.timeToNumber(from),
+      WeeklyAttendanceData.timeToNumber(barNotLine ? to : from),
+      WeeklyAttendanceData.timeToNumber(to)
     ];
-  }
-
-  private static toNumber(attendanceString: string): number {
-    const hourAndMinute: string[] = attendanceString.split(":");
-    return Number(hourAndMinute[0]) + (Number(hourAndMinute[1]) / 60);
   }
 
   private static toTooltipTrigger(showTooltip: boolean): string {
     return showTooltip ? "focus" : "none";
+  }
+
+  private static getTicks(): {v: number, f: string}[] {
+    return Object.values(AttendanceTime)
+      .map((time: string) => ({v: WeeklyAttendanceData.timeToNumber(time), f: time}));
   }
 
   public ngOnInit(): void {

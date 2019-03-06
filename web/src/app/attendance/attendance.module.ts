@@ -7,13 +7,17 @@ import { GoogleTimelineChartComponent } from "./weekly-attendance-chart/charts/g
 import {
   GoogleCandlestickChartComponent
 } from "./weekly-attendance-chart/charts/google-candlestick-chart/google-candlestick-chart.component";
+import {
+  GoogleTimelineChildNumberChartComponent
+} from "./weekly-attendance-chart/charts/google-timeline-child-number-chart/google-timeline-child-number-chart.component";
 import { Ng2GoogleChartsModule } from "ng2-google-charts";
 
 @NgModule({
   declarations: [
     WeeklyAttendanceChartComponent,
     GoogleTimelineChartComponent,
-    GoogleCandlestickChartComponent
+    GoogleCandlestickChartComponent,
+    GoogleTimelineChildNumberChartComponent
   ],
   imports: [
     CommonModule,

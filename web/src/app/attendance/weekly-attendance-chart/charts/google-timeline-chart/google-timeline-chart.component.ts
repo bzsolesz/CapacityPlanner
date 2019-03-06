@@ -59,17 +59,12 @@ export class GoogleTimelineChartComponent implements OnInit, OnDestroy {
         dataTable.push([
           day,
           childName,
-          this.toDate(dailyAttendance.from),
-          this.toDate(dailyAttendance.to)
+          WeeklyAttendanceData.timeToDate(dailyAttendance.from),
+          WeeklyAttendanceData.timeToDate(dailyAttendance.to)
         ]);
       });
     });
     return dataTable;
-  }
-
-  private static toDate(attendanceString: string): Date {
-    const hourAndMinute: string[] = attendanceString.split(":");
-    return new Date(0, 0, 0, Number(hourAndMinute[0]), Number(hourAndMinute[1]), 0);
   }
 
   private static toTooltipTrigger(showTooltip: boolean): string {

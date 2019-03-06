@@ -1,6 +1,7 @@
 import { Component, forwardRef } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { DailyAttendance } from "../domain/daily-attendance";
+import { AttendanceTime } from "../../shared/date";
 
 @Component({
   selector: "app-daily-attendance",
@@ -15,9 +16,6 @@ import { DailyAttendance } from "../domain/daily-attendance";
   ]
 })
 export class DailyAttendanceComponent implements ControlValueAccessor {
-  public static readonly TIMES: string[] = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-    "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00",
-    "16:30", "17:00", "17:30", "18:00", "18:30"];
   public static readonly NOT_SET_VALUE: string = "-";
 
   public _from: string;
@@ -44,7 +42,7 @@ export class DailyAttendanceComponent implements ControlValueAccessor {
   }
 
   get times(): string[] {
-    return DailyAttendanceComponent.TIMES;
+    return Object.values(AttendanceTime);
   }
 
   get notSetValue(): string {
