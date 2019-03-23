@@ -7,7 +7,7 @@
     <parent>
         <artifactId>capacity-planner</artifactId>
         <groupId>com.plm</groupId>
-        <version>0.15-SNAPSHOT</version>
+        <version>0.16-SNAPSHOT</version>
     </parent>
 
     <artifactId>integration-test</artifactId>
